@@ -1,0 +1,1336 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Gestione Parcheggio Smart</title>
+    <style type="text/css">
+      body {
+      	font-family: Trebuchet MS, sans-serif;
+      	font-size: 15px;
+      	color: #444;
+      	margin-right: 24px;
+      }
+      
+      h1	{
+      	font-size: 25px;
+      }
+      h2	{
+      	font-size: 20px;
+      }
+      h3	{
+      	font-size: 16px;
+      	font-weight: bold;
+      }
+      hr	{
+      	height: 1px;
+      	border: 0;
+      	color: #ddd;
+      	background-color: #ddd;
+      }
+      
+      .app-desc {
+        clear: both;
+        margin-left: 20px;
+      }
+      .param-name {
+        width: 100%;
+      }
+      .license-info {
+        margin-left: 20px;
+      }
+      
+      .license-url {
+        margin-left: 20px;
+      }
+      
+      .model {
+        margin: 0 0 0px 20px;
+      }
+      
+      .method {
+        margin-left: 20px;
+      }
+      
+      .method-notes	{
+      	margin: 10px 0 20px 0;
+      	font-size: 90%;
+      	color: #555;
+      }
+      
+      pre {
+        padding: 10px;
+        margin-bottom: 2px;
+      }
+      
+      .http-method {
+       text-transform: uppercase;
+      }
+      
+      pre.get {
+        background-color: #0f6ab4;
+      }
+      
+      pre.post {
+        background-color: #10a54a;
+      }
+      
+      pre.put {
+        background-color: #c5862b;
+      }
+      
+      pre.delete {
+        background-color: #a41e22;
+      }
+      
+      .huge	{
+      	color: #fff;
+      }
+      
+      pre.example {
+        background-color: #f3f3f3;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+      
+      code {
+        white-space: pre;
+      }
+      
+      .nickname {
+        font-weight: bold;
+      }
+      
+      .method-path {
+        font-size: 1.5em;
+        background-color: #0f6ab4;
+      }
+      
+      .up {
+        float:right;
+      }
+      
+      .parameter {
+        width: 500px;
+      }
+      
+      .param {
+        width: 500px;
+        padding: 10px 0 0 20px;
+        font-weight: bold;
+      }
+      
+      .param-desc {
+        width: 700px;
+        padding: 0 0 0 20px;
+        color: #777;
+      }
+      
+      .param-type {
+        font-style: italic;
+      }
+      
+      .param-enum-header {
+      width: 700px;
+      padding: 0 0 0 60px;
+      color: #777;
+      font-weight: bold;
+      }
+      
+      .param-enum {
+      width: 700px;
+      padding: 0 0 0 80px;
+      color: #777;
+      font-style: italic;
+      }
+      
+      .field-label {
+        padding: 0;
+        margin: 0;
+        clear: both;
+      }
+      
+      .field-items	{
+      	padding: 0 0 15px 0;
+      	margin-bottom: 15px;
+      }
+      
+      .return-type {
+        clear: both;
+        padding-bottom: 10px;
+      }
+      
+      .param-header {
+        font-weight: bold;
+      }
+      
+      .method-tags {
+        text-align: right;
+      }
+      
+      .method-tag {
+        background: none repeat scroll 0% 0% #24A600;
+        border-radius: 3px;
+        padding: 2px 10px;
+        margin: 2px;
+        color: #FFF;
+        display: inline-block;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+  <h1>Gestione Parcheggio Smart</h1>
+    <div class="app-desc">API del backend del sistema di gestione parcheggio</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="hello@helloreverb.com">hello@helloreverb.com</a></div>
+    <div class="app-desc">Version: 1.0.0</div>
+    <div class="app-desc">BasePath:/MARCOVECCHIO/ParkCharge/1.0.0</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Costi">Costi</a></h4>
+  <ul>
+  <li><a href="#costoGet"><code><span class="http-method">get</span> /costo</code></a></li>
+  <li><a href="#costoPut"><code><span class="http-method">put</span> /costo</code></a></li>
+  </ul>
+  <h4><a href="#Prenotazioni">Prenotazioni</a></h4>
+  <ul>
+  <li><a href="#prenotazioniGet"><code><span class="http-method">get</span> /prenotazioni</code></a></li>
+  <li><a href="#prenotazioniIdDelete"><code><span class="http-method">delete</span> /prenotazioni/{id}/</code></a></li>
+  <li><a href="#prenotazioniIdGet"><code><span class="http-method">get</span> /prenotazioni/{id}/</code></a></li>
+  <li><a href="#prenotazioniIdTempoArrivoPut"><code><span class="http-method">put</span> /prenotazioni/{id}/tempo_arrivo</code></a></li>
+  <li><a href="#prenotazioniIdTempoUscitaPut"><code><span class="http-method">put</span> /prenotazioni/{id}/tempo_uscita</code></a></li>
+  <li><a href="#prenotazioniPost"><code><span class="http-method">post</span> /prenotazioni</code></a></li>
+  </ul>
+  <h4><a href="#Ricariche">Ricariche</a></h4>
+  <ul>
+  <li><a href="#ricaricheGet"><code><span class="http-method">get</span> /ricariche</code></a></li>
+  <li><a href="#ricarichePost"><code><span class="http-method">post</span> /ricariche</code></a></li>
+  <li><a href="#ricarichePrenotazioneGet"><code><span class="http-method">get</span> /ricariche/{prenotazione}/</code></a></li>
+  </ul>
+  <h4><a href="#Utenti">Utenti</a></h4>
+  <ul>
+  <li><a href="#utentiGet"><code><span class="http-method">get</span> /utenti</code></a></li>
+  <li><a href="#utentiPost"><code><span class="http-method">post</span> /utenti</code></a></li>
+  <li><a href="#utentiUsernameGet"><code><span class="http-method">get</span> /utenti/{username}/</code></a></li>
+  <li><a href="#utentiUsernamePut"><code><span class="http-method">put</span> /utenti/{username}/</code></a></li>
+  <li><a href="#utentiUsernameTipoPut"><code><span class="http-method">put</span> /utenti/{username}/tipo</code></a></li>
+  </ul>
+
+  <h1><a name="Costi">Costi</a></h1>
+  <div class="method"><a name="costoGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /costo</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">costoGet</span>)</div>
+    <div class="method-notes">Ritorna un oggetto con i costi attuali</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Costi">Costi</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "penale" : 1,
+  "costo_posteggio" : 0.8008281904610115,
+  "costo_ricarica" : 6.027456183070403,
+  "costo_premium" : 5
+}, {
+  "penale" : 1,
+  "costo_posteggio" : 0.8008281904610115,
+  "costo_ricarica" : 6.027456183070403,
+  "costo_premium" : 5
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Oggetto ritornato con successo
+        
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="costoPut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /costo</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">costoPut</span>)</div>
+    <div class="method-notes">Modifica i costi attuali</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#costo_body">costo_body</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Costi">Costi</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "penale" : 1,
+  "costo_posteggio" : 0.8008281904610115,
+  "costo_ricarica" : 6.027456183070403,
+  "costo_premium" : 5
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Costi aggiornati con successo
+        <a href="#Costi">Costi</a>
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Prenotazioni">Prenotazioni</a></h1>
+  <div class="method"><a name="prenotazioniGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /prenotazioni</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">prenotazioniGet</span>)</div>
+    <div class="method-notes">Ritorna una lista di prenotazioni</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Prenotazioni">Prenotazioni</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "utente" : "utente",
+  "posto" : 6,
+  "tempo_arrivo" : "2024-01-30 15:34:22",
+  "id" : 0,
+  "tempo_uscita" : "2024-01-30 15:34:22"
+}, {
+  "utente" : "utente",
+  "posto" : 6,
+  "tempo_arrivo" : "2024-01-30 15:34:22",
+  "id" : 0,
+  "tempo_uscita" : "2024-01-30 15:34:22"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Prenotazioni ritornati con successo
+        
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="prenotazioniIdDelete"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /prenotazioni/{id}/</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">prenotazioniIdDelete</span>)</div>
+    <div class="method-notes">Elimina una prenotazione specifica dall'id</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">204</h4>
+    Prenotazione eliminata con successo
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="prenotazioniIdGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /prenotazioni/{id}/</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">prenotazioniIdGet</span>)</div>
+    <div class="method-notes">Ritorna un prenotazione specifica dall'id</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Prenotazioni">Prenotazioni</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "utente" : "utente",
+  "posto" : 6,
+  "tempo_arrivo" : "2024-01-30 15:34:22",
+  "id" : 0,
+  "tempo_uscita" : "2024-01-30 15:34:22"
+}, {
+  "utente" : "utente",
+  "posto" : 6,
+  "tempo_arrivo" : "2024-01-30 15:34:22",
+  "id" : 0,
+  "tempo_uscita" : "2024-01-30 15:34:22"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Prenotazione ritornata con succcesso
+        
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="prenotazioniIdTempoArrivoPut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /prenotazioni/{id}/tempo_arrivo</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">prenotazioniIdTempoArrivoPut</span>)</div>
+    <div class="method-notes">Cambia il tempo di arrivo di una prenotazione specifica</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#id_tempo_arrivo_body">id_tempo_arrivo_body</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Prenotazioni">Prenotazioni</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "utente" : "utente",
+  "posto" : 6,
+  "tempo_arrivo" : "2024-01-30 15:34:22",
+  "id" : 0,
+  "tempo_uscita" : "2024-01-30 15:34:22"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Tempo di arrivo aggiornato con successo
+        <a href="#Prenotazioni">Prenotazioni</a>
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="prenotazioniIdTempoUscitaPut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /prenotazioni/{id}/tempo_uscita</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">prenotazioniIdTempoUscitaPut</span>)</div>
+    <div class="method-notes">Cambia il tempo di uscita di una prenotazione specifica</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#id_tempo_uscita_body">id_tempo_uscita_body</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Prenotazioni">Prenotazioni</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "utente" : "utente",
+  "posto" : 6,
+  "tempo_arrivo" : "2024-01-30 15:34:22",
+  "id" : 0,
+  "tempo_uscita" : "2024-01-30 15:34:22"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Tempo di uscita aggiornato con successo
+        <a href="#Prenotazioni">Prenotazioni</a>
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="prenotazioniPost"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /prenotazioni</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">prenotazioniPost</span>)</div>
+    <div class="method-notes">Crea una nuova prenotazione</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#Prenotazioni">Prenotazioni</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Prenotazioni">Prenotazioni</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "utente" : "utente",
+  "posto" : 6,
+  "tempo_arrivo" : "2024-01-30 15:34:22",
+  "id" : 0,
+  "tempo_uscita" : "2024-01-30 15:34:22"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Prenotazione creato con successo
+        <a href="#Prenotazioni">Prenotazioni</a>
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Ricariche">Ricariche</a></h1>
+  <div class="method"><a name="ricaricheGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /ricariche</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">ricaricheGet</span>)</div>
+    <div class="method-notes">Ritorna una lista di ricariche</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Ricariche">Ricariche</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "kilowatt" : 0.8008281904610115,
+  "prenotazione" : 5,
+  "MWBot" : 5,
+  "durata_ricarica" : 6,
+  "percentuale_richiesta" : 1
+}, {
+  "kilowatt" : 0.8008281904610115,
+  "prenotazione" : 5,
+  "MWBot" : 5,
+  "durata_ricarica" : 6,
+  "percentuale_richiesta" : 1
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Ricariche ritornati con successo
+        
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="ricarichePost"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /ricariche</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">ricarichePost</span>)</div>
+    <div class="method-notes">Crea una nuova ricarica</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#Ricariche">Ricariche</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Ricariche">Ricariche</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "kilowatt" : 0.8008281904610115,
+  "prenotazione" : 5,
+  "MWBot" : 5,
+  "durata_ricarica" : 6,
+  "percentuale_richiesta" : 1
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Ricarica creato con successo
+        <a href="#Ricariche">Ricariche</a>
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="ricarichePrenotazioneGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /ricariche/{prenotazione}/</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">ricarichePrenotazioneGet</span>)</div>
+    <div class="method-notes">Ritorna una ricarica specifica dalla prenotazione</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">prenotazione (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Ricariche">Ricariche</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "kilowatt" : 0.8008281904610115,
+  "prenotazione" : 5,
+  "MWBot" : 5,
+  "durata_ricarica" : 6,
+  "percentuale_richiesta" : 1
+}, {
+  "kilowatt" : 0.8008281904610115,
+  "prenotazione" : 5,
+  "MWBot" : 5,
+  "durata_ricarica" : 6,
+  "percentuale_richiesta" : 1
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Ricarica ritornata con succcesso
+        
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Utenti">Utenti</a></h1>
+  <div class="method"><a name="utentiGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /utenti</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">utentiGet</span>)</div>
+    <div class="method-notes">Ritorna una lista di utenti</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Utenti">Utenti</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "carta" : {
+    "cvv" : "cvv",
+    "cognome" : "cognome",
+    "scadenza" : "scadenza",
+    "numero_carta" : "numero_carta",
+    "nome" : "nome"
+  },
+  "tipo" : 0,
+  "cognome" : "cognome",
+  "nome" : "nome",
+  "username" : "username"
+}, {
+  "carta" : {
+    "cvv" : "cvv",
+    "cognome" : "cognome",
+    "scadenza" : "scadenza",
+    "numero_carta" : "numero_carta",
+    "nome" : "nome"
+  },
+  "tipo" : 0,
+  "cognome" : "cognome",
+  "nome" : "nome",
+  "username" : "username"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Utenti ritornati con successo
+        
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="utentiPost"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /utenti</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">utentiPost</span>)</div>
+    <div class="method-notes">Crea un nuovo utente</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#Utenti">Utenti</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Utenti">Utenti</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "carta" : {
+    "cvv" : "cvv",
+    "cognome" : "cognome",
+    "scadenza" : "scadenza",
+    "numero_carta" : "numero_carta",
+    "nome" : "nome"
+  },
+  "tipo" : 0,
+  "cognome" : "cognome",
+  "nome" : "nome",
+  "username" : "username"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Utente creato con successo
+        <a href="#Utenti">Utenti</a>
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="utentiUsernameGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /utenti/{username}/</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">utentiUsernameGet</span>)</div>
+    <div class="method-notes">Ritorna un utente specifico dall'username</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">username (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#Utenti">Utenti</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "carta" : {
+    "cvv" : "cvv",
+    "cognome" : "cognome",
+    "scadenza" : "scadenza",
+    "numero_carta" : "numero_carta",
+    "nome" : "nome"
+  },
+  "tipo" : 0,
+  "cognome" : "cognome",
+  "nome" : "nome",
+  "username" : "username"
+}, {
+  "carta" : {
+    "cvv" : "cvv",
+    "cognome" : "cognome",
+    "scadenza" : "scadenza",
+    "numero_carta" : "numero_carta",
+    "nome" : "nome"
+  },
+  "tipo" : 0,
+  "cognome" : "cognome",
+  "nome" : "nome",
+  "username" : "username"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Utente ritornato con successo
+        
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="utentiUsernamePut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /utenti/{username}/</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">utentiUsernamePut</span>)</div>
+    <div class="method-notes">Modifica i dettagli di un utente specifico, escludendo il tipo</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">username (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#utenti_username_body">utenti_username_body</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Utenti">Utenti</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "carta" : {
+    "cvv" : "cvv",
+    "cognome" : "cognome",
+    "scadenza" : "scadenza",
+    "numero_carta" : "numero_carta",
+    "nome" : "nome"
+  },
+  "tipo" : 0,
+  "cognome" : "cognome",
+  "nome" : "nome",
+  "username" : "username"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Dettagli utente aggiornati con successo
+        <a href="#Utenti">Utenti</a>
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="utentiUsernameTipoPut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /utenti/{username}/tipo</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">utentiUsernameTipoPut</span>)</div>
+    <div class="method-notes">Cambia il tipo di un utente specifico da base a premium</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">username (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#username_tipo_body">username_tipo_body</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Utenti">Utenti</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "carta" : {
+    "cvv" : "cvv",
+    "cognome" : "cognome",
+    "scadenza" : "scadenza",
+    "numero_carta" : "numero_carta",
+    "nome" : "nome"
+  },
+  "tipo" : 0,
+  "cognome" : "cognome",
+  "nome" : "nome",
+  "username" : "username"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Tipo utente aggiornato con successo
+        <a href="#Utenti">Utenti</a>
+    <h4 class="field-label">400</h4>
+    Invalid request
+        <a href="#inline_response_400">inline_response_400</a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#Costi"><code>Costi</code></a></li>
+    <li><a href="#Prenotazioni"><code>Prenotazioni</code></a></li>
+    <li><a href="#Prenotazioni_tempo_arrivo"><code>Prenotazioni_tempo_arrivo</code></a></li>
+    <li><a href="#Prenotazioni_tempo_uscita"><code>Prenotazioni_tempo_uscita</code></a></li>
+    <li><a href="#Ricariche"><code>Ricariche</code></a></li>
+    <li><a href="#Utenti"><code>Utenti</code></a></li>
+    <li><a href="#costo_body"><code>costo_body</code></a></li>
+    <li><a href="#id_tempo_arrivo_body"><code>id_tempo_arrivo_body</code></a></li>
+    <li><a href="#id_tempo_uscita_body"><code>id_tempo_uscita_body</code></a></li>
+    <li><a href="#inline_response_400"><code>inline_response_400</code></a></li>
+    <li><a href="#prenotazioniidtempo_arrivo_tempo_arrivo"><code>prenotazioniidtempo_arrivo_tempo_arrivo</code></a></li>
+    <li><a href="#username_tipo_body"><code>username_tipo_body</code></a></li>
+    <li><a href="#utenti_username_body"><code>utenti_username_body</code></a></li>
+    <li><a href="#utentiusername_carta"><code>utentiusername_carta</code></a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="Costi"><code>Costi</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">costo_posteggio </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+<div class="param">costo_ricarica </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+<div class="param">penale </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">costo_premium </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Prenotazioni"><code>Prenotazioni</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">tempo_arrivo </div><div class="param-desc"><span class="param-type"><a href="#Prenotazioni_tempo_arrivo">Prenotazioni_tempo_arrivo</a></span>  </div>
+<div class="param">tempo_uscita </div><div class="param-desc"><span class="param-type"><a href="#Prenotazioni_tempo_uscita">Prenotazioni_tempo_uscita</a></span>  </div>
+<div class="param">utente </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">posto </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Prenotazioni_tempo_arrivo"><code>Prenotazioni_tempo_arrivo</code></a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Orario arrivo dell&#x27;utente</div>
+    <div class="field-items">
+      <div class="param">anno (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">mese (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">giorno (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">ora (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">minuti (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">secondi (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Prenotazioni_tempo_uscita"><code>Prenotazioni_tempo_uscita</code></a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Orario uscita dell&#x27;utente</div>
+    <div class="field-items">
+      <div class="param">anno (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">mese (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">giorno (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">ora (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">minuti (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">secondi (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Ricariche"><code>Ricariche</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">kilowatt </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+<div class="param">durata_ricarica </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">percentuale_richiesta </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">prenotazione </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">MWBot </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Utenti"><code>Utenti</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">username </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">nome </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">cognome </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">tipo </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">carta </div><div class="param-desc"><span class="param-type"><a href="#utentiusername_carta">utentiusername_carta</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="costo_body"><code>costo_body</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">costo_posteggio (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+<div class="param">costo_ricarica (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+<div class="param">penale (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">costo_premium (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="id_tempo_arrivo_body"><code>id_tempo_arrivo_body</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">tempo_arrivo (optional)</div><div class="param-desc"><span class="param-type"><a href="#prenotazioniidtempo_arrivo_tempo_arrivo">prenotazioniidtempo_arrivo_tempo_arrivo</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="id_tempo_uscita_body"><code>id_tempo_uscita_body</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">tempo_uscita (optional)</div><div class="param-desc"><span class="param-type"><a href="#prenotazioniidtempo_arrivo_tempo_arrivo">prenotazioniidtempo_arrivo_tempo_arrivo</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_400"><code>inline_response_400</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="prenotazioniidtempo_arrivo_tempo_arrivo"><code>prenotazioniidtempo_arrivo_tempo_arrivo</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">anno (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">mese (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">giorno (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">ora (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">minuti (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">secondi (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="username_tipo_body"><code>username_tipo_body</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">tipo (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="utenti_username_body"><code>utenti_username_body</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">cognome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">carta (optional)</div><div class="param-desc"><span class="param-type"><a href="#utentiusername_carta">utentiusername_carta</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="utentiusername_carta"><code>utentiusername_carta</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">nome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">cognome (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">numero_carta (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">scadenza (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">cvv (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>
