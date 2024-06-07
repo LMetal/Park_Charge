@@ -724,6 +724,18 @@
     }
   }
 };
+            defs["Credenziali"] = {
+  "required" : [ "password", "username" ],
+  "type" : "object",
+  "properties" : {
+    "username" : {
+      "type" : "string"
+    },
+    "password" : {
+      "type" : "string"
+    }
+  }
+};
             defs["id_tempo_arrivo_body"] = {
   "type" : "object",
   "properties" : {
@@ -948,6 +960,13 @@
                     </li>
                     <li data-group="Costi" data-name="costoPut" class="">
                       <a href="#api-Costi-costoPut">costoPut</a>
+                    </li>
+                  <li class="nav-header" data-group="Credenziali"><a href="#api-Credenziali">API Methods - Credenziali</a></li>
+                    <li data-group="Credenziali" data-name="credenzialiPost" class="">
+                      <a href="#api-Credenziali-credenzialiPost">credenzialiPost</a>
+                    </li>
+                    <li data-group="Credenziali" data-name="credenzialiUsernameGet" class="">
+                      <a href="#api-Credenziali-credenzialiUsernameGet">credenzialiUsernameGet</a>
                     </li>
                   <li class="nav-header" data-group="Prenotazioni"><a href="#api-Prenotazioni">API Methods - Prenotazioni</a></li>
                     <li data-group="Prenotazioni" data-name="prenotazioniGet" class="">
@@ -1864,6 +1883,947 @@ except ApiException as e:
                                     </script>
                                   </div>
                                   <input id='responses-costoPut-500-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                  </section>
+                <section id="api-Credenziali">
+                  <h1>Credenziali</h1>
+                    <div id="api-Credenziali-credenzialiPost">
+                      <article id="api-Credenziali-credenzialiPost-0" data-group="User" data-name="credenzialiPost" data-version="0">
+                        <div class="pull-left">
+                          <h1>credenzialiPost</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Crea le credenziali per un nuovo utente</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/credenziali</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Credenziali-credenzialiPost-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Credenziali-credenzialiPost-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Credenziali-credenzialiPost-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Credenziali-credenzialiPost-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Accept: application/json"\
+-H "Content-Type: application/json"\
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/credenziali"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.CredenzialiApi;
+
+import java.io.File;
+import java.util.*;
+
+public class CredenzialiApiExample {
+
+    public static void main(String[] args) {
+        
+        CredenzialiApi apiInstance = new CredenzialiApi();
+        Credenziali body = ; // Credenziali | 
+        try {
+            Credenziali result = apiInstance.credenzialiPost(body);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling CredenzialiApi#credenzialiPost");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.CredenzialiApi;
+
+public class CredenzialiApiExample {
+
+    public static void main(String[] args) {
+        CredenzialiApi apiInstance = new CredenzialiApi();
+        Credenziali body = ; // Credenziali | 
+        try {
+            Credenziali result = apiInstance.credenzialiPost(body);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling CredenzialiApi#credenzialiPost");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Credenziali *body = ; // 
+
+CredenzialiApi *apiInstance = [[CredenzialiApi alloc] init];
+
+[apiInstance credenzialiPostWith:body
+              completionHandler: ^(Credenziali output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var GestioneParcheggioSmart = require('gestione_parcheggio_smart');
+
+var api = new GestioneParcheggioSmart.CredenzialiApi()
+var body = ; // {{Credenziali}} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.credenzialiPost(body, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class credenzialiPostExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new CredenzialiApi();
+            var body = new Credenziali(); // Credenziali | 
+
+            try
+            {
+                Credenziali result = apiInstance.credenzialiPost(body);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling CredenzialiApi.credenzialiPost: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiCredenzialiApi();
+$body = ; // Credenziali | 
+
+try {
+    $result = $api_instance->credenzialiPost($body);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling CredenzialiApi->credenzialiPost: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::CredenzialiApi;
+
+my $api_instance = WWW::SwaggerClient::CredenzialiApi->new();
+my $body = WWW::SwaggerClient::Object::Credenziali->new(); # Credenziali | 
+
+eval { 
+    my $result = $api_instance->credenzialiPost(body => $body);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling CredenzialiApi->credenzialiPost: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.CredenzialiApi()
+body =  # Credenziali | 
+
+try: 
+    api_response = api_instance.credenziali_post(body)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling CredenzialiApi->credenzialiPost: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">body <span style="color:red;">*</span></td>
+                                <td>
+                                
+                                
+                                <script>
+                                $(document).ready(function() {
+                                  var schemaWrapper = {
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Credenziali"
+      }
+    }
+  },
+  "required" : true
+};
+                                  var schema = schemaWrapper.content["application/json"].schema;
+                                  if (schema.$ref != null) {
+                                    schema = defsParser.$refs.get(schema.$ref);
+                                  } else {
+                                    schemaWrapper.components = {};
+                                    schemaWrapper.components.schemas = Object.assign({}, defs);
+                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                      console.log(err);
+                                    });
+                                  }
+                                
+                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+                                  var result = $('#d2e199_credenzialiPost_body');
+                                  result.empty();
+                                  result.append(view.render());
+                                });
+                                </script>
+                                <div id="d2e199_credenzialiPost_body"></div>
+                                </td>
+                                </tr>
+                            </table>
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 201 - Credenziali create con successo </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-credenzialiPost-201-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-credenzialiPost-201-schema">
+                                  <div id='responses-credenzialiPost-201-schema-201' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Credenziali create con successo",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Credenziali"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-credenzialiPost-201-schema-data').val(stringify(schema));
+                                        var result = $('#responses-credenzialiPost-201-schema-201');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-credenzialiPost-201-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 400 - Richiesta non valida </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-credenzialiPost-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-credenzialiPost-400-schema">
+                                  <div id='responses-credenzialiPost-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Richiesta non valida",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-credenzialiPost-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-credenzialiPost-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-credenzialiPost-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 401 - Accesso non autorizzato </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-credenzialiPost-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-credenzialiPost-401-schema">
+                                  <div id='responses-credenzialiPost-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Accesso non autorizzato",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-credenzialiPost-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-credenzialiPost-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-credenzialiPost-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 500 - Errore interno </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-credenzialiPost-500-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-credenzialiPost-500-schema">
+                                  <div id='responses-credenzialiPost-500-schema-500' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Errore interno",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-credenzialiPost-500-schema-data').val(stringify(schema));
+                                        var result = $('#responses-credenzialiPost-500-schema-500');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-credenzialiPost-500-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Credenziali-credenzialiUsernameGet">
+                      <article id="api-Credenziali-credenzialiUsernameGet-0" data-group="User" data-name="credenzialiUsernameGet" data-version="0">
+                        <div class="pull-left">
+                          <h1>credenzialiUsernameGet</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Ritorna le credenziali di un utente specifico dall&#x27;username</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/credenziali/{username}/</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Credenziali-credenzialiUsernameGet-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Credenziali-credenzialiUsernameGet-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Credenziali-credenzialiUsernameGet-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Credenziali-credenzialiUsernameGet-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Credenziali-credenzialiUsernameGet-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Credenziali-credenzialiUsernameGet-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Credenziali-credenzialiUsernameGet-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Credenziali-credenzialiUsernameGet-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Credenziali-credenzialiUsernameGet-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Credenziali-credenzialiUsernameGet-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Credenziali-credenzialiUsernameGet-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Credenziali-credenzialiUsernameGet-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+-H "Accept: application/json"\
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/credenziali/{username}/"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Credenziali-credenzialiUsernameGet-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.CredenzialiApi;
+
+import java.io.File;
+import java.util.*;
+
+public class CredenzialiApiExample {
+
+    public static void main(String[] args) {
+        
+        CredenzialiApi apiInstance = new CredenzialiApi();
+        String username = username_example; // String | 
+        try {
+            array[Credenziali] result = apiInstance.credenzialiUsernameGet(username);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling CredenzialiApi#credenzialiUsernameGet");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Credenziali-credenzialiUsernameGet-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.CredenzialiApi;
+
+public class CredenzialiApiExample {
+
+    public static void main(String[] args) {
+        CredenzialiApi apiInstance = new CredenzialiApi();
+        String username = username_example; // String | 
+        try {
+            array[Credenziali] result = apiInstance.credenzialiUsernameGet(username);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling CredenzialiApi#credenzialiUsernameGet");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Credenziali-credenzialiUsernameGet-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Credenziali-credenzialiUsernameGet-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">String *username = username_example; // 
+
+CredenzialiApi *apiInstance = [[CredenzialiApi alloc] init];
+
+[apiInstance credenzialiUsernameGetWith:username
+              completionHandler: ^(array[Credenziali] output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Credenziali-credenzialiUsernameGet-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var GestioneParcheggioSmart = require('gestione_parcheggio_smart');
+
+var api = new GestioneParcheggioSmart.CredenzialiApi()
+var username = username_example; // {{String}} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.credenzialiUsernameGet(username, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Credenziali-credenzialiUsernameGet-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Credenziali-credenzialiUsernameGet-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class credenzialiUsernameGetExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new CredenzialiApi();
+            var username = username_example;  // String | 
+
+            try
+            {
+                array[Credenziali] result = apiInstance.credenzialiUsernameGet(username);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling CredenzialiApi.credenzialiUsernameGet: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Credenziali-credenzialiUsernameGet-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiCredenzialiApi();
+$username = username_example; // String | 
+
+try {
+    $result = $api_instance->credenzialiUsernameGet($username);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling CredenzialiApi->credenzialiUsernameGet: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Credenziali-credenzialiUsernameGet-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::CredenzialiApi;
+
+my $api_instance = WWW::SwaggerClient::CredenzialiApi->new();
+my $username = username_example; # String | 
+
+eval { 
+    my $result = $api_instance->credenzialiUsernameGet(username => $username);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling CredenzialiApi->credenzialiUsernameGet: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Credenziali-credenzialiUsernameGet-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.CredenzialiApi()
+username = username_example # String | 
+
+try: 
+    api_response = api_instance.credenziali_username_get(username)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling CredenzialiApi->credenzialiUsernameGet: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">username*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_credenzialiUsernameGet_username">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - Credenziali ritornate con successo </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-credenzialiUsernameGet-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-credenzialiUsernameGet-200-schema">
+                                  <div id='responses-credenzialiUsernameGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Credenziali ritornate con successo",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Credenziali"
+        },
+        "x-content-type" : "application/json"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-credenzialiUsernameGet-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-credenzialiUsernameGet-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-credenzialiUsernameGet-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 400 - Richiesta non valida </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-credenzialiUsernameGet-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-credenzialiUsernameGet-400-schema">
+                                  <div id='responses-credenzialiUsernameGet-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Richiesta non valida",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-credenzialiUsernameGet-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-credenzialiUsernameGet-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-credenzialiUsernameGet-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 401 - Accesso non autorizzato </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-credenzialiUsernameGet-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-credenzialiUsernameGet-401-schema">
+                                  <div id='responses-credenzialiUsernameGet-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Accesso non autorizzato",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-credenzialiUsernameGet-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-credenzialiUsernameGet-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-credenzialiUsernameGet-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 404 - Risorsa non trovata </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-credenzialiUsernameGet-404-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-credenzialiUsernameGet-404-schema">
+                                  <div id='responses-credenzialiUsernameGet-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Risorsa non trovata",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-credenzialiUsernameGet-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-credenzialiUsernameGet-404-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-credenzialiUsernameGet-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 500 - Errore interno </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-credenzialiUsernameGet-500-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-credenzialiUsernameGet-500-schema">
+                                  <div id='responses-credenzialiUsernameGet-500-schema-500' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Errore interno",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-credenzialiUsernameGet-500-schema-data').val(stringify(schema));
+                                        var result = $('#responses-credenzialiUsernameGet-500-schema-500');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-credenzialiUsernameGet-500-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
 
