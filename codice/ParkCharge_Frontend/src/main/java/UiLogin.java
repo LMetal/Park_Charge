@@ -1,5 +1,12 @@
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 
 import static javax.swing.JOptionPane.*;
@@ -85,17 +92,16 @@ public class UiLogin {
     }
 
     public void avvioLogin(){
-
         do {
             this.mostraFormLogin();
                 if(scelta == 0)
                     uiUtente.avviaCreaUtente();
                 if(scelta == 1) {
-                    esitoRicerca = Backend.ricercaCredenziali(username,password);
+                    esitoRicerca = ricercaCredenziali(username,password);
                     if(esitoRicerca.contains("errore"))
                         this.mostraErrore(esitoRicerca);
                     else{
-                        utente = Backend.ricercaUtente(username);
+                        utente = ricercaUtente(username);
                         do {
                             this.mostraMenu((String)utente.get("nome"),(String)utente.get("tipo"));
                             if(sceltaMenu == 0 && ((String)utente.get("tipo")).equals("amministratore"))
@@ -120,22 +126,99 @@ public class UiLogin {
         }while(scelta != -1);
     }
 
+    private HashMap<String, Object> ricercaUtente(String username) {
+        HttpURLConnection con = null;
+        HashMap<String,Object> utente = new HashMap<>();
+
+        try {
+            URL url = new URL("http://localhost:4568/api/v1.0/utenti/"+username);
+            con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Accept", "application/json");
+
+            int responseCode = con.getResponseCode();
+            if(responseCode == 200) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                Gson gson = new Gson();
+                utente = gson.fromJson(response.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                return utente;
+            }
+            else
+                return null;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            if(con != null)
+                con.disconnect();
+        }
+    }
+
+    private String ricercaCredenziali(String username, String password) {
+        if(username.isEmpty() && password.isEmpty())
+            return "erroreCredenziali";
+        else if(username.isEmpty())
+            return "erroreUsername";
+        else if(password.isEmpty())
+            return "errorePassword";
+
+        HttpURLConnection con = null;
+        try {
+            URL url = new URL("http://localhost:4568/api/v1.0/credenziali/"+username+"/"+password);
+            con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Accept", "application/json");
+
+            int responseCode = con.getResponseCode();
+            if(responseCode == 200) {
+                return "corretto";
+            }
+            else
+                return "erroreAssente";
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return "erroreConnessione";
+        }
+        finally {
+            if(con != null)
+                con.disconnect();
+        }
+    }
+
     private void mostraMenu(String nome, String tipo) {
         int pulsante;
+        String tipoCliente = "";
 
         usernameField.setText("");
         passwordField.setText("");
         usernameField.setBackground(Color.WHITE);
         passwordField.setBackground(Color.WHITE);
 
-        menuLabel1.setText("Ciao\n " + nome + "! (" + tipo + ")");
+        menuLabel1.setText("Ciao\n " + nome);
 
-        if (tipo.equals("premium"))
+        if (tipo.equals("1")) {
+            tipoCliente = "Premium";
             menuList.setListData(pulsantiMenuPremium);
-        if (tipo.equals("cliente"))
+        }
+        if (tipo.equals("2")) {
+            tipoCliente = "Cliente";
             menuList.setListData(pulsantiMenuCliente);
-        if (tipo.equals("amministratore"))
+        }
+        if (tipo.equals("3")) {
+            tipoCliente = "Amministratore";
             menuList.setListData(pulsantiMenuAmministratore);
+        }
         menuList.setSelectedIndex(0);
 
         pulsante = showConfirmDialog(null, menuPanel, "Menu " + tipo, DEFAULT_OPTION, QUESTION_MESSAGE, null);
@@ -184,6 +267,10 @@ public class UiLogin {
             messaggio="Credenziali errate.";
             usernameField.setBackground(Color.RED);
             passwordField.setBackground(Color.RED);
+        }
+        if (tipoErrore.equals("erroreConnessione"))
+        {
+            messaggio="Server non raggiungibile.";
         }
         
         messaggio = messaggio + "\n(clicca su OK o X per continuare)";
