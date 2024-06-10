@@ -13,6 +13,9 @@ public class RestAPI {
         String baseURL = "/api/v1.0";
 
         GestoreUtenti gestoreUtenti = new GestoreUtenti();
+        GestorePagamenti gestorePagamenti = new GestorePagamenti();
+        GestorePosti gestorePosti = new GestorePosti();
+        GestoreRicariche gestoreRicariche = new GestoreRicariche();
 
         before((request, response) -> {
             response.header("Access-Control-Allow-Origin", "*");

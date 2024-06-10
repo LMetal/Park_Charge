@@ -13,6 +13,8 @@ import static javax.swing.JOptionPane.*;
 
 public class UiLogin {
 
+    private String baseURL = "http://localhost:4568/api/v1.0";
+
     //Componenti
     private UiMonitora uiMonitora;
     private UiPosteggio uiPosteggio;
@@ -131,7 +133,7 @@ public class UiLogin {
         HashMap<String,Object> utente = new HashMap<>();
 
         try {
-            URL url = new URL("http://localhost:4568/api/v1.0/utenti/"+username);
+            URL url = new URL(baseURL + "/utenti/"+username);
             con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Accept", "application/json");
@@ -174,7 +176,7 @@ public class UiLogin {
 
         HttpURLConnection con = null;
         try {
-            URL url = new URL("http://localhost:4568/api/v1.0/credenziali/"+username+"/"+password);
+            URL url = new URL(baseURL + "/credenziali/"+username+"/"+password);
             con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Accept", "application/json");

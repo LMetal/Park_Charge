@@ -12,7 +12,7 @@ public class GestoreUtenti {
         System.out.println(comandoSql);
         var rs = dbUtenti.query(comandoSql);
 
-        Credenziali credenziali = new Credenziali(rs.getFirst().get("username").toString(),rs.getFirst().get("password").toString());
+        Credenziali credenziali = new Credenziali(rs.get(0).get("username").toString(),rs.get(0).get("password").toString());
 
         return credenziali;
     }
@@ -22,7 +22,7 @@ public class GestoreUtenti {
         System.out.println(comandoSql);
         var rs = dbUtenti.query(comandoSql);
 
-        Utente utente = new Utente(rs.getFirst().get("nome").toString(),rs.getFirst().get("cognome").toString(),rs.getFirst().get("username").toString(), (Integer) rs.getFirst().get("tipo"),rs.getFirst().get("carta").toString());
+        Utente utente = new Utente(rs.get(0).get("nome").toString(),rs.get(0).get("cognome").toString(),rs.get(0).get("username").toString(), (Integer) rs.get(0).get("tipo"),rs.get(0).get("carta").toString());
 
         return utente;
     }
