@@ -1,0 +1,25 @@
+user Sensore
+topic write ParkCharge/StatoSensore/#
+
+user GestoreIoT
+topic read  ParkCharge/StatoSensore/#
+topic write ParkCharge/StatoPosti/#
+topic write ParkCharge/StatoRicariche/#
+topic read ParkCharge/StatoMWBot/#
+topic read ParkCharge/RichiediRicarica/#
+topic write ParkCharge/EseguiRicarica/#
+
+user BackEnd
+topic read ParkCharge/StatoPosti/#
+topic read ParkCharge/StatoRicariche/#
+topic write ParkCharge/RichiediRicarica/#
+topic write ParkCharge/Notifiche/SostaConclusa/#
+topic write  ParkCharge/Notifiche/RicaricaConclusa/#
+
+user MWBot
+topic read ParkCharge/EseguiRicarica/#
+topic write ParkCharge/StatoMWBot/#
+
+user User
+topic read ParkCharge/Notifiche/SostaConclusa/#
+topic read  ParkCharge/Notifiche/RicaricaConclusa/#
