@@ -5,20 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae605fca-8a7d-432d-a4cb-15d91c108933" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Costi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Prenotazioni.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Ricariche.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbPrenotazioni.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbPrenotazioni.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbRicariche.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbRicariche.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbStorico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbStorico.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GestorePagamenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestorePagamenti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GestorePosti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestorePosti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GestoreRicariche.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestoreRicariche.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GestoreUtenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestoreUtenti.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/RestAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/RestAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ParkCharge_Frontend/src/main/java/UiLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Frontend/src/main/java/UiLogin.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,24 +40,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.ParkCharge_Backend [:RestAPI.main()].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.ParkCharge_Backend [:RestAPI.main()].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RunManager">
+    <configuration name="RestAPI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="RestAPI" />
+      <module name="ParkCharge_Backend.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.RestAPI" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -89,6 +91,8 @@
       <workItem from="1718003700260" duration="5545000" />
       <workItem from="1718010988407" duration="1042000" />
       <workItem from="1718012038710" duration="813000" />
+      <workItem from="1718021406287" duration="470000" />
+      <workItem from="1718025810103" duration="548000" />
     </task>
     <servers />
   </component>
