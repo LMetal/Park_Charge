@@ -1,31 +1,36 @@
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Prenotazioni {
     private int id;
-    private LocalDateTime tempo_arrivo;
-    private LocalDateTime tempo_uscita;
+    private String tempo_arrivo;
+    private String tempo_uscita;
     private String utente;
     private int posto;
+    private transient DateTimeFormatter formatter;
+
 
     public Prenotazioni(int id, LocalDateTime tempo_arrivo, LocalDateTime tempo_uscita, String utente, int posto){
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         this.id = id;
-        this.tempo_arrivo = tempo_arrivo;
-        this.tempo_uscita = tempo_uscita;
+        this.tempo_arrivo = tempo_arrivo.format(formatter);
+        this.tempo_uscita = tempo_uscita.format(formatter);
         this.utente = utente;
         this.posto = posto;
     }
+
 
     public int getId() {
         return id;
     }
 
     public LocalDateTime getTempo_arrivo() {
-        return tempo_arrivo;
+        return LocalDateTime.parse(tempo_arrivo, formatter);
     }
 
     public LocalDateTime getTempo_uscita() {
-        return tempo_uscita;
+        return LocalDateTime.parse(tempo_uscita, formatter);
     }
 
     public String getUtente() {
