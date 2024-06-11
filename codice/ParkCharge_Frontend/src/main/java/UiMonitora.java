@@ -57,6 +57,11 @@ public class UiMonitora {
                 if(sceltaMenu == 0)
                     this.mostraModificaPrezzi();
                 if(sceltaMenu == 1)
+                    this.mostraStatoPosti();
+
+                if(sceltaMenu == 3)
+                    this.mostraRicariche();
+                if(sceltaMenu == 4)
                     this.mostraPrenotazioni();
             }
             else
@@ -67,8 +72,92 @@ public class UiMonitora {
 
     }
 
+    private void mostraRicariche() {
+        var listaRicariche = this.getApi("/ricariche");
+        System.out.println(listaRicariche);
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel headerPrenotazione = new JLabel("Prenotazione");
+        JLabel headerKilowatt = new JLabel("Kilowatt utilizzati");
+        JLabel headerDurata = new JLabel("Durata della ricarica");
+        JLabel headerPercentuale = new JLabel("Percentuale richiesta");
+        JLabel headerBot = new JLabel("MWBot");
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(headerPrenotazione, gbc);
+        gbc.gridx = 1;
+        panel.add(headerKilowatt, gbc);
+        gbc.gridx = 2;
+        panel.add(headerDurata, gbc);
+        gbc.gridx = 3;
+        panel.add(headerPercentuale, gbc);
+        gbc.gridx = 4;
+        panel.add(headerBot, gbc);
+
+        int row = 1;
+        for (HashMap<String, Object> ricarica : listaRicariche) {
+            JLabel labelId = new JLabel(ricarica.get("prenotazione").toString());
+            JLabel labelKilowatt = new JLabel(ricarica.get("kilowatt").toString());
+            JLabel labelDurata = new JLabel(ricarica.get("durata_ricarica").toString());
+            JLabel labelPercentuale = new JLabel(ricarica.get("percentuale_richiesta").toString());
+            JLabel labelBot = new JLabel(ricarica.get("mwbot").toString());
+
+            gbc.gridx = 0;
+            gbc.gridy = row;
+            panel.add(labelId, gbc);
+            gbc.gridx = 1;
+            panel.add(labelKilowatt, gbc);
+            gbc.gridx = 2;
+            panel.add(labelDurata, gbc);
+            gbc.gridx = 3;
+            panel.add(labelPercentuale, gbc);
+            gbc.gridx = 4;
+            panel.add(labelBot, gbc);
+
+            row++;
+        }
+
+        showConfirmDialog(null, panel, "Lista ricariche", DEFAULT_OPTION, QUESTION_MESSAGE, null);
+
+    }
+
+    private void mostraStatoPosti() {
+        /* panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel headerPosto = new JLabel("Posto");
+        JLabel headerStato = new JLabel("Stato");
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(headerPosto, gbc);
+        gbc.gridx = 1;
+        panel.add(headerStato, gbc);
+
+        int row = 1;
+        for (Posto posto : posti) {
+            JLabel labelNumeroPosto = new JLabel(Integer.toString(posto.getNumero()));
+            JLabel labelStato = new JLabel(posto.getStato());
+
+            gbc.gridx = 0;
+            gbc.gridy = row;
+            panel.add(labelNumeroPosto, gbc);
+            gbc.gridx = 1;
+            panel.add(labelStato, gbc);
+
+            row++;
+        }*/
+
+    }
+
     private void mostraPrenotazioni() {
-        var listaPrenotazioni = this.getPrenotazioni();
+        var listaPrenotazioni = this.getApi("/prenotazioni");
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -117,14 +206,12 @@ public class UiMonitora {
             row++;
         }
 
-        scelta = showConfirmDialog(null, panel, "Lista prenotazioni", DEFAULT_OPTION, QUESTION_MESSAGE, null);
+        showConfirmDialog(null, panel, "Lista prenotazioni", DEFAULT_OPTION, QUESTION_MESSAGE, null);
 
     }
 
-
-
     private void mostraModificaPrezzi() {
-        var costiAttuali = this.getPrezzi();
+        var costiAttuali = this.getApi("/costi").get(0);
 
         JFrame frame = new JFrame("Modifica prezzi Parcheggio (X per uscire)");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -191,53 +278,12 @@ public class UiMonitora {
         }
     }
 
-    private HashMap<String, Object> getPrezzi() {
-        HttpURLConnection con = null;
-        HashMap<String,Object> costi;
-
-        try {
-            URL url = new URL(baseURL + "/costi");
-            con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Accept", "application/json");
-
-            int responseCode = con.getResponseCode();
-            if(responseCode == 200) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                Gson gson = new Gson();
-                costi = gson.fromJson(response.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-                //return utente;
-                System.out.println(costi);
-                return costi;
-            }
-            else
-                return null;
-
-        }catch (Exception e){
-            e.printStackTrace();
-            //return null;
-        }
-        finally {
-            if(con != null)
-                con.disconnect();
-        }
-        return null;
-    }
-
-    private ArrayList<HashMap<String,Object>> getPrenotazioni() {
+    private ArrayList<HashMap<String,Object>> getApi(String resource) {
         HttpURLConnection con = null;
         ArrayList<HashMap<String,Object>> prenotazioni;
 
         try {
-            URL url = new URL(baseURL + "/prenotazioni");
+            URL url = new URL(baseURL + resource);
             con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Accept", "application/json");
@@ -254,12 +300,9 @@ public class UiMonitora {
                 in.close();
 
                 Gson gson = new Gson();
-                //prenotazioni = gson.fromJson(response.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-                //return utente;
 
                 Type type = new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType();
                 prenotazioni = gson.fromJson(String.valueOf(response), type);
-                System.out.println(prenotazioni);
                 return prenotazioni;
             }
             else

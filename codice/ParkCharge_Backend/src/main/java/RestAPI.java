@@ -62,17 +62,11 @@ public class RestAPI {
 
         get(baseURL + "/costi", "application/json", ((request, response) -> {
             var costi = gestorePagamenti.getCosti();
-            Map<String,String> finalJson = new HashMap<>();
-            System.out.println(costi);
-            finalJson.put("costo_posteggio", costi.get("costo_posteggio").toString());
-            finalJson.put("costo_ricarica", costi.get("costo_ricarica").toString());
-            finalJson.put("penale", costi.get("penale").toString());
-            finalJson.put("costo_premium", costi.get("costo_premium").toString());
 
             response.status(200);
             response.type("application/json");
 
-            return finalJson;
+            return costi;
         }),gson::toJson);
 
         get(baseURL + "/prenotazioni", "application/json", ((request, response) -> {
@@ -92,8 +86,15 @@ public class RestAPI {
 
             return null;
         }),gson::toJson);
+
+
+        get(baseURL + "/ricariche", "application/json", ((request, response) -> {
+            var ricariche = gestoreRicariche.getRicariche();
+
+            response.status(200);
+            response.type("application/json");
+
+            return ricariche;
+        }),gson::toJson);
     }
-
-
-
 }
