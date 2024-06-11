@@ -1,5 +1,6 @@
 import DataBase.DbStorico;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GestorePagamenti {
@@ -9,11 +10,10 @@ public class GestorePagamenti {
         this.dbStorico = new DbStorico();
     }
 
-    public HashMap<String, Object> getCosti(){
+    public ArrayList<HashMap<String, Object>> getCosti(){
         String comandoSql = "SELECT * FROM Costi";
         System.out.println(comandoSql);
         var rs = dbStorico.query(comandoSql);
-        System.out.println(rs.get(0));
-        return rs.get(0);
+        return rs;
     }
 }
