@@ -6,8 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static javax.swing.JOptionPane.*;
@@ -52,9 +54,10 @@ public class UiMonitora {
             scelta = showConfirmDialog(null, menuPanel, "Menu monitora parcheggio", DEFAULT_OPTION, QUESTION_MESSAGE, null);
             if (scelta == OK_OPTION){
                 sceltaMenu = menuList.getSelectedIndex();
-                if(sceltaMenu == 0) {
+                if(sceltaMenu == 0)
                     this.mostraModificaPrezzi();
-                }
+                if(sceltaMenu == 1)
+                    this.mostraPrenotazioni();
             }
             else
                 sceltaMenu = -1;
@@ -63,6 +66,62 @@ public class UiMonitora {
         } while (sceltaMenu != -1);
 
     }
+
+    private void mostraPrenotazioni() {
+        var listaPrenotazioni = this.getPrenotazioni();
+
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel headerId = new JLabel("ID");
+        JLabel headerArrivo = new JLabel("Tempo di Arrivo");
+        JLabel headerUscita = new JLabel("Tempo di Uscita");
+        JLabel headerUtente = new JLabel("Utente");
+        JLabel headerPosto = new JLabel("Posto");
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(headerId, gbc);
+        gbc.gridx = 1;
+        panel.add(headerArrivo, gbc);
+        gbc.gridx = 2;
+        panel.add(headerUscita, gbc);
+        gbc.gridx = 3;
+        panel.add(headerUtente, gbc);
+        gbc.gridx = 4;
+        panel.add(headerPosto, gbc);
+
+        int row = 1;
+
+        for (HashMap<String, Object> prenotazione : listaPrenotazioni) {
+            JLabel labelId = new JLabel(prenotazione.get("id").toString());
+            JLabel labelArrivo = new JLabel(prenotazione.get("tempo_arrivo").toString());
+            JLabel labelUscita = new JLabel(prenotazione.get("tempo_uscita").toString());
+            JLabel labelUtente = new JLabel(prenotazione.get("utente").toString());
+            JLabel labelPosto = new JLabel(prenotazione.get("posto").toString());
+
+            gbc.gridx = 0;
+            gbc.gridy = row;
+            panel.add(labelId, gbc);
+            gbc.gridx = 1;
+            panel.add(labelArrivo, gbc);
+            gbc.gridx = 2;
+            panel.add(labelUscita, gbc);
+            gbc.gridx = 3;
+            panel.add(labelUtente, gbc);
+            gbc.gridx = 4;
+            panel.add(labelPosto, gbc);
+
+            row++;
+        }
+
+        scelta = showConfirmDialog(null, panel, "Lista prenotazioni", DEFAULT_OPTION, QUESTION_MESSAGE, null);
+
+    }
+
+
 
     private void mostraModificaPrezzi() {
         var costiAttuali = this.getPrezzi();
@@ -172,5 +231,50 @@ public class UiMonitora {
         }
         return null;
     }
+
+    private ArrayList<HashMap<String,Object>> getPrenotazioni() {
+        HttpURLConnection con = null;
+        ArrayList<HashMap<String,Object>> prenotazioni;
+
+        try {
+            URL url = new URL(baseURL + "/prenotazioni");
+            con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Accept", "application/json");
+
+            int responseCode = con.getResponseCode();
+            if(responseCode == 200) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                Gson gson = new Gson();
+                //prenotazioni = gson.fromJson(response.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                //return utente;
+
+                Type type = new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType();
+                prenotazioni = gson.fromJson(String.valueOf(response), type);
+                System.out.println(prenotazioni);
+                return prenotazioni;
+            }
+            else
+                return null;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            //return null;
+        }
+        finally {
+            if(con != null)
+                con.disconnect();
+        }
+        return null;
+    }
 }
+
 
