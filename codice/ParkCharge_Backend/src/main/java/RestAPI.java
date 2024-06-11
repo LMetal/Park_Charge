@@ -1,8 +1,12 @@
 import DataBase.DbUtenti;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.time.LocalDateTime;
 
 import static spark.Spark.*;
 
@@ -11,6 +15,7 @@ public class RestAPI {
         port(4568);
         Gson gson = new Gson();
         String baseURL = "/api/v1.0";
+
 
         GestoreUtenti gestoreUtenti = new GestoreUtenti();
         GestorePagamenti gestorePagamenti = new GestorePagamenti();
@@ -54,5 +59,41 @@ public class RestAPI {
             }
             return finalJson;
         }),gson::toJson);
+
+        get(baseURL + "/costi", "application/json", ((request, response) -> {
+            var costi = gestorePagamenti.getCosti();
+            Map<String,String> finalJson = new HashMap<>();
+            System.out.println(costi);
+            finalJson.put("costo_posteggio", costi.get("costo_posteggio").toString());
+            finalJson.put("costo_ricarica", costi.get("costo_ricarica").toString());
+            finalJson.put("penale", costi.get("penale").toString());
+            finalJson.put("costo_premium", costi.get("costo_premium").toString());
+
+            response.status(200);
+            response.type("application/json");
+
+            return finalJson;
+        }),gson::toJson);
+
+        get(baseURL + "/prenotazioni", "application/json", ((request, response) -> {
+            var prenotazioni = gestorePosti.getPrenotazioni();
+
+            response.status(200);
+            response.type("application/json");
+
+            return prenotazioni;
+        }),gson::toJson);
+
+        put(baseURL + "/costi", "application/json", ((request, response) -> {
+            System.out.println(request.body());
+
+            response.status(200);
+            response.type("application/json");
+
+            return null;
+        }),gson::toJson);
     }
+
+
+
 }

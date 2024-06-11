@@ -68,13 +68,13 @@ public class UiLogin {
         pulsantiMenuPremium[0] = "Occupa posto";
         pulsantiMenuPremium[1] = "Prenota posto";
         pulsantiMenuPremium[2] = "Modifica prenotazione";
-        pulsantiMenuPremium[3] = "Chiedi estensione ricarica";
+        pulsantiMenuPremium[3] = "Richiedi ricarica";
         pulsantiMenuPremium[4] = "Interrompi ricarica";
         pulsantiMenuPremium[5] = "Modifica dati";
 
         pulsantiMenuCliente = new String[5];
         pulsantiMenuCliente[0] = "Occupa posto";
-        pulsantiMenuCliente[1] = "Chiedi estensione ricarica";
+        pulsantiMenuCliente[1] = "Richiedi ricarica";
         pulsantiMenuCliente[2] = "Interrompi ricarica";
         pulsantiMenuCliente[3] = "Diventa premium";
         pulsantiMenuCliente[4] = "Modifica dati";
@@ -91,6 +91,9 @@ public class UiLogin {
         menuPanel.add(menuLabel1,BorderLayout.NORTH);
         menuPanel.add(menuLabel2,BorderLayout.CENTER);
         menuPanel.add(menuList,BorderLayout.SOUTH);
+
+        uiRicarica = new UiRicarica();
+        uiMonitora = new UiMonitora();
     }
 
     public void avvioLogin(){
@@ -106,8 +109,11 @@ public class UiLogin {
                         utente = ricercaUtente(username);
                         do {
                             this.mostraMenu((String)utente.get("nome"),(String)utente.get("tipo"));
-                            if(sceltaMenu == 0 && ((String)utente.get("tipo")).equals("amministratore"))
+                            System.out.println("Scelta = " + utente.get("tipo"));
+                            if(sceltaMenu == 0 && ((String)utente.get("tipo")).equals("3")){
                                 uiMonitora.avviaMonitoraParcheggio();
+                                System.out.println("SI");
+                            }
                             if(sceltaMenu == 1 && ((String)utente.get("tipo")).equals("premium"))
                                 uiPosteggio.avviaPrenotaPosto();
                             if(sceltaMenu == 2  && ((String)utente.get("tipo")).equals("premium"))
@@ -117,7 +123,7 @@ public class UiLogin {
                             if(sceltaMenu == 4 && !((String)utente.get("tipo")).equals("amministratore"))
                                 uiPosteggio.avviaOccupaPosto();
                             if(sceltaMenu == 5 && !((String)utente.get("tipo")).equals("amministratore"))
-                                uiRicarica.avviaRichiediEstensioneRicarica();
+                                uiRicarica.avviaRichiediRicarica();
                             if(sceltaMenu == 6 && !((String)utente.get("tipo")).equals("amministratore"))
                                 uiRicarica.avviaInterrompiRicarica();
                             if(sceltaMenu == 7 && !((String)utente.get("tipo")).equals("amministratore"))
