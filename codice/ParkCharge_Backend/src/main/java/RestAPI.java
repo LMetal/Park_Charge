@@ -23,6 +23,7 @@ public class RestAPI {
             response.header("Access-Control-Allow-Headers", "Content-Type");
         });
 
+        //Login
         get(baseURL + "/credenziali/:username/:password","application/json", ((request, response) -> {
             Credenziali credenziali = gestoreUtenti.getCredenziali(request.params(":username"),request.params(":password"));
             Map<String,String> finalJson = new HashMap<>();
@@ -54,5 +55,73 @@ public class RestAPI {
             }
             return finalJson;
         }),gson::toJson);
+
+        //Crea Utente
+        post(baseURL + "/utenti", "application/json", ((request, response) -> {
+            Utente utente = gson.fromJson(request.body(), Utente.class);
+            Credenziali credenziali = gson.fromJson(request.body(), Credenziali.class);
+            String created = gestoreUtenti.creaUtenti(utente,credenziali);
+
+            if(created.equals("Successo")){
+                response.status(201);
+                response.type("application/json");
+                return utente;
+            }
+            else{
+                response.status(400);
+                return created;
+            }
+        } ),gson::toJson);
+
+        //Modifica Dati Utente
+        put(baseURL + "/utenti/:username", "application/json", ((request, response) -> {
+            Utente utente = gson.fromJson(request.body(), Utente.class);
+            String username = request.params(":username");
+            boolean update = gestoreUtenti.modificaDatiUtente(username,utente);
+
+            if(update){
+                response.status(200);
+                response.type("application/json");
+                return utente;
+            }
+            else{
+                response.status(400);
+                return "Utente non trovato";
+            }
+        } ),gson::toJson);
+
+        //Diventa Premium
+        put(baseURL + "/utenti/tipo/:username", "application/json", ((request, response) -> {
+            String username = request.params(":username");
+            boolean update = gestoreUtenti.diventaPremium(username);
+
+
+            if(update){
+                int costoPremium = gestorePagamenti.getCostoPremium();
+                response.status(200);
+                response.type("application/json");
+                return costoPremium;
+            }
+            else{
+                response.status(400);
+                return "Utente non trovato";
+            }
+        } ),gson::toJson);
+
+        //Prenota Posto
+        post(baseURL + "/prenotazioni", "application/json", ((request, response) -> {
+            Prenotazioni prenotazione = gson.fromJson(request.body(), Prenotazioni.class);
+            String created = gestorePosti.creaPrenotazione(prenotazione);
+
+            if(created.equals("Successo")){
+                response.status(201);
+                response.type("application/json");
+                return prenotazione;
+            }
+            else{
+                response.status(400);
+                return created;
+            }
+        } ),gson::toJson);
     }
 }

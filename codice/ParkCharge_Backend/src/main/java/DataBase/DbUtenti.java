@@ -48,7 +48,7 @@ public class DbUtenti {
         return list;
     }
 
-    public void update(String comandoSql)
+    public boolean update(String comandoSql)
     {
         Connection conn;
         Statement stmt;
@@ -59,13 +59,16 @@ public class DbUtenti {
         {
             conn = DriverManager.getConnection("jdbc:sqlite:dati/DbUtenti");
             stmt = conn.createStatement();
-            stmt.executeUpdate(comandoSql);
+            if(stmt.executeUpdate(comandoSql) == 0)
+                return false;
             stmt.close();
             conn.close();
+            return true;
         }
         catch (SQLException e)
         {
             e.printStackTrace();
+            return false;
         }
     }
 

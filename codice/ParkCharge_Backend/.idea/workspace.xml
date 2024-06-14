@@ -5,7 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae605fca-8a7d-432d-a4cb-15d91c108933" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbPrenotazioni.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbPrenotazioni.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbUtenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbUtenti.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GestorePagamenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestorePagamenti.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GestorePosti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestorePosti.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GestoreUtenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestoreUtenti.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Prenotazioni.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Prenotazioni.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/RestAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/RestAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
