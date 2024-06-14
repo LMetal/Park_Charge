@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae605fca-8a7d-432d-a4cb-15d91c108933" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/Login.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dati/DbPrenotazioni" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbPrenotazioni" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GestorePosti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestorePosti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Prenotazioni.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Prenotazioni.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GestoreUtenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestoreUtenti.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +19,19 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/src/test">
+          <activation />
+        </task>
+        <projects_view />
+      </state>
+    </system>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -43,24 +54,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.ParkCharge_Backend [:RestAPI.main()].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;gruppo1&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Gradle.Login.executor": "Run",
+    "Gradle.Login.testLoginErrore.executor": "Run",
+    "Gradle.Login.testLoginSuccesso.executor": "Run",
+    "Gradle.Login.testProva.executor": "Run",
+    "Gradle.ParkCharge_Backend [:RestAPI.main()].executor": "Run",
+    "Gradle.Tests in 'ParkCharge_Backend'.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "gruppo1",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/nicom/OneDrive/Documenti/Università/3° anno 2° semestre/Pissir/aa23-24-gruppo6/codice/ParkCharge_Backend/src/test",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="RestAPI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="RestAPI" />
@@ -71,7 +92,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.RestAPI" />
         <item itemvalue="Application.RestAPI" />
       </list>
     </recent_temporary>
@@ -100,6 +120,7 @@
       <workItem from="1718049367128" duration="1554000" />
       <workItem from="1718089319029" duration="15000" />
       <workItem from="1718369800181" duration="1239000" />
+      <workItem from="1718373374758" duration="3914000" />
     </task>
     <servers />
   </component>
