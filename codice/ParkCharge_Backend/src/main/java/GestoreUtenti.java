@@ -26,4 +26,57 @@ public class GestoreUtenti {
 
         return utente;
     }
+
+    public String creaUtenti(Utente utente, Credenziali credenziali) {
+        String controlloSql = "SELECT * FROM Utente WHERE username=\"" +utente.getUsername()+ "\"";
+        String credenzialiSql = "INSERT INTO Credenziali (username,password) VALUES (\"" + credenziali.getUsername() + "\",\"" + credenziali.getPassword() + "\")";
+        String utenteSql = "INSERT INTO Utente (nome,cognome,username,tipo,carta) VALUES (\"" + utente.getNome() + "\",\"" + utente.getCognome() + "\",\"" + utente.getUsername() + "\",\"" + utente.getTipo() + "\",\"" + utente.getCarta() + "\")";
+
+        System.out.println(controlloSql);
+        var rs = dbUtenti.query(controlloSql);
+        if(!rs.isEmpty())
+            return "Username già esistente";
+
+        System.out.println(credenzialiSql);
+        boolean credenzialiBool = dbUtenti.update(credenzialiSql);
+        if(!credenzialiBool)
+            return "Errore nella creazione delle credenziali";
+
+        System.out.println(utenteSql);
+        boolean utenteBool = dbUtenti.update(utenteSql);
+        if(!utenteBool)
+            return "Errore nella creazione delle utente";
+
+        return "Successo";
+    }
+
+    public boolean modificaDatiUtente(String username, Utente utente) {
+        StringBuilder comandoSql = new StringBuilder("UPDATE Utente SET ");
+        boolean primoCampo = true;
+
+        if(utente.getNome() != null){
+            comandoSql.append("nome=\"").append(utente.getNome()).append("\"");
+            primoCampo = false;
+        }
+        if(utente.getCognome() != null){
+            if(!primoCampo)
+                comandoSql.append(",");
+            comandoSql.append("cognome=\"").append(utente.getCognome()).append("\"");
+            primoCampo = false;
+        }
+        if(utente.getCarta() != null){
+            if(!primoCampo)
+                comandoSql.append(",");
+            comandoSql.append("carta=\"").append(utente.getCarta()).append("\"");
+        }
+        comandoSql.append("WHERE username=\"" +username+ "\"");
+        System.out.println(comandoSql);
+        return dbUtenti.update(comandoSql.toString());
+    }
+
+    public boolean diventaPremium(String username) {
+        String comandoSql = "UPDATE Utente SET tipo = 1 WHERE username=\"" +username+ "\"";
+        System.out.println(comandoSql);
+        return dbUtenti.update(comandoSql);
+    }
 }
