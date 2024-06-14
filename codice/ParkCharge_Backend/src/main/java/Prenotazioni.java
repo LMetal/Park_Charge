@@ -8,10 +8,9 @@ public class Prenotazioni {
     private String tempo_uscita;
     private String utente;
     private int posto;
-    private transient DateTimeFormatter formatter;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public Prenotazioni(int id, LocalDateTime tempo_arrivo, LocalDateTime tempo_uscita, String utente, int posto){
-        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         this.id = id;
         this.tempo_arrivo = tempo_arrivo.format(formatter);
         this.tempo_uscita = tempo_uscita.format(formatter);

@@ -36,7 +36,7 @@ public class GestorePosti {
         }
 
         if(this.verificaDisponibilta(idPostiAuto,prenotazioni,nuovaPrenotazione)){
-            String comandoSql = "INSERT INTO Prenotazioni (tempo_arrivo,tempo_uscita,utente,posto) VALUES (\"" + nuovaPrenotazione.getTempo_arrivo().format(formatter) + ",\"" + nuovaPrenotazione.getTempo_uscita().format(formatter) + ",\"" + nuovaPrenotazione.getUtente() + ",\"" + nuovaPrenotazione.getPosto() + "\");";
+            String comandoSql = "INSERT INTO Prenotazioni (tempo_arrivo, tempo_uscita, utente, posto) VALUES ('" + nuovaPrenotazione.getTempo_arrivo().format(formatter) + "', '" + nuovaPrenotazione.getTempo_uscita().format(formatter) + "', '" + nuovaPrenotazione.getUtente() + "', " + nuovaPrenotazione.getPosto() + ");";
             System.out.println(comandoSql);
             if(dbPrenotazioni.update(comandoSql))
                 return "Successo";
@@ -51,11 +51,8 @@ public class GestorePosti {
         ArrayList<Integer> postiLiberi = new ArrayList<>(idPostiAuto);
 
         for (Prenotazioni prenotazione : prenotazioni) {
-            LocalDateTime tempoArrivoEsistente = prenotazione.getTempo_arrivo();
-            LocalDateTime tempoUscitaEsistente = prenotazione.getTempo_uscita();
-
-            if (tempoArrivoEsistente.isBefore(nuovaPrenotazione.getTempo_uscita()) &&
-                    tempoUscitaEsistente.isAfter(nuovaPrenotazione.getTempo_arrivo())) {
+            if (prenotazione.getTempo_arrivo().isBefore(nuovaPrenotazione.getTempo_uscita()) &&
+                    prenotazione.getTempo_uscita().isAfter(nuovaPrenotazione.getTempo_arrivo())) {
                 postiLiberi.remove((Integer) prenotazione.getPosto());
             }
         }
