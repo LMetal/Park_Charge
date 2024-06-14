@@ -12,6 +12,8 @@ public class GestoreUtenti {
         System.out.println(comandoSql);
         var rs = dbUtenti.query(comandoSql);
 
+        if(rs.isEmpty()) return null;
+
         Credenziali credenziali = new Credenziali(rs.get(0).get("username").toString(),rs.get(0).get("password").toString());
 
         return credenziali;
