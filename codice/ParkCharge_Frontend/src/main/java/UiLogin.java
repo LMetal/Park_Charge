@@ -97,53 +97,53 @@ public class UiLogin {
     public void avvioLogin(){
         do {
             this.mostraFormLogin();
-                if(scelta == 0) {
-                    System.out.println("Creazione di un nuovo utente.");
-                    uiUtente.avviaCreaUtente();
+            if(scelta == 0) {
+                System.out.println("Creazione di un nuovo utente.");
+                uiUtente.avviaCreaUtente();
+            }
+            if(scelta == 1) {
+                esitoRicerca = ricercaCredenziali(username,password);
+                if(esitoRicerca.contains("errore"))
+                    this.mostraErrore(esitoRicerca);
+                else{
+                    utente = ricercaUtente(username);
+                    do {
+                        this.mostraMenu((String)utente.get("nome"),(String)utente.get("tipo"));
+                        if (sceltaMenu == 0 && ((String) utente.get("tipo")).equals("3")) {
+                            System.out.println("Monitoraggio del parcheggio da parte di un amministratore.");
+                            uiMonitora.avviaMonitoraParcheggio();
+                        }
+                        if (sceltaMenu == 1 && ((String) utente.get("tipo")).equals("1")) {
+                            System.out.println("Prenotazione di un posto da parte di un utente premium.");
+                            uiPosteggio.avviaPrenotaPosto();
+                        }
+                        if (sceltaMenu == 2 && ((String) utente.get("tipo")).equals("1")) {
+                            System.out.println("Modifica della prenotazione da parte di un utente premium.");
+                            uiPosteggio.avviaModificaPrenotazione();
+                        }
+                        if (sceltaMenu == 3 && ((String) utente.get("tipo")).equals("2")) {
+                            System.out.println("Un cliente sta cercando di diventare premium.");
+                            uiUtente.avviaDiventaPremium();
+                        }
+                        if (sceltaMenu == 4 && !((String) utente.get("tipo")).equals("3")) {
+                            System.out.println("Occupazione di un posto.");
+                            uiPosteggio.avviaOccupaPosto();
+                        }
+                        if (sceltaMenu == 5 && !((String) utente.get("tipo")).equals("3")) {
+                            System.out.println("Richiesta di estensione della ricarica.");
+                            uiRicarica.avviaRichiediEstensioneRicarica();
+                        }
+                        if (sceltaMenu == 6 && !((String) utente.get("tipo")).equals("3")) {
+                            System.out.println("Interruzione della ricarica.");
+                            uiRicarica.avviaInterrompiRicarica();
+                        }
+                        if (sceltaMenu == 7 && !((String) utente.get("tipo")).equals("3")) {
+                            System.out.println("Modifica dei dati dell'utente.");
+                            uiUtente.avviaModificaDati();
+                        }
+                    }while(sceltaMenu != -1);
                 }
-                if(scelta == 1) {
-                    esitoRicerca = ricercaCredenziali(username,password);
-                    if(esitoRicerca.contains("errore"))
-                        this.mostraErrore(esitoRicerca);
-                    else{
-                        utente = ricercaUtente(username);
-                        do {
-                            this.mostraMenu((String)utente.get("nome"),(String)utente.get("tipo"));
-                            if (sceltaMenu == 0 && ((String) utente.get("tipo")).equals("amministratore")) {
-                                System.out.println("Monitoraggio del parcheggio da parte di un amministratore.");
-                                uiMonitora.avviaMonitoraParcheggio();
-                            }
-                            if (sceltaMenu == 1 && ((String) utente.get("tipo")).equals("premium")) {
-                                System.out.println("Prenotazione di un posto da parte di un utente premium.");
-                                uiPosteggio.avviaPrenotaPosto();
-                            }
-                            if (sceltaMenu == 2 && ((String) utente.get("tipo")).equals("premium")) {
-                                System.out.println("Modifica della prenotazione da parte di un utente premium.");
-                                uiPosteggio.avviaModificaPrenotazione();
-                            }
-                            if (sceltaMenu == 3 && ((String) utente.get("tipo")).equals("cliente")) {
-                                System.out.println("Un cliente sta cercando di diventare premium.");
-                                uiUtente.avviaDiventaPremium();
-                            }
-                            if (sceltaMenu == 4 && !((String) utente.get("tipo")).equals("amministratore")) {
-                                System.out.println("Occupazione di un posto.");
-                                uiPosteggio.avviaOccupaPosto();
-                            }
-                            if (sceltaMenu == 5 && !((String) utente.get("tipo")).equals("amministratore")) {
-                                System.out.println("Richiesta di estensione della ricarica.");
-                                uiRicarica.avviaRichiediEstensioneRicarica();
-                            }
-                            if (sceltaMenu == 6 && !((String) utente.get("tipo")).equals("amministratore")) {
-                                System.out.println("Interruzione della ricarica.");
-                                uiRicarica.avviaInterrompiRicarica();
-                            }
-                            if (sceltaMenu == 7 && !((String) utente.get("tipo")).equals("amministratore")) {
-                                System.out.println("Modifica dei dati dell'utente.");
-                                uiUtente.avviaModificaDati();
-                            }
-                        }while(sceltaMenu != -1);
-                    }
-                }
+            }
         }while(scelta != -1);
     }
 
