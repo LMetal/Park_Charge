@@ -8,7 +8,13 @@ import static spark.Spark.*;
 
 public class RestAPI {
     public static void main(String[] args) {
-        port(4568);
+        int port = 4568;
+
+        if (args.length > 0) {
+            port = Integer.parseInt(args[0]);
+        }
+
+        port(port);
         Gson gson = new Gson();
         String baseURL = "/api/v1.0";
 
