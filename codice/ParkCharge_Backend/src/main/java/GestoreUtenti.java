@@ -24,6 +24,8 @@ public class GestoreUtenti {
         System.out.println(comandoSql);
         var rs = dbUtenti.query(comandoSql);
 
+        if(rs.isEmpty()) return null;
+
         Utente utente = new Utente(rs.get(0).get("nome").toString(),rs.get(0).get("cognome").toString(),rs.get(0).get("username").toString(), (Integer) rs.get(0).get("tipo"),rs.get(0).get("carta").toString());
 
         return utente;
@@ -37,7 +39,7 @@ public class GestoreUtenti {
         System.out.println(controlloSql);
         var rs = dbUtenti.query(controlloSql);
         if(!rs.isEmpty())
-            return "Username già esistente";
+            return "Username gia' esistente";
 
         System.out.println(credenzialiSql);
         boolean credenzialiBool = dbUtenti.update(credenzialiSql);
