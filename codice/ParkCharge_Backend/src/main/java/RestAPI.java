@@ -49,6 +49,7 @@ public class RestAPI {
             return finalJson;
         }),gson::toJson);
 
+        //Login
         get(baseURL + "/utenti/:username","application/json", ((request, response) -> {
             Utente utente = gestoreUtenti.getUtente(request.params(":username"));
             Map<String,String> finalJson = new HashMap<>();
@@ -67,6 +68,7 @@ public class RestAPI {
             return finalJson;
         }),gson::toJson);
 
+        //Modifica prezzi
         get(baseURL + "/costi", "application/json", ((request, response) -> {
             var costi = gestorePagamenti.getCosti();
 
@@ -76,6 +78,7 @@ public class RestAPI {
             return costi;
         }),gson::toJson);
 
+        //monitora prenotazioni
         get(baseURL + "/prenotazioni", "application/json", ((request, response) -> {
             var prenotazioni = gestorePosti.getPrenotazioni();
 
@@ -85,6 +88,7 @@ public class RestAPI {
             return prenotazioni;
         }),gson::toJson);
 
+        //Modifica costi
         put(baseURL + "/costi", "application/json", ((request, response) -> {
             System.out.println(request.body());
 
@@ -95,6 +99,7 @@ public class RestAPI {
         }),gson::toJson);
 
 
+        //Monitora ricariche prenotate
         get(baseURL + "/ricariche", "application/json", ((request, response) -> {
             var ricariche = gestoreRicariche.getRicariche();
 
