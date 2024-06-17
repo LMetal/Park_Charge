@@ -1,3 +1,4 @@
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -39,5 +40,9 @@ public class Prenotazioni {
 
     public int getPosto() {
         return posto;
+    }
+
+    public void setPosto(int posto) {
+        this.posto = posto;
     }
 }

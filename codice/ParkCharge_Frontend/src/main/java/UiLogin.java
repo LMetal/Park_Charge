@@ -99,38 +99,53 @@ public class UiLogin {
     public void avvioLogin(){
         do {
             this.mostraFormLogin();
-                if(scelta == 0)
-                    uiUtente.avviaCreaUtente();
-                if(scelta == 1) {
-                    esitoRicerca = ricercaCredenziali(username,password);
-                    if(esitoRicerca.contains("errore"))
-                        this.mostraErrore(esitoRicerca);
-                    else{
-                        utente = ricercaUtente(username);
-                        do {
-                            this.mostraMenu((String)utente.get("nome"),(String)utente.get("tipo"));
-                            System.out.println("Scelta = " + utente.get("tipo"));
-                            if(sceltaMenu == 0 && ((String)utente.get("tipo")).equals("3")){
-                                uiMonitora.avviaMonitoraParcheggio();
-                                System.out.println("SI");
-                            }
-                            if(sceltaMenu == 1 && ((String)utente.get("tipo")).equals("premium"))
-                                uiPosteggio.avviaPrenotaPosto();
-                            if(sceltaMenu == 2  && ((String)utente.get("tipo")).equals("premium"))
-                                uiPosteggio.avviaModificaPrenotazione();
-                            if(sceltaMenu == 3 && ((String)utente.get("tipo")).equals("cliente"))
-                                uiUtente.avviaDiventaPremium();
-                            if(sceltaMenu == 4 && !((String)utente.get("tipo")).equals("amministratore"))
-                                uiPosteggio.avviaOccupaPosto();
-                            if(sceltaMenu == 5 && !((String)utente.get("tipo")).equals("amministratore"))
-                                uiRicarica.avviaRichiediRicarica();
-                            if(sceltaMenu == 6 && !((String)utente.get("tipo")).equals("amministratore"))
-                                uiRicarica.avviaInterrompiRicarica();
-                            if(sceltaMenu == 7 && !((String)utente.get("tipo")).equals("amministratore"))
-                                uiUtente.avviaModificaDati();
-                        }while(sceltaMenu != -1);
-                    }
+            if(scelta == 0) {
+                System.out.println("Creazione di un nuovo utente.");
+                uiUtente.avviaCreaUtente();
+            }
+            if(scelta == 1) {
+                esitoRicerca = ricercaCredenziali(username,password);
+                if(esitoRicerca.contains("errore"))
+                    this.mostraErrore(esitoRicerca);
+                else{
+                    utente = ricercaUtente(username);
+                    do {
+                        this.mostraMenu((String)utente.get("nome"),(String)utente.get("tipo"));
+                        if (sceltaMenu == 0 && ((String) utente.get("tipo")).equals("3")) {
+                            System.out.println("Monitoraggio del parcheggio da parte di un amministratore.");
+                            uiMonitora.avviaMonitoraParcheggio();
+                        }
+                        if (sceltaMenu == 1 && ((String) utente.get("tipo")).equals("1")) {
+                            System.out.println("Prenotazione di un posto da parte di un utente premium.");
+                            uiPosteggio.avviaPrenotaPosto();
+                        }
+                        if (sceltaMenu == 2 && ((String) utente.get("tipo")).equals("1")) {
+                            System.out.println("Modifica della prenotazione da parte di un utente premium.");
+                            uiPosteggio.avviaModificaPrenotazione();
+                        }
+                        if (sceltaMenu == 3 && ((String) utente.get("tipo")).equals("2")) {
+                            System.out.println("Un cliente sta cercando di diventare premium.");
+                            uiUtente.avviaDiventaPremium();
+                        }
+                        if (sceltaMenu == 4 && !((String) utente.get("tipo")).equals("3")) {
+                            System.out.println("Occupazione di un posto.");
+                            uiPosteggio.avviaOccupaPosto();
+                        }
+                        if (sceltaMenu == 5 && !((String) utente.get("tipo")).equals("3")) {
+                            System.out.println("Richiesta di estensione della ricarica.");
+                            uiRicarica.avviaRichiediEstensioneRicarica();
+                        }
+                        if (sceltaMenu == 6 && !((String) utente.get("tipo")).equals("3")) {
+                            System.out.println("Interruzione della ricarica.");
+                            uiRicarica.avviaInterrompiRicarica();
+                        }
+                        if (sceltaMenu == 7 && !((String) utente.get("tipo")).equals("3")) {
+                            System.out.println("Modifica dei dati dell'utente.");
+                            uiUtente.avviaModificaDati();
+                        }
+                    }while(sceltaMenu != -1);
                 }
+            }
         }while(scelta != -1);
     }
 
@@ -157,11 +172,13 @@ public class UiLogin {
 
                 Gson gson = new Gson();
                 utente = gson.fromJson(response.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                System.out.println("Utente trovato: " + utente.toString());
                 return utente;
             }
-            else
+            else{
+                System.out.println("Errore nella ricerca dell'utente, codice di risposta: " + responseCode);
                 return null;
-
+            }
         }catch (Exception e){
             e.printStackTrace();
             return null;
@@ -189,10 +206,13 @@ public class UiLogin {
 
             int responseCode = con.getResponseCode();
             if(responseCode == 200) {
+                System.out.println("Credenziali corrette.");
                 return "corretto";
             }
-            else
+            else {
+                System.out.println("Credenziali errate o utente non presente, codice di risposta: " + responseCode);
                 return "erroreAssente";
+            }
 
         }catch (Exception e){
             e.printStackTrace();
@@ -229,7 +249,7 @@ public class UiLogin {
         }
         menuList.setSelectedIndex(0);
 
-        pulsante = showConfirmDialog(null, menuPanel, "Menu " + tipo, DEFAULT_OPTION, QUESTION_MESSAGE, null);
+        pulsante = showConfirmDialog(null, menuPanel, "Menu " + tipoCliente, DEFAULT_OPTION, QUESTION_MESSAGE, null);
         if (pulsante == OK_OPTION)
             sceltaMenu = menuList.getSelectedIndex();
         else
@@ -241,6 +261,7 @@ public class UiLogin {
 
         if (scelta == 0) // crea utente
         {
+            System.out.println("Creazione di un nuovo utente selezionata.");
             usernameField.setText("");
             passwordField.setText("");
             usernameField.setBackground(Color.WHITE);
@@ -250,6 +271,7 @@ public class UiLogin {
         {
             username = usernameField.getText();
             password = new String(passwordField.getPassword());
+            System.out.println("\nTentativo di login con username: " + username);
             usernameField.setBackground(Color.WHITE);
             passwordField.setBackground(Color.WHITE);
         }
@@ -261,26 +283,31 @@ public class UiLogin {
         if (tipoErrore.equals("erroreUsername"))
         {
             messaggio="Username mancante.";
+            System.out.println("Errore: " + messaggio);
         }
         if (tipoErrore.equals("errorePassword"))
         {
             messaggio="Password mancante.";
+            System.out.println("Errore: " + messaggio);
         }
         if (tipoErrore.equals("erroreCredenziali"))
         {
             messaggio="Credenziali mancanti.";
+            System.out.println("Errore: " + messaggio);
         }
         if (tipoErrore.equals("erroreAssente"))
         {
             messaggio="Credenziali errate.";
             usernameField.setBackground(Color.RED);
             passwordField.setBackground(Color.RED);
+            System.out.println("Errore: " + messaggio);
         }
         if (tipoErrore.equals("erroreConnessione"))
         {
             messaggio="Server non raggiungibile.";
+            System.out.println("Errore: " + messaggio);
         }
-        
+
         messaggio = messaggio + "\n(clicca su OK o X per continuare)";
 
         showMessageDialog(null, messaggio, "Errore", ERROR_MESSAGE);
