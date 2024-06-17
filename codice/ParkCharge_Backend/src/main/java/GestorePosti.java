@@ -1,5 +1,4 @@
 import DataBase.DbPrenotazioni;
-import DataBase.DbUtenti;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,7 +26,11 @@ public class GestorePosti {
         return listaPrenotazioni;
     }
 
-    public String creaPrenotazione(Prenotazioni nuovaPrenotazione) {
+    public String creaPrenotazione(Prenotazioni nuovaPrenotazione, int tipo, String provenienza) {
+        if(tipo == 2 || (tipo == 1 && provenienza.equals("occupa"))){
+            LocalDateTime now = LocalDateTime.now();
+            nuovaPrenotazione.setTempo_arrivo(now.format(formatter));
+        }
         String comandoPostiAutoSql = "SELECT * FROM PostoAuto";
         System.out.println(comandoPostiAutoSql);
         ArrayList<Integer> idPostiAuto = new ArrayList<>();
