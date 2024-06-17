@@ -127,4 +127,10 @@ public class GestorePosti {
         }
         return false;
     }
+
+    public boolean cancellaPrenotazione(String id) {
+        String comandoSql = "DELETE FROM Prenotazioni WHERE id = \"" + id + "\";";
+        System.out.println(comandoSql);
+        return dbPrenotazioni.update(comandoSql);
+    }
 }

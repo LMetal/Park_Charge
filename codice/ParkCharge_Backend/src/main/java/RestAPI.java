@@ -85,16 +85,6 @@ public class RestAPI {
             return prenotazioni;
         }),gson::toJson);
 
-        put(baseURL + "/costi", "application/json", ((request, response) -> {
-            System.out.println(request.body());
-
-            response.status(200);
-            response.type("application/json");
-
-            return null;
-        }),gson::toJson);
-
-
         get(baseURL + "/ricariche", "application/json", ((request, response) -> {
             var ricariche = gestoreRicariche.getRicariche();
 
@@ -204,6 +194,37 @@ public class RestAPI {
             else{
                 response.status(400);
                 return "Prenotazione non modificata";
+            }
+        } ),gson::toJson);
+
+        //Cancella Prenotazione
+        delete(baseURL + "/prenotazioni/:id", "application/json", ((request, response) -> {
+            boolean delete = gestorePosti.cancellaPrenotazione(request.params(":id"));
+
+            if(delete){
+                response.status(200);
+                response.type("application/json");
+                return "Prenotazione eliminata";
+            }
+            else{
+                response.status(400);
+                return "Errore nell'eliminazione della prenotazione";
+            }
+        } ),gson::toJson);
+
+        //Aggiorna Prezzi
+        put(baseURL + "/costo", "application/json", ((request, response) -> {
+            Costi costo = gson.fromJson(request.body(), Costi.class);
+            boolean update = gestorePagamenti.aggiornaPrezzi(costo);
+
+            if(update){
+                response.status(200);
+                response.type("application/json");
+                return "Prezzi aggiornati";
+            }
+            else{
+                response.status(400);
+                return "Prezzi non aggiornati";
             }
         } ),gson::toJson);
     }

@@ -27,4 +27,10 @@ public class GestorePagamenti {
 
         return (Integer) rs.get(0).get("costo_premium");
     }
+
+    public boolean aggiornaPrezzi(Costi costo) {
+        String comandoSql = "UPDATE Costi SET costo_posteggio = \"" + costo.getCosto_posteggio() + "\", costo_ricarica = \"" + costo.getCosto_ricarica() + "\", penale = \"" + costo.getPenale() + "\", costo_premium = \"" + costo.getCosto_premium() + "\" WHERE id = \"" + 1 + "\";";
+        System.out.println(comandoSql);
+        return dbStorico.update(comandoSql);
+    }
 }
