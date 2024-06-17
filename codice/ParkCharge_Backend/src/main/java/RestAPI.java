@@ -114,10 +114,12 @@ public class RestAPI {
             }
         } ),gson::toJson);
 
-        //Prenota Posto
-        post(baseURL + "/prenotazioni", "application/json", ((request, response) -> {
+        //Prenota Posto Cambiare APIREST!!
+        post(baseURL + "/prenotazioni/premium/:username", "application/json", ((request, response) -> {
             Prenotazioni prenotazione = gson.fromJson(request.body(), Prenotazioni.class);
-            String created = gestorePosti.creaPrenotazione(prenotazione);
+            Utente utente = gestoreUtenti.getUtente(request.params(":username"));
+            String created = gestorePosti.creaPrenotazione(prenotazione,utente.getTipo(),"prenota");
+
 
             if(created.equals("Successo")){
                 response.status(201);
@@ -129,5 +131,24 @@ public class RestAPI {
                 return created;
             }
         } ),gson::toJson);
+
+        //Occupa Posto
+        post(baseURL + "/prenotazioni/:username", "application/json", ((request, response) -> {
+            Prenotazioni prenotazione = gson.fromJson(request.body(), Prenotazioni.class);
+            Utente utente = gestoreUtenti.getUtente(request.params(":username"));
+            String created = gestorePosti.creaPrenotazione(prenotazione,utente.getTipo(),"occupa");
+
+
+            if(created.equals("Successo")){
+                response.status(201);
+                response.type("application/json");
+                return prenotazione;
+            }
+            else{
+                response.status(400);
+                return created;
+            }
+        } ),gson::toJson);
+
     }
 }
