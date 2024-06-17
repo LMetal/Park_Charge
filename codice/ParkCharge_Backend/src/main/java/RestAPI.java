@@ -143,7 +143,6 @@ public class RestAPI {
             String username = request.params(":username");
             boolean update = gestoreUtenti.diventaPremium(username);
 
-
             if(update){
                 int costoPremium = gestorePagamenti.getCostoPremium();
                 response.status(200);
