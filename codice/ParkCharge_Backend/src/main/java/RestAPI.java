@@ -31,7 +31,7 @@ public class RestAPI {
         get(baseURL + "/credenziali/:username/:password","application/json", ((request, response) -> {
             Credenziali credenziali = gestoreUtenti.getCredenziali(request.params(":username"),request.params(":password"));
             Map<String,String> finalJson = new HashMap<>();
-            if(credenziali == null)
+            if(credenziali == null || !(credenziali.getUsername().equals(request.params(":username")) && credenziali.getPassword().equals(request.params(":password"))))
                 response.status(404);
             else{
                 finalJson.put("username",credenziali.getUsername());
