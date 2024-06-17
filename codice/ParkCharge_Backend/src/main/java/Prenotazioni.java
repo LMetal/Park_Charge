@@ -41,4 +41,8 @@ public class Prenotazioni {
     public void setPosto(int posto) {
         this.posto = posto;
     }
+
+    public void setTempo_arrivo(String tempo_arrivo) {
+        this.tempo_arrivo = tempo_arrivo;
+    }
 }
