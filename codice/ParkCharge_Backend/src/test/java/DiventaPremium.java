@@ -11,15 +11,16 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class DiventaPremium extends RestApiTest{
+public class DiventaPremium{
     Gson gson = new Gson();
     DbUtenti dbUtenti = new DbUtenti();
     GestorePagamenti gestorePagamenti = new GestorePagamenti();
     GestoreUtenti gestoreUtenti = new GestoreUtenti();
 
+    String baseURL = "http://localhost:6789/api/v1.0";
+
     @Test
     public void testDiventaPremiumSuccesso(){
-        String baseURL = getBaseURL();
         try {
             dbUtenti.update("INSERT INTO Credenziali (username,password) VALUES ('UsernameTest','PasswordTest')");
             dbUtenti.update("INSERT INTO Utente (username,nome,cognome,tipo,carta) VALUES ('UsernameTest','NomeTest','CognomeTest', 2 ,'CartaTest')");
@@ -49,7 +50,6 @@ public class DiventaPremium extends RestApiTest{
 
     @Test
     public void testDiventaPremiumErrore(){
-        String baseURL = getBaseURL();
         try {
             dbUtenti.update("INSERT INTO Credenziali (username,password) VALUES ('UsernameTest','PasswordTest')");
             dbUtenti.update("INSERT INTO Utente (username,nome,cognome,tipo,carta) VALUES ('UsernameTest','NomeTest','CognomeTest', 1 ,'CartaTest')");

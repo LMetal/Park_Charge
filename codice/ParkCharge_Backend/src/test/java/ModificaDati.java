@@ -11,13 +11,14 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class ModificaDati extends RestApiTest{
+public class ModificaDati{
     Gson gson = new Gson();
     DbUtenti dbUtenti = new DbUtenti();
 
+    String baseURL = "http://localhost:6789/api/v1.0";
+
     @Test
     public void testModificaUtenteSuccesso(){
-        String baseURL = getBaseURL();
         try {
             dbUtenti.update("INSERT INTO Credenziali (username,password) VALUES ('UsernameTest','PasswordTest')");
             dbUtenti.update("INSERT INTO Utente (username,nome,cognome,tipo,carta) VALUES ('UsernameTest','NomeTest','CognomeTest', 1 ,'CartaTest')");
@@ -53,7 +54,6 @@ public class ModificaDati extends RestApiTest{
 
     @Test
     public void testModificaUtenteErrore(){
-        String baseURL = getBaseURL();
         try {
             dbUtenti.update("INSERT INTO Credenziali (username,password) VALUES ('UsernameTest','PasswordTest')");
             dbUtenti.update("INSERT INTO Utente (username,nome,cognome,tipo,carta) VALUES ('UsernameTest','NomeTest','CognomeTest', 1 ,'CartaTest')");
