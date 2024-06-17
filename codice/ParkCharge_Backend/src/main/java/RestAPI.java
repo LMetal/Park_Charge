@@ -191,5 +191,20 @@ public class RestAPI {
             }
         } ),gson::toJson);
 
+        //Modifica Prenotazione
+        put(baseURL + "/prenotazioni/modifica/:id", "application/json", ((request, response) -> {
+            Prenotazioni nuovaPrenotazione = gson.fromJson(request.body(), Prenotazioni.class);
+            Prenotazioni vecchiaPrenotazione = gestorePosti.getPrenotazione(request.params(":id"));
+            boolean update = gestorePosti.modificaPrenotazione(nuovaPrenotazione,vecchiaPrenotazione);
+            if(update){
+                response.status(200);
+                response.type("application/json");
+                return "Prenotazione modificata";
+            }
+            else{
+                response.status(400);
+                return "Prenotazione non modificata";
+            }
+        } ),gson::toJson);
     }
 }

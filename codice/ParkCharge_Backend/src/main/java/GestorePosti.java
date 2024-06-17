@@ -83,4 +83,48 @@ public class GestorePosti {
             return true;
         }
     }
+
+    public Prenotazioni getPrenotazione(String id) {
+        String comandoSql = "SELECT * FROM Prenotazioni WHERE id = \"" + id + "\"";
+        System.out.println(comandoSql);
+        var rs = dbPrenotazioni.query(comandoSql);
+
+        if(rs.isEmpty())
+            return null;
+
+        return new Prenotazioni((Integer) rs.get(0).get("id"), LocalDateTime.parse((CharSequence) rs.get(0).get("tempo_arrivo"), formatter), LocalDateTime.parse((CharSequence) rs.get(0).get("tempo_uscita"), formatter), (String) rs.get(0).get("utente"), (Integer) rs.get(0).get("posto"));
+
+    }
+
+    public boolean modificaPrenotazione(Prenotazioni nuovaPrenotazione, Prenotazioni vecchiaPrenotazione) {
+        String comandoPostiAutoSql = "SELECT * FROM PostoAuto";
+        System.out.println(comandoPostiAutoSql);
+        ArrayList<Integer> idPostiAuto = new ArrayList<>();
+        var rsPostiAuto = dbPrenotazioni.query(comandoPostiAutoSql);
+        for (HashMap<String,Object> postoAutoRs : rsPostiAuto){
+            idPostiAuto.add((int)postoAutoRs.get("id"));//tutti i posti auto
+        }
+
+        String comandoPrenotazioniSql = "SELECT * FROM prenotazioni";
+        System.out.println(comandoPrenotazioniSql);
+        ArrayList<Prenotazioni> prenotazioni = new ArrayList<>();
+        var rs = dbPrenotazioni.query(comandoPrenotazioniSql);
+        for (HashMap<String,Object> prenotazioniRs : rs){
+            if((int)prenotazioniRs.get("id") == vecchiaPrenotazione.getId())
+                continue;
+            int id = (int)prenotazioniRs.get("id");
+            LocalDateTime tempoArrivo = LocalDateTime.parse((CharSequence) prenotazioniRs.get("tempo_arrivo"), formatter);
+            LocalDateTime tempoUscita = LocalDateTime.parse((CharSequence) prenotazioniRs.get("tempo_uscita"), formatter);
+            String utente = (String)prenotazioniRs.get("utente");
+            int posto = (int)prenotazioniRs.get("posto");
+            prenotazioni.add(new Prenotazioni(id, tempoArrivo, tempoUscita, utente, posto));//tutte le prenotazioni  tranne quella vecchia
+        }
+
+        if(this.verificaDisponibilta(idPostiAuto,prenotazioni,nuovaPrenotazione)){
+            String comandoSql = "UPDATE Prenotazioni SET tempo_arrivo = \"" + nuovaPrenotazione.getTempo_arrivo() + "\", tempo_uscita = \"" + nuovaPrenotazione.getTempo_uscita() + "\" WHERE id = \"" + vecchiaPrenotazione.getId() + "\";";
+            System.out.println(comandoSql);
+            return dbPrenotazioni.update(comandoSql);
+        }
+        return false;
+    }
 }
