@@ -7,20 +7,22 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class PrenotaPosto extends RestApiTest{
+public class PrenotaPosto{
+
+    String baseURL = "http://localhost:6789/api/v1.0";
     @Test
     public void testPrenotaPostoSuccesso(){
-        String baseURL = getBaseURL();
+
     }
 
     @Test
     public void testPrenotaPostoErrore(){
-        String baseURL = getBaseURL();
+
     }
 
     @Test
     public void testPrenotaPostoVerificaDisponibilita(){
-        String baseURL = getBaseURL();
+
     }
 
 }

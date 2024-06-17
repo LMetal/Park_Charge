@@ -10,14 +10,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-public class CreaUtente extends RestApiTest{
+public class CreaUtente{
 
     Gson gson = new Gson();
     DbUtenti dbUtenti = new DbUtenti();
 
+    String baseURL = "http://localhost:6789/api/v1.0";
+
     @Test
     public void testCreaUtenteSuccesso(){
-        String baseURL = getBaseURL();
         try {
             Utente utente = new  Utente("NomeTest","CognomeTest", "UsernameTest",1,"CartaTest");
             Credenziali credenziali = new Credenziali("UsernameTest","PasswordTest");
@@ -53,7 +54,6 @@ public class CreaUtente extends RestApiTest{
 
     @Test
     public void testCreaUtenteErrore(){
-        String baseURL = getBaseURL();
         try {
             Utente utente = new  Utente("NomeTest","CognomeTest", "mrossi",1,"CartaTest");
             Credenziali credenziali = new Credenziali("UsernameTest","PasswordTest");

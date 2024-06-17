@@ -155,7 +155,7 @@ public class RestAPI {
             }
         } ),gson::toJson);
 
-        //Prenota Posto Cambiare APIREST!!
+        //Prenota Posto
         post(baseURL + "/prenotazioni/premium/:username", "application/json", ((request, response) -> {
             Prenotazioni prenotazione = gson.fromJson(request.body(), Prenotazioni.class);
             Utente utente = gestoreUtenti.getUtente(request.params(":username"));

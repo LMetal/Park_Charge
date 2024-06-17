@@ -8,13 +8,14 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class Login extends RestApiTest{
+public class Login{
 
     Gson gson = new Gson();
 
+    String baseURL = "http://localhost:6789/api/v1.0";
+
     @Test
     public void testLoginSuccesso(){
-        String baseURL = getBaseURL();
         try {
             URL url = new URL(baseURL + "/credenziali/mrossi/password123");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -36,7 +37,6 @@ public class Login extends RestApiTest{
 
     @Test
     public void testLoginErrore(){
-        String baseURL = getBaseURL();
         try {
             URL url = new URL(baseURL + "/credenziali/mrossi/prova");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -52,7 +52,6 @@ public class Login extends RestApiTest{
 
     @Test
     public void testGetUtenteSuccesso(){
-        String baseURL = getBaseURL();
         try {
             URL url = new URL(baseURL + "/utenti/mrossi");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -77,7 +76,6 @@ public class Login extends RestApiTest{
 
     @Test
     public void testGetUtenteErrore(){
-        String baseURL = getBaseURL();
         try {
             URL url = new URL(baseURL + "/utenti/rossim");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
