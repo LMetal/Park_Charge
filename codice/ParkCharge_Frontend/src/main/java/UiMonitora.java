@@ -1,24 +1,15 @@
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import javax.swing.*;
-
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.Map;
 
 import static javax.swing.JOptionPane.*;
 
 public class UiMonitora {
-    private String baseURL = "http://localhost:4568/api/v1.0";
     private int scelta;
     private int sceltaMenu;
-    private JPanel monitoraMenu;
     private String pulsantiScelta[];
     private JList<String> menuList;
     private JLabel menuLabel1;
@@ -73,7 +64,7 @@ public class UiMonitora {
     }
 
     private void mostraRicariche() {
-        var listaRicariche = this.getApi("/ricariche");
+        var listaRicariche = RestAPI_Adapter.get("/ricariche");
         System.out.println(listaRicariche);
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -157,7 +148,7 @@ public class UiMonitora {
     }
 
     private void mostraPrenotazioni() {
-        var listaPrenotazioni = this.getApi("/prenotazioni");
+        var listaPrenotazioni = RestAPI_Adapter.get("/prenotazioni");
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -211,7 +202,7 @@ public class UiMonitora {
     }
 
     private void mostraModificaPrezzi() {
-        var costiAttuali = this.getApi("/costi").get(0);
+        var costiAttuali = RestAPI_Adapter.get("/costi").get(0);
 
         JFrame frame = new JFrame("Modifica prezzi Parcheggio (X per uscire)");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -233,10 +224,10 @@ public class UiMonitora {
         JTextField textPenale = new JTextField(10);
         JTextField textPremium = new JTextField(10);
 
-        JLabel currentPosteggio = new JLabel(costiAttuali.get("costo_posteggio").toString());
-        JLabel currentRicarica = new JLabel(costiAttuali.get("costo_ricarica").toString());
-        JLabel currentPenale = new JLabel(costiAttuali.get("penale").toString());
-        JLabel currentPremium = new JLabel(costiAttuali.get("costo_premium").toString());
+        JLabel currentPosteggio = new JLabel(costiAttuali.get("costo_posteggio").toString() + " euro/ora");
+        JLabel currentRicarica = new JLabel(costiAttuali.get("costo_ricarica").toString() + " euro/KW");
+        JLabel currentPenale = new JLabel(costiAttuali.get("penale").toString() + " euro");
+        JLabel currentPremium = new JLabel(costiAttuali.get("costo_premium").toString() + " euro");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -274,49 +265,50 @@ public class UiMonitora {
         scelta = showConfirmDialog(null, panel, "Modifica prezzi", DEFAULT_OPTION, QUESTION_MESSAGE, null);
 
         if(scelta == OK_OPTION){
-            System.out.println("PUT dati");
+            //verifica dati
+            System.out.println(textPosteggio.getText());
+            try{
+                if(Integer.parseInt(textPosteggio.getText()) < 0){
+                    this.mostraErrore("Costo posteggio minore di zero");
+                    return;
+                }
+                if(Integer.parseInt(textRicarica.getText()) < 0){
+                    this.mostraErrore("Costo ricarica minore di zero");
+                    return;
+                }
+                if(Integer.parseInt(textPenale.getText()) < 0){
+                    this.mostraErrore("Costo penale minore di zero");
+                    return;
+                }
+                if(Integer.parseInt(textPremium.getText()) < 0){
+                    this.mostraErrore("Costo premium minore di zero");
+                    return;
+                }
+            } catch (Exception e){
+                this.mostraErrore("Errore inserimento dati");
+                return;
+            }
+
+            Map<String, Object> costi = new HashMap<>();
+            costi.put("costo_posteggio", textPosteggio.getText());
+            costi.put("costo_ricarica", textPosteggio.getText());
+            costi.put("penale", textPosteggio.getText());
+            costi.put("costo_premium", textPosteggio.getText());
+
+            if(RestAPI_Adapter.put("/costi", costi)) {
+                this.mostraSuccesso("Costi modificati con successo");
+            }else{
+                this.mostraErrore("Costi non modificati, errore di connessione al Backend");
+            }
         }
     }
 
-    private ArrayList<HashMap<String,Object>> getApi(String resource) {
-        HttpURLConnection con = null;
-        ArrayList<HashMap<String,Object>> prenotazioni;
+    private void mostraErrore(String testoErrore){
+        showMessageDialog(null, testoErrore, "Errore", ERROR_MESSAGE);
+    }
 
-        try {
-            URL url = new URL(baseURL + resource);
-            con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Accept", "application/json");
-
-            int responseCode = con.getResponseCode();
-            if(responseCode == 200) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                Gson gson = new Gson();
-
-                Type type = new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType();
-                prenotazioni = gson.fromJson(String.valueOf(response), type);
-                return prenotazioni;
-            }
-            else
-                return null;
-
-        }catch (Exception e){
-            e.printStackTrace();
-            //return null;
-        }
-        finally {
-            if(con != null)
-                con.disconnect();
-        }
-        return null;
+    private void mostraSuccesso(String testoSuccesso){
+        showMessageDialog(null, testoSuccesso, "Successo", INFORMATION_MESSAGE);
     }
 }
 

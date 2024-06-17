@@ -29,7 +29,7 @@ public class GestoreRicariche {
 
         for(HashMap<String, Object> record : rs){
             kilowatt = Double.valueOf(record.get("kilowatt").toString()).floatValue();
-            durata_ricarica = 10; //(int) record.get("durata_ricarica");
+            durata_ricarica = (int) record.get("durata_ricarica");
             percentuale_richiesta = (int) record.get("percentuale_richiesta");
             prenotazione = (int) record.get("prenotazione");
             mwbot = (int) record.get("MWBot");
