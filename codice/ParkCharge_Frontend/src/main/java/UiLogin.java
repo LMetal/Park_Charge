@@ -133,7 +133,7 @@ public class UiLogin {
                         }
                         if (sceltaMenu == 5 && !((String) utente.get("tipo")).equals("3")) {
                             System.out.println("Richiesta di estensione della ricarica.");
-                            uiRicarica.avviaRichiediEstensioneRicarica();
+                            uiRicarica.avviaRichiediRicarica();
                         }
                         if (sceltaMenu == 6 && !((String) utente.get("tipo")).equals("3")) {
                             System.out.println("Interruzione della ricarica.");
