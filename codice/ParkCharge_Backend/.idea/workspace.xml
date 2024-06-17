@@ -122,6 +122,43 @@
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Gradle.CreaUtente.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CreaUtente.testCreaUtenteErrore.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CreaUtente.testCreaUtenteSuccesso.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.DiventaPremium.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.DiventaPremium.testDiventaPremiumErrore.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.DiventaPremium.testDiventaPremiumSuccesso.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Login.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Login.testLoginErrore.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Login.testLoginSuccesso.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Login.testProva.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ModificaDati.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ModificaDati.testModificaUtenteErrore.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ModificaDati.testModificaUtenteSuccesso.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ParkCharge_Backend [:RestAPI.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ParkCharge_Backend [test].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests in 'ParkCharge_Backend'.executor&quot;: &quot;Run&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;gruppo1&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/nicom/OneDrive/Documenti/Università/3° anno 2° semestre/Pissir/aa23-24-gruppo6/codice/ParkCharge_Backend/src/test&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -129,6 +166,7 @@
       <recent name="" />
     </key>
 }]]></component>
+}</component>
   <component name="RunManager" selected="Gradle.ParkCharge_Backend [test]">
     <configuration name="CreaUtente" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -261,7 +299,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-19.0.2-corretto-19.0.2-3183f394aec4-f0552fc0" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17011.79" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17011.79" />
       </set>
     </attachedChunks>
   </component>
@@ -294,6 +333,7 @@
       <workItem from="1718373374758" duration="4016000" />
       <workItem from="1718472528480" duration="2909000" />
       <workItem from="1718566081914" duration="5371000" />
+      <workItem from="1718622666263" duration="2480000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
