@@ -83,4 +83,8 @@ public class GestorePosti {
             return true;
         }
     }
+
+    public ArrayList<HashMap<String, Object>> getStatoPosti() {
+        return dbPrenotazioni.query("SELECT * FROM PostoAuto");
+    }
 }

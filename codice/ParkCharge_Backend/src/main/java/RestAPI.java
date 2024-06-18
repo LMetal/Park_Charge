@@ -196,5 +196,16 @@ public class RestAPI {
             }
         } ),gson::toJson);
 
+
+        //TODO aggiungi a swagger
+        //monitora posti
+        get(baseURL + "/posti", "application/json", ((request, response) -> {
+            var ricariche = gestorePosti.getStatoPosti();
+
+            response.status(200);
+            response.type("application/json");
+
+            return ricariche;
+        }),gson::toJson);
     }
 }
