@@ -2,7 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import static javax.swing.JOptionPane.*;
@@ -15,6 +19,7 @@ public class UiMonitora {
     private JLabel menuLabel1;
     private JLabel menuLabel2;
     private JPanel menuPanel;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public UiMonitora(){
         pulsantiScelta = new String[5];
@@ -117,7 +122,9 @@ public class UiMonitora {
     }
 
     private void mostraStatoPosti() {
-        /* panel = new JPanel(new GridBagLayout());
+        var listaPosti = RestAPI_Adapter.get("/posti");
+        System.out.println(listaPosti);
+        JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -132,9 +139,15 @@ public class UiMonitora {
         panel.add(headerStato, gbc);
 
         int row = 1;
-        for (Posto posto : posti) {
-            JLabel labelNumeroPosto = new JLabel(Integer.toString(posto.getNumero()));
-            JLabel labelStato = new JLabel(posto.getStato());
+        for (HashMap<String, Object> posto : listaPosti) {
+            JLabel labelNumeroPosto = new JLabel(posto.get("id").toString());
+            JLabel labelStato;
+            if(posto.get("disponibilita").toString().equals("1.0")){
+                labelStato = new JLabel("OCCUPATO");
+            } else {
+                labelStato = new JLabel("LIBERO");
+            }
+
 
             gbc.gridx = 0;
             gbc.gridy = row;
@@ -143,8 +156,8 @@ public class UiMonitora {
             panel.add(labelStato, gbc);
 
             row++;
-        }*/
-
+        }
+        showConfirmDialog(null, panel, "Stato posti", DEFAULT_OPTION, QUESTION_MESSAGE, null);
     }
 
     private void mostraPrenotazioni() {
@@ -175,7 +188,7 @@ public class UiMonitora {
 
         int row = 1;
 
-        for (HashMap<String, Object> prenotazione : listaPrenotazioni) {
+        for (HashMap<String, Object> prenotazione: listaPrenotazioni) {
             JLabel labelId = new JLabel(prenotazione.get("id").toString());
             JLabel labelArrivo = new JLabel(prenotazione.get("tempo_arrivo").toString());
             JLabel labelUscita = new JLabel(prenotazione.get("tempo_uscita").toString());
