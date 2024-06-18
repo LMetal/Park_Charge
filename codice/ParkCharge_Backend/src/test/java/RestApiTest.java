@@ -4,11 +4,12 @@ import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import spark.utils.IOUtils;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.Map;
+
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -30,6 +31,9 @@ public class RestApiTest {
 
     GestorePagamenti gestorePagamenti = new GestorePagamenti();
     GestoreUtenti gestoreUtenti = new GestoreUtenti();
+    GestorePosti gestorePosti = new GestorePosti();
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @BeforeAll
     public static void setUp(){
@@ -44,19 +48,19 @@ public class RestApiTest {
     @Test
     public void testLoginSuccessoApi(){
         try {
-            URL url = new URL(baseURL + "/credenziali/mrossi/password123");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/credenziali/mrossi/password123"))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
 
-            int responseCode = connection.getResponseCode();
-            assertEquals(200, responseCode);
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            Credenziali credenziali = gson.fromJson(response.body(), Credenziali.class);
 
-            String responseBody = IOUtils.toString(connection.getInputStream());
-            Map<String, String> jsonResponse = gson.fromJson(responseBody, Map.class);
-
-            assertEquals("mrossi", jsonResponse.get("username"));
-            assertEquals("password123", jsonResponse.get("password"));
-
+            assertEquals(200, response.statusCode());
+            assertEquals("mrossi", credenziali.getUsername());
+            assertEquals("password123", credenziali.getPassword());
         } catch (Exception e) {
             fail("Exception occurred: " + e.getMessage());
         }
@@ -65,12 +69,15 @@ public class RestApiTest {
     @Test
     public void testLoginErroreApi(){
         try {
-            URL url = new URL(baseURL + "/credenziali/mrossi/prova");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/credenziali/mrossi/prova"))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
 
-            int responseCode = connection.getResponseCode();
-            assertEquals(404, responseCode);
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            assertEquals(404, response.statusCode());
 
         } catch (Exception e) {
             fail("Exception occurred: " + e.getMessage());
@@ -80,22 +87,22 @@ public class RestApiTest {
     @Test
     public void testGetUtenteSuccessoApi(){
         try {
-            URL url = new URL(baseURL + "/utenti/mrossi");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/utenti/mrossi"))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
 
-            int responseCode = connection.getResponseCode();
-            assertEquals(200, responseCode);
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            Utente utente = gson.fromJson(response.body(), Utente.class);
 
-            String responseBody = IOUtils.toString(connection.getInputStream());
-            Map<String, String> jsonResponse = gson.fromJson(responseBody, Map.class);
-
-            assertEquals("mrossi", jsonResponse.get("username"));
-            assertEquals("Mario", jsonResponse.get("nome"));
-            assertEquals("Rossi", jsonResponse.get("cognome"));
-            assertEquals("1", jsonResponse.get("tipo"));
-            assertEquals("1234567812345678", jsonResponse.get("carta"));
-
+            assertEquals(200, response.statusCode());
+            assertEquals("mrossi", utente.getUsername());
+            assertEquals("Mario", utente.getNome());
+            assertEquals("Rossi", utente.getCognome());
+            assertEquals(1, utente.getTipo());
+            assertEquals("1234567812345678", utente.getCarta());
         } catch (Exception e) {
             fail("Exception occurred: " + e.getMessage());
         }
@@ -104,13 +111,16 @@ public class RestApiTest {
     @Test
     public void testGetUtenteErroreApi(){
         try {
-            URL url = new URL(baseURL + "/utenti/rossim");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/utenti/rossim"))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
 
-            int responseCode = connection.getResponseCode();
-            assertEquals(404, responseCode);
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+            assertEquals(404, response.statusCode());
         } catch (Exception e) {
             fail("Exception occurred: " + e.getMessage());
         }
@@ -311,7 +321,7 @@ public class RestApiTest {
     }
 
     @Test
-    public void testCreaPrenotazioneApi(){
+    public void testPrenotaPostoApi(){
         try {
             Map<String, Object> prenotazioneMap = new HashMap<>();
             prenotazioneMap.put("tempo_arrivo","2024-06-12 08:00:00");
@@ -339,7 +349,7 @@ public class RestApiTest {
     }
 
     @Test
-    public void testCreaPrenotazioneErroreApi(){
+    public void testPrenotaPostoErroreApi(){
         try {
             for (int i = 0; i<10; i++){
                 Map<String, Object> prenotazioneMap = new HashMap<>();
@@ -387,6 +397,203 @@ public class RestApiTest {
                 dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE tempo_arrivo = '2024-06-12 08:00:00'");
 
         } catch (Exception e) {
+            fail("Exception occurred: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testOccupaPostoApi(){
+        try {
+            Map<String, Object> prenotazioneMap = new HashMap<>();
+            LocalDateTime now = LocalDateTime.now();
+            String tempo_uscita = now.plusHours(2).format(formatter);
+            prenotazioneMap.put("tempo_uscita",tempo_uscita);
+            prenotazioneMap.put("utente","mrossi");
+
+            String prenotazione = gson.toJson(prenotazioneMap);
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/prenotazioni/mrossi"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(prenotazione))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            assertEquals(201, response.statusCode());
+
+            dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE tempo_uscita = '" + tempo_uscita + "'");
+
+        } catch (Exception e) {
+            fail("Exception occurred: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testOccupaPostoErroreApi(){
+        try {
+            ArrayList<String> nows = new ArrayList<>();
+            for (int i = 0; i<10; i++){
+                LocalDateTime now = LocalDateTime.now();
+                String tempo_uscita = now.plusHours(2).format(formatter);
+                nows.add(tempo_uscita);
+                Map<String, Object> prenotazioneMap = new HashMap<>();
+                prenotazioneMap.put("tempo_uscita",tempo_uscita);
+                prenotazioneMap.put("utente","mrossi");
+
+                String prenotazione = gson.toJson(prenotazioneMap);
+
+                HttpClient client = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(new URI(baseURL + "/prenotazioni/mrossi"))
+                        .header("Content-Type", "application/json")
+                        .POST(HttpRequest.BodyPublishers.ofString(prenotazione))
+                        .build();
+
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+                assertEquals(201, response.statusCode());
+            }
+
+            Map<String, Object> prenotazioneMap = new HashMap<>();
+            LocalDateTime now = LocalDateTime.now();
+            String tempo_uscita = now.plusHours(2).format(formatter);
+            prenotazioneMap.put("tempo_uscita",tempo_uscita);
+            prenotazioneMap.put("utente","mrossi");
+
+            String prenotazione = gson.toJson(prenotazioneMap);
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/prenotazioni/mrossi"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(prenotazione))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            String expectedResponse = "Nessun posto disponibile nel periodo richiesto";
+            String actualResponse = gson.fromJson(response.body(), String.class);
+            assertEquals(400, response.statusCode());
+            assertEquals(expectedResponse, actualResponse);
+
+
+            for (int i = 0; i < 10; i++)
+                dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE tempo_uscita = '" + nows.get(i) + "'");
+
+        } catch (Exception e) {
+            fail("Exception occurred: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testModificaPrenotazioneApi(){
+        try {
+            dbPrenotazioni.update("INSERT INTO Prenotazioni (tempo_arrivo, tempo_uscita, utente, posto) VALUES ('2024-06-12 08:00:00', '2024-06-12 09:00:00', 'utenteTest', 11)");
+
+            Map<String, Object> modificaPrenotazioneMap = new HashMap<>();
+            modificaPrenotazioneMap.put("tempo_arrivo", "2024-06-12 09:00:00");
+            modificaPrenotazioneMap.put("tempo_uscita", "2024-06-12 10:00:00");
+
+            String prenotazioneModificata = gson.toJson(modificaPrenotazioneMap);
+
+            ArrayList<Prenotazioni> prenotazioni = gestorePosti.getPrenotazioni();
+            Prenotazioni prenotazioneVecchia = null;
+            for (Prenotazioni prenotazione : prenotazioni){
+                if(prenotazione.getUtente().equals("utenteTest")){
+                    prenotazioneVecchia = new Prenotazioni(prenotazione.getId(),prenotazione.getTempo_arrivo(),prenotazione.getTempo_uscita(),prenotazione.getUtente(),prenotazione.getPosto());
+                }
+            }
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/prenotazioni/modifica/" + prenotazioneVecchia.getId()))
+                    .header("Content-Type", "application/json")
+                    .PUT(HttpRequest.BodyPublishers.ofString(prenotazioneModificata))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            String expectedResponse = "Prenotazione modificata";
+            String actualResponse = gson.fromJson(response.body(), String.class);
+
+            assertEquals(200, response.statusCode());
+            assertEquals(expectedResponse, actualResponse);
+
+            dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE id = '" + prenotazioneVecchia.getId() + "'");
+        } catch (Exception e) {
+            fail("Exception occurred: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testModificaPrenotazioneErroreApi(){
+        try {
+            Map<String, Object> modificaPrenotazioneMap = new HashMap<>();
+            modificaPrenotazioneMap.put("tempo_arrivo", "2024-06-01 08:00:00");
+            modificaPrenotazioneMap.put("tempo_uscita", " 2024-06-01 10:00:00");
+
+            String prenotazioneModificata = gson.toJson(modificaPrenotazioneMap);
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/prenotazioni/modifica/9999"))
+                    .header("Content-Type", "application/json")
+                    .PUT(HttpRequest.BodyPublishers.ofString(prenotazioneModificata))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            String expectedResponse = "Prenotazione non modificata";
+            String actualResponse = gson.fromJson(response.body(), String.class);
+
+            assertEquals(400, response.statusCode());
+            assertEquals(expectedResponse, actualResponse);
+        } catch (Exception e) {
+            fail("Exception occurred: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testEliminaPrenotazioneApi(){
+        dbPrenotazioni.update("INSERT INTO Prenotazioni (id, tempo_arrivo, tempo_uscita, utente, posto) VALUES ('998','2024-06-12 08:00:00', '2024-06-12 09:00:00', 'utente1', 1)");
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/prenotazioni/998"))
+                    .header("Content-Type", "application/json")
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String expectedResponse = "Prenotazione eliminata";
+            String actualResponse = gson.fromJson(response.body(), String.class);
+
+            assertEquals(200, response.statusCode());
+            assertEquals(expectedResponse, actualResponse);
+        }catch (Exception e) {
+            fail("Exception occurred: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testEliminaPrenotazioneApiErrore(){
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/prenotazioni/998"))
+                    .header("Content-Type", "application/json")
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String expectedResponse = "Errore nell'eliminazione della prenotazione";
+            String actualResponse = gson.fromJson(response.body(), String.class);
+
+            assertEquals(400, response.statusCode());
+            assertEquals(expectedResponse, actualResponse);
+        }catch (Exception e) {
             fail("Exception occurred: " + e.getMessage());
         }
     }

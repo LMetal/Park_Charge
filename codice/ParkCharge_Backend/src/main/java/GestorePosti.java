@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.time.format.DateTimeFormatter;
 
+
 public class GestorePosti {
     private DbPrenotazioni dbPrenotazioni;
     DateTimeFormatter formatter;
@@ -31,26 +32,9 @@ public class GestorePosti {
             LocalDateTime now = LocalDateTime.now();
             nuovaPrenotazione.setTempo_arrivo(now.format(formatter));
         }
-        String comandoPostiAutoSql = "SELECT * FROM PostoAuto";
-        System.out.println(comandoPostiAutoSql);
-        ArrayList<Integer> idPostiAuto = new ArrayList<>();
-        var rsPostiAuto = dbPrenotazioni.query(comandoPostiAutoSql);
-        for (HashMap<String,Object> postoAutoRs : rsPostiAuto){
-            idPostiAuto.add((int)postoAutoRs.get("id"));//tutti i posti auto
-        }
 
-        String comandoPrenotazioniSql = "SELECT * FROM prenotazioni";
-        System.out.println(comandoPrenotazioniSql);
-        ArrayList<Prenotazioni> prenotazioni = new ArrayList<>();
-        var rs = dbPrenotazioni.query(comandoPrenotazioniSql);
-        for (HashMap<String,Object> prenotazioniRs : rs){
-            int id = (int)prenotazioniRs.get("id");
-            LocalDateTime tempoArrivo = LocalDateTime.parse((CharSequence) prenotazioniRs.get("tempo_arrivo"), formatter);
-            LocalDateTime tempoUscita = LocalDateTime.parse((CharSequence) prenotazioniRs.get("tempo_uscita"), formatter);
-            String utente = (String)prenotazioniRs.get("utente");
-            int posto = (int)prenotazioniRs.get("posto");
-            prenotazioni.add(new Prenotazioni(id, tempoArrivo, tempoUscita, utente, posto));//tutte le prenotazioni
-        }
+        ArrayList<Integer> idPostiAuto = this.getIdPostiAuto();
+        ArrayList<Prenotazioni> prenotazioni = this.getPrenotazioni();
 
         if(this.verificaDisponibilta(idPostiAuto,prenotazioni,nuovaPrenotazione)){
             String comandoSql = "INSERT INTO Prenotazioni (tempo_arrivo, tempo_uscita, utente, posto) VALUES ('" + nuovaPrenotazione.getTempo_arrivo().format(formatter) + "', '" + nuovaPrenotazione.getTempo_uscita().format(formatter) + "', '" + nuovaPrenotazione.getUtente() + "', " + nuovaPrenotazione.getPosto() + ");";
@@ -62,6 +46,17 @@ public class GestorePosti {
         }
 
         return "Nessun posto disponibile nel periodo richiesto";
+    }
+
+    private ArrayList<Integer> getIdPostiAuto() {
+        String comandoPostiAutoSql = "SELECT * FROM PostoAuto";
+        System.out.println(comandoPostiAutoSql);
+        ArrayList<Integer> idPostiAuto = new ArrayList<>();
+        var rsPostiAuto = dbPrenotazioni.query(comandoPostiAutoSql);
+        for (HashMap<String, Object> postoAutoRs : rsPostiAuto) {
+            idPostiAuto.add((int) postoAutoRs.get("id"));
+        }
+        return idPostiAuto;
     }
 
     private boolean verificaDisponibilta(ArrayList<Integer> idPostiAuto, ArrayList<Prenotazioni> prenotazioni, Prenotazioni nuovaPrenotazione) {
@@ -97,31 +92,16 @@ public class GestorePosti {
     }
 
     public boolean modificaPrenotazione(Prenotazioni nuovaPrenotazione, Prenotazioni vecchiaPrenotazione) {
-        String comandoPostiAutoSql = "SELECT * FROM PostoAuto";
-        System.out.println(comandoPostiAutoSql);
-        ArrayList<Integer> idPostiAuto = new ArrayList<>();
-        var rsPostiAuto = dbPrenotazioni.query(comandoPostiAutoSql);
-        for (HashMap<String,Object> postoAutoRs : rsPostiAuto){
-            idPostiAuto.add((int)postoAutoRs.get("id"));//tutti i posti auto
-        }
 
-        String comandoPrenotazioniSql = "SELECT * FROM prenotazioni";
-        System.out.println(comandoPrenotazioniSql);
-        ArrayList<Prenotazioni> prenotazioni = new ArrayList<>();
-        var rs = dbPrenotazioni.query(comandoPrenotazioniSql);
-        for (HashMap<String,Object> prenotazioniRs : rs){
-            if((int)prenotazioniRs.get("id") == vecchiaPrenotazione.getId())
-                continue;
-            int id = (int)prenotazioniRs.get("id");
-            LocalDateTime tempoArrivo = LocalDateTime.parse((CharSequence) prenotazioniRs.get("tempo_arrivo"), formatter);
-            LocalDateTime tempoUscita = LocalDateTime.parse((CharSequence) prenotazioniRs.get("tempo_uscita"), formatter);
-            String utente = (String)prenotazioniRs.get("utente");
-            int posto = (int)prenotazioniRs.get("posto");
-            prenotazioni.add(new Prenotazioni(id, tempoArrivo, tempoUscita, utente, posto));//tutte le prenotazioni  tranne quella vecchia
-        }
+        if(vecchiaPrenotazione == null) return false;
+
+        ArrayList<Integer> idPostiAuto = this.getIdPostiAuto();
+        ArrayList<Prenotazioni> prenotazioni = this.getPrenotazioni();
+
+        prenotazioni.removeIf(prenotazione -> prenotazione.getId() == vecchiaPrenotazione.getId());
 
         if(this.verificaDisponibilta(idPostiAuto,prenotazioni,nuovaPrenotazione)){
-            String comandoSql = "UPDATE Prenotazioni SET tempo_arrivo = \"" + nuovaPrenotazione.getTempo_arrivo() + "\", tempo_uscita = \"" + nuovaPrenotazione.getTempo_uscita() + "\" WHERE id = \"" + vecchiaPrenotazione.getId() + "\";";
+            String comandoSql = "UPDATE Prenotazioni SET tempo_arrivo = \"" + nuovaPrenotazione.getTempo_arrivo().format(formatter) + "\", tempo_uscita = \"" + nuovaPrenotazione.getTempo_uscita().format(formatter) + "\" WHERE id = \"" + vecchiaPrenotazione.getId() + "\";";
             System.out.println(comandoSql);
             return dbPrenotazioni.update(comandoSql);
         }

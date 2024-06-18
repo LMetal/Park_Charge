@@ -19,6 +19,8 @@ public class Prenotazioni {
         this.posto = posto;
     }
 
+    public Prenotazioni(){
+    }
 
     public int getId() {
         return id;
@@ -46,5 +48,17 @@ public class Prenotazioni {
 
     public void setTempo_arrivo(String tempo_arrivo) {
         this.tempo_arrivo = tempo_arrivo;
+    }
+
+    public void setTempo_uscita(String tempo_uscita) {
+        this.tempo_uscita = tempo_uscita;
+    }
+
+    public void setUtente(String utente) {
+        this.utente = utente;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
