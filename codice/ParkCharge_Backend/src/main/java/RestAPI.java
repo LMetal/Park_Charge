@@ -3,6 +3,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,8 @@ import java.time.LocalDateTime;
 import static spark.Spark.*;
 
 public class RestAPI {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     public static void main(String[] args) {
         int port = 4568;
 
@@ -206,6 +209,28 @@ public class RestAPI {
             response.type("application/json");
 
             return ricariche;
+        }),gson::toJson);
+
+        //TODO aggiungi a swagger
+        //monitora storico
+        get(baseURL + "/storico", "application/json", ((request, response) -> {
+            var storico = gestorePagamenti.getStorico();
+            ArrayList<HashMap<String, Object>> storicoFiltrato = new ArrayList<>();
+
+            int year = Integer.parseInt(request.queryParams("year"));
+            int month = Integer.parseInt(request.queryParams("month"));
+
+            for(var p: storico){
+                LocalDateTime tempoArrivo = LocalDateTime.parse((CharSequence) p.get("tempo_arrivo"), formatter);
+                if(tempoArrivo.getYear() == year && tempoArrivo.getMonthValue() == month){
+                    storicoFiltrato.add(p);
+                }
+            }
+
+            response.status(200);
+            response.type("application/json");
+
+            return storicoFiltrato;
         }),gson::toJson);
     }
 }

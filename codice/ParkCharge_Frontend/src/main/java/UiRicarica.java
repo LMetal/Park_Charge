@@ -1,6 +1,5 @@
 public class UiRicarica {
     public UiRicarica(){
-        System.out.println("HERE");
     }
     public void avviaInterrompiRicarica() {
     }

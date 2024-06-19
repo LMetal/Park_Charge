@@ -91,17 +91,7 @@ public class UiMonitora {
             return;
         }
 
-        var listaPrenotazioni = RestAPI_Adapter.get("/storico");
-        ArrayList<HashMap<String, Object>> storicoFiltrato = new ArrayList<>();
-
-
-
-        for(var p: listaPrenotazioni){
-            LocalDateTime tempoArrivo = LocalDateTime.parse((CharSequence) p.get("tempo_arrivo"), formatter);
-            if(tempoArrivo.getYear() == year && tempoArrivo.getMonthValue() == month){
-                storicoFiltrato.add(p);
-            }
-        }
+        var storicoFiltrato = RestAPI_Adapter.get("/storico?year="+year+"&month="+month);
 
         if(storicoFiltrato.isEmpty()){
             this.mostraErrore("Nessun dato trovato");
