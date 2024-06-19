@@ -81,20 +81,32 @@ public class UiMonitora {
             if (month < 1 || month > 12) {
                 throw new NumberFormatException();
             }
+
+            //parcheggio aperto nel 2020
+            if (year < 2020 || year > LocalDateTime.now().getYear()) {
+                throw new NumberFormatException();
+            }
         } catch (NumberFormatException e) {
-            showMessageDialog(null, "Formato anno o mese non valido. Usa yyyy per l'anno e MM per il mese", "Errore", ERROR_MESSAGE);
+            this.mostraErrore("Formato anno o mese non valido. Usa yyyy per l'anno e MM per il mese");
             return;
         }
 
-        var listaPrenotazioni = RestAPI_Adapter.get("/prenotazioni");
+        var listaPrenotazioni = RestAPI_Adapter.get("/storico");
+        ArrayList<HashMap<String, Object>> storicoFiltrato = new ArrayList<>();
 
-        // Filtra le prenotazioni per l'anno e il mese
-        HashMap<String, Object> filteredPrenotazioni = listaPrenotazioni.stream()
-                .filter(p -> {
-                    LocalDateTime arrivo = LocalDateTime.parse(p.get("tempo_arrivo").toString());
-                    return arrivo.getYear() == year && arrivo.getMonthValue() == month;
-                })
-                .collect(Collectors.toList());
+
+
+        for(var p: listaPrenotazioni){
+            LocalDateTime tempoArrivo = LocalDateTime.parse((CharSequence) p.get("tempo_arrivo"), formatter);
+            if(tempoArrivo.getYear() == year && tempoArrivo.getMonthValue() == month){
+                storicoFiltrato.add(p);
+            }
+        }
+
+        if(storicoFiltrato.isEmpty()){
+            this.mostraErrore("Nessun dato trovato");
+            return;
+        }
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -127,7 +139,7 @@ public class UiMonitora {
 
         int row = 1;
 
-        for (HashMap<String, Object> prenotazione: filteredPrenotazioni) {
+        for (HashMap<String, Object> prenotazione: storicoFiltrato) {
             JLabel labelUtente = new JLabel(prenotazione.get("utente").toString());
             JLabel labelArrivo = new JLabel(prenotazione.get("tempo_arrivo").toString());
             JLabel labelUscita = new JLabel(prenotazione.get("tempo_uscita").toString());
