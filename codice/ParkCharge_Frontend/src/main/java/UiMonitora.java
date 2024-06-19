@@ -54,7 +54,8 @@ public class UiMonitora {
                     this.mostraModificaPrezzi();
                 if(sceltaMenu == 1)
                     this.mostraStatoPosti();
-
+                if(sceltaMenu == 2)
+                    this.mostraStorico();
                 if(sceltaMenu == 3)
                     this.mostraRicariche();
                 if(sceltaMenu == 4)
@@ -66,6 +67,95 @@ public class UiMonitora {
 
         } while (sceltaMenu != -1);
 
+    }
+
+    private void mostraStorico() {
+        String inputYear = showInputDialog(null, "Inserisci l'anno (yyyy):", "Filtro Storico", QUESTION_MESSAGE);
+        String inputMonth = showInputDialog(null, "Inserisci il mese (MM):", "Filtro Storico", QUESTION_MESSAGE);
+
+        int year;
+        int month;
+        try {
+            year = Integer.parseInt(inputYear);
+            month = Integer.parseInt(inputMonth);
+            if (month < 1 || month > 12) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            showMessageDialog(null, "Formato anno o mese non valido. Usa yyyy per l'anno e MM per il mese", "Errore", ERROR_MESSAGE);
+            return;
+        }
+
+        var listaPrenotazioni = RestAPI_Adapter.get("/prenotazioni");
+
+        // Filtra le prenotazioni per l'anno e il mese
+        HashMap<String, Object> filteredPrenotazioni = listaPrenotazioni.stream()
+                .filter(p -> {
+                    LocalDateTime arrivo = LocalDateTime.parse(p.get("tempo_arrivo").toString());
+                    return arrivo.getYear() == year && arrivo.getMonthValue() == month;
+                })
+                .collect(Collectors.toList());
+
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel headerUtente = new JLabel("Utente");
+        JLabel headerArrivo = new JLabel("Tempo di Arrivo");
+        JLabel headerUscita = new JLabel("Tempo di Uscita");
+        JLabel headerPosto = new JLabel("Posto");
+        JLabel headerPosteggio = new JLabel("Costo posteggio");
+        JLabel headerRicarica = new JLabel("Costo ricarica");
+        JLabel headerPenale = new JLabel("Costo penale");
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(headerUtente, gbc);
+        gbc.gridx = 1;
+        panel.add(headerArrivo, gbc);
+        gbc.gridx = 2;
+        panel.add(headerUscita, gbc);
+        gbc.gridx = 3;
+        panel.add(headerPosto, gbc);
+        gbc.gridx = 4;
+        panel.add(headerPosteggio, gbc);
+        gbc.gridx = 5;
+        panel.add(headerRicarica, gbc);
+        gbc.gridx = 6;
+        panel.add(headerPenale, gbc);
+
+        int row = 1;
+
+        for (HashMap<String, Object> prenotazione: filteredPrenotazioni) {
+            JLabel labelUtente = new JLabel(prenotazione.get("utente").toString());
+            JLabel labelArrivo = new JLabel(prenotazione.get("tempo_arrivo").toString());
+            JLabel labelUscita = new JLabel(prenotazione.get("tempo_uscita").toString());
+            JLabel labelPosto = new JLabel(prenotazione.get("posto").toString());
+            JLabel labelPosteggio = new JLabel(prenotazione.get("costo_posteggio").toString());
+            JLabel labelRicarica = new JLabel(prenotazione.get("costo_ricarica").toString());
+            JLabel labelPenale = new JLabel(prenotazione.get("penale").toString());
+
+            gbc.gridx = 0;
+            gbc.gridy = row;
+            panel.add(labelUtente, gbc);
+            gbc.gridx = 1;
+            panel.add(labelArrivo, gbc);
+            gbc.gridx = 2;
+            panel.add(labelUscita, gbc);
+            gbc.gridx = 3;
+            panel.add(labelPosto, gbc);
+            gbc.gridx = 4;
+            panel.add(labelPosteggio, gbc);
+            gbc.gridx = 5;
+            panel.add(labelRicarica, gbc);
+            gbc.gridx = 6;
+            panel.add(labelPenale, gbc);
+
+            row++;
+        }
+
+        showConfirmDialog(null, panel, "Lista storico", DEFAULT_OPTION, QUESTION_MESSAGE, null);
     }
 
     private void mostraRicariche() {
