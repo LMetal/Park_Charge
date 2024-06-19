@@ -27,4 +27,12 @@ public class GestorePagamenti {
 
         return (Integer) rs.get(0).get("costo_premium");
     }
+
+    public ArrayList<HashMap<String, Object>> getStorico() {
+        String comandoSql = "SELECT * FROM Pagamenti\n" +
+                "JOIN PrezzoPosteggio \n" +
+                "WHERE Pagamenti.costo = PrezzoPosteggio.id";
+
+        return dbStorico.query(comandoSql);
+    }
 }
