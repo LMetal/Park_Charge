@@ -1,4 +1,5 @@
 import DataBase.DbPrenotazioni;
+import DataBase.DbStorico;
 import DataBase.DbUtenti;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterAll;
@@ -28,6 +29,7 @@ public class RestApiTest {
 
     DbUtenti dbUtenti = new DbUtenti();
     DbPrenotazioni dbPrenotazioni = new DbPrenotazioni();
+    DbStorico dbStorico = new DbStorico();
 
     GestorePagamenti gestorePagamenti = new GestorePagamenti();
     GestoreUtenti gestoreUtenti = new GestoreUtenti();
@@ -597,4 +599,41 @@ public class RestApiTest {
             fail("Exception occurred: " + e.getMessage());
         }
     }
+
+    @Test
+    public void testAggiornaPrezziApi(){
+        try {
+            ArrayList<HashMap<String, Object>> prezziIniziali = gestorePagamenti.getCosti();
+
+            Map<String, Object> aggiornaPrezzoMap = new HashMap<>();
+            aggiornaPrezzoMap.put("costo_posteggio", "10");
+            aggiornaPrezzoMap.put("costo_ricarica", "12");
+            aggiornaPrezzoMap.put("penale", "30");
+            aggiornaPrezzoMap.put("costo_premium", "50");
+
+            String prezzoAggiornato = gson.toJson(aggiornaPrezzoMap);
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/costo"))
+                    .header("Content-Type", "application/json")
+                    .PUT(HttpRequest.BodyPublishers.ofString(prezzoAggiornato))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            String expectedResponse = "Prezzi aggiornati";
+            String actualResponse = gson.fromJson(response.body(), String.class);
+
+            assertEquals(200, response.statusCode());
+            assertEquals(expectedResponse,actualResponse);
+
+
+            dbStorico.update("UPDATE Costi SET costo_posteggio = \"" + prezziIniziali.get(0).get("costo_posteggio") + "\", costo_ricarica = \"" + prezziIniziali.get(0).get("costo_ricarica") + "\", penale = \"" + prezziIniziali.get(0).get("penale") + "\", costo_premium = \"" + prezziIniziali.get(0).get("costo_premium") + "\" WHERE id = '1'");
+        } catch (Exception e) {
+            fail("Exception occurred: " + e.getMessage());
+        }
+    }
+
+
 }
