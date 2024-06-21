@@ -38,8 +38,10 @@ public class RestAPI {
         get(baseURL + "/credenziali/:username/:password","application/json", ((request, response) -> {
             Credenziali credenziali = gestoreUtenti.getCredenziali(request.params(":username"),request.params(":password"));
             Map<String,String> finalJson = new HashMap<>();
-            if(credenziali == null || !(credenziali.getUsername().equals(request.params(":username")) && credenziali.getPassword().equals(request.params(":password"))))
+            if(credenziali == null || !(credenziali.getUsername().equals(request.params(":username")) && credenziali.getPassword().equals(request.params(":password")))){
                 response.status(404);
+                return "Credenziali dell'utente non trovate";
+            }
             else{
                 finalJson.put("username",credenziali.getUsername());
                 finalJson.put("password",credenziali.getPassword());
@@ -52,8 +54,10 @@ public class RestAPI {
         get(baseURL + "/utenti/:username","application/json", ((request, response) -> {
             Utente utente = gestoreUtenti.getUtente(request.params(":username"));
             Map<String,String> finalJson = new HashMap<>();
-            if(utente == null)
+            if(utente == null){
                 response.status(404);
+                return "Utente non trovate";
+            }
             else{
                 finalJson.put("username",utente.getUsername());
                 finalJson.put("nome",utente.getNome());
@@ -123,7 +127,7 @@ public class RestAPI {
                 return utente;
             }
             else{
-                response.status(400);
+                response.status(404);
                 return "Utente non trovato";
             }
         } ),gson::toJson);
@@ -140,7 +144,7 @@ public class RestAPI {
                 return costoPremium;
             }
             else{
-                response.status(400);
+                response.status(404);
                 return "Utente non trovato";
             }
         } ),gson::toJson);
@@ -149,17 +153,16 @@ public class RestAPI {
         post(baseURL + "/prenotazioni/premium/:username", "application/json", ((request, response) -> {
             Prenotazioni prenotazione = gson.fromJson(request.body(), Prenotazioni.class);
             Utente utente = gestoreUtenti.getUtente(request.params(":username"));
-            String created = gestorePosti.creaPrenotazione(prenotazione,utente.getTipo(),"prenota");
+            Prenotazioni nuovaPrenotazione = gestorePosti.creaPrenotazione(prenotazione,utente.getTipo(),"prenota");
 
-
-            if(created.equals("Successo")){
+            if(nuovaPrenotazione != null){
                 response.status(201);
                 response.type("application/json");
-                return prenotazione;
+                return nuovaPrenotazione;
             }
             else{
                 response.status(400);
-                return created;
+                return "Nessun posto disponibile nel periodo richiesto";
             }
         } ),gson::toJson);
 
@@ -167,17 +170,17 @@ public class RestAPI {
         post(baseURL + "/prenotazioni/:username", "application/json", ((request, response) -> {
             Prenotazioni prenotazione = gson.fromJson(request.body(), Prenotazioni.class);
             Utente utente = gestoreUtenti.getUtente(request.params(":username"));
-            String created = gestorePosti.creaPrenotazione(prenotazione,utente.getTipo(),"occupa");
+            Prenotazioni nuovaPrenotazione = gestorePosti.creaPrenotazione(prenotazione,utente.getTipo(),"occupa");
 
 
-            if(created.equals("Successo")){
+            if(nuovaPrenotazione != null){
                 response.status(201);
                 response.type("application/json");
-                return prenotazione;
+                return nuovaPrenotazione;
             }
             else{
                 response.status(400);
-                return created;
+                return "Nessun posto disponibile al momento";
             }
         } ),gson::toJson);
 
@@ -185,14 +188,15 @@ public class RestAPI {
         put(baseURL + "/prenotazioni/modifica/:id", "application/json", ((request, response) -> {
             Prenotazioni nuovaPrenotazione = gson.fromJson(request.body(), Prenotazioni.class);
             Prenotazioni vecchiaPrenotazione = gestorePosti.getPrenotazione(request.params(":id"));
-            boolean update = gestorePosti.modificaPrenotazione(nuovaPrenotazione,vecchiaPrenotazione);
-            if(update){
+            Prenotazioni prenotazione = gestorePosti.modificaPrenotazione(nuovaPrenotazione,vecchiaPrenotazione);
+
+            if(prenotazione != null){
                 response.status(200);
                 response.type("application/json");
-                return "Prenotazione modificata";
+                return prenotazione;
             }
             else{
-                response.status(400);
+                response.status(404);
                 return "Prenotazione non modificata";
             }
         } ),gson::toJson);
@@ -202,12 +206,12 @@ public class RestAPI {
             boolean delete = gestorePosti.cancellaPrenotazione(request.params(":id"));
 
             if(delete){
-                response.status(200);
+                response.status(204);
                 response.type("application/json");
                 return "Prenotazione eliminata";
             }
             else{
-                response.status(400);
+                response.status(404);
                 return "Errore nell'eliminazione della prenotazione";
             }
         } ),gson::toJson);
@@ -220,7 +224,7 @@ public class RestAPI {
             if(update){
                 response.status(200);
                 response.type("application/json");
-                return "Prezzi aggiornati";
+                return costo;
             }
             else{
                 response.status(400);
