@@ -100,54 +100,79 @@ public class UiLogin {
     public void avvioLogin(){
         do {
             this.mostraFormLogin();
-            if(scelta == 0) {
+            if (scelta == 0) {
                 System.out.println("Creazione di un nuovo utente.");
                 utente = uiUtente.avviaCreaUtente();
             }
-            if(scelta == 1) {
-                esitoRicerca = ricercaCredenziali(username,password);
-                if(esitoRicerca.contains("errore"))
+            if (scelta == 1) {
+                esitoRicerca = ricercaCredenziali(username, password);
+                if (esitoRicerca.contains("errore"))
                     this.mostraErrore(esitoRicerca);
-                else{
+                else {
                     utente = ricercaUtente(username);
                     do {
-                        this.mostraMenu((String)utente.get("nome"),(String)utente.get("tipo"));
-                        if (sceltaMenu == 0 && ((String) utente.get("tipo")).equals("3")) {
-                            System.out.println("Monitoraggio del parcheggio da parte di un amministratore.");
-                            uiMonitora.avviaMonitoraParcheggio();
+                        this.mostraMenu((String) utente.get("nome"), (String) utente.get("tipo"));
+                        String tipoUtente = (String) utente.get("tipo");
+                        if (tipoUtente.equals("3")) {
+                            if (sceltaMenu == 0) {
+                                System.out.println("Monitoraggio del parcheggio da parte di un amministratore.");
+                                uiMonitora.avviaMonitoraParcheggio();
+                            }
+                        } else if (tipoUtente.equals("1")) { // Utente Premium
+                            switch (sceltaMenu) {
+                                case 0:
+                                    System.out.println("Occupazione di un posto.");
+                                    uiPosteggio.avviaOccupaPosto();
+                                    break;
+                                case 1:
+                                    System.out.println("Prenotazione di un posto da parte di un utente premium.");
+                                    uiPosteggio.avviaPrenotaPosto();
+                                    break;
+                                case 2:
+                                    System.out.println("Modifica della prenotazione da parte di un utente premium.");
+                                    uiPosteggio.avviaModificaPrenotazione();
+                                    break;
+                                case 3:
+                                    System.out.println("Richiesta di estensione della ricarica.");
+                                    uiRicarica.avviaRichiediRicarica();
+                                    break;
+                                case 4:
+                                    System.out.println("Interruzione della ricarica.");
+                                    uiRicarica.avviaInterrompiRicarica();
+                                    break;
+                                case 5:
+                                    System.out.println("Modifica dei dati dell'utente.");
+                                    utente = uiUtente.avviaModificaDati(utente);
+                                    break;
+                            }
+                        } else if (tipoUtente.equals("2")) { // Cliente
+                            switch (sceltaMenu) {
+                                case 0:
+                                    System.out.println("Occupazione di un posto.");
+                                    uiPosteggio.avviaOccupaPosto();
+                                    break;
+                                case 1:
+                                    System.out.println("Richiesta di estensione della ricarica.");
+                                    uiRicarica.avviaRichiediRicarica();
+                                    break;
+                                case 2:
+                                    System.out.println("Interruzione della ricarica.");
+                                    uiRicarica.avviaInterrompiRicarica();
+                                    break;
+                                case 3:
+                                    System.out.println("Un cliente sta cercando di diventare premium.");
+                                    utente = uiUtente.avviaDiventaPremium(utente);
+                                    break;
+                                case 4:
+                                    System.out.println("Modifica dei dati dell'utente.");
+                                    utente = uiUtente.avviaModificaDati(utente);
+                                    break;
+                            }
                         }
-                        if (sceltaMenu == 1 && ((String) utente.get("tipo")).equals("1")) {
-                            System.out.println("Prenotazione di un posto da parte di un utente premium.");
-                            uiPosteggio.avviaPrenotaPosto();
-                        }
-                        if (sceltaMenu == 2 && ((String) utente.get("tipo")).equals("1")) {
-                            System.out.println("Modifica della prenotazione da parte di un utente premium.");
-                            uiPosteggio.avviaModificaPrenotazione();
-                        }
-                        if (sceltaMenu == 3 && ((String) utente.get("tipo")).equals("2")) {
-                            System.out.println("Un cliente sta cercando di diventare premium.");
-                            utente = uiUtente.avviaDiventaPremium(utente);
-                        }
-                        if (sceltaMenu == 4 && !((String) utente.get("tipo")).equals("3")) {
-                            System.out.println("Occupazione di un posto.");
-                            uiPosteggio.avviaOccupaPosto();
-                        }
-                        if (sceltaMenu == 5 && !((String) utente.get("tipo")).equals("3")) {
-                            System.out.println("Richiesta di estensione della ricarica.");
-                            uiRicarica.avviaRichiediRicarica();
-                        }
-                        if (sceltaMenu == 6 && !((String) utente.get("tipo")).equals("3")) {
-                            System.out.println("Interruzione della ricarica.");
-                            uiRicarica.avviaInterrompiRicarica();
-                        }
-                        if (sceltaMenu == 7 && !((String) utente.get("tipo")).equals("3")) {
-                            System.out.println("Modifica dei dati dell'utente.");
-                            utente = uiUtente.avviaModificaDati(utente);
-                        }
-                    }while(sceltaMenu != -1);
+                    } while (sceltaMenu != -1);
                 }
             }
-        }while(scelta != -1);
+        } while (scelta != -1);
     }
 
     private HashMap<String, Object> ricercaUtente(String username) {
