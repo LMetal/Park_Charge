@@ -94,6 +94,7 @@ public class UiLogin {
 
         uiRicarica = new UiRicarica();
         uiMonitora = new UiMonitora();
+        uiUtente = new UiUtente();
     }
 
     public void avvioLogin(){
@@ -101,7 +102,7 @@ public class UiLogin {
             this.mostraFormLogin();
             if(scelta == 0) {
                 System.out.println("Creazione di un nuovo utente.");
-                uiUtente.avviaCreaUtente();
+                utente = uiUtente.avviaCreaUtente();
             }
             if(scelta == 1) {
                 esitoRicerca = ricercaCredenziali(username,password);
@@ -125,7 +126,7 @@ public class UiLogin {
                         }
                         if (sceltaMenu == 3 && ((String) utente.get("tipo")).equals("2")) {
                             System.out.println("Un cliente sta cercando di diventare premium.");
-                            uiUtente.avviaDiventaPremium();
+                            utente = uiUtente.avviaDiventaPremium(utente);
                         }
                         if (sceltaMenu == 4 && !((String) utente.get("tipo")).equals("3")) {
                             System.out.println("Occupazione di un posto.");
@@ -141,7 +142,7 @@ public class UiLogin {
                         }
                         if (sceltaMenu == 7 && !((String) utente.get("tipo")).equals("3")) {
                             System.out.println("Modifica dei dati dell'utente.");
-                            uiUtente.avviaModificaDati();
+                            utente = uiUtente.avviaModificaDati(utente);
                         }
                     }while(sceltaMenu != -1);
                 }
@@ -261,7 +262,6 @@ public class UiLogin {
 
         if (scelta == 0) // crea utente
         {
-            System.out.println("Creazione di un nuovo utente selezionata.");
             usernameField.setText("");
             passwordField.setText("");
             usernameField.setBackground(Color.WHITE);

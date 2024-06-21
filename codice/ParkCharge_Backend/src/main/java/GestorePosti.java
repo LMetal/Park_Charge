@@ -27,7 +27,7 @@ public class GestorePosti {
         return listaPrenotazioni;
     }
 
-    public String creaPrenotazione(Prenotazioni nuovaPrenotazione, int tipo, String provenienza) {
+    public Prenotazioni creaPrenotazione(Prenotazioni nuovaPrenotazione, int tipo, String provenienza) {
         if(tipo == 2 || (tipo == 1 && provenienza.equals("occupa"))){
             LocalDateTime now = LocalDateTime.now();
             nuovaPrenotazione.setTempo_arrivo(now.format(formatter));
@@ -40,12 +40,10 @@ public class GestorePosti {
             String comandoSql = "INSERT INTO Prenotazioni (tempo_arrivo, tempo_uscita, utente, posto) VALUES ('" + nuovaPrenotazione.getTempo_arrivo().format(formatter) + "', '" + nuovaPrenotazione.getTempo_uscita().format(formatter) + "', '" + nuovaPrenotazione.getUtente() + "', " + nuovaPrenotazione.getPosto() + ");";
             System.out.println(comandoSql);
             if(dbPrenotazioni.update(comandoSql))
-                return "Successo";
-            else
-                return "Errore nella crezione della prenotazione";
+                return nuovaPrenotazione;
         }
 
-        return "Nessun posto disponibile nel periodo richiesto";
+        return null;
     }
 
     private ArrayList<Integer> getIdPostiAuto() {
@@ -91,9 +89,9 @@ public class GestorePosti {
 
     }
 
-    public boolean modificaPrenotazione(Prenotazioni nuovaPrenotazione, Prenotazioni vecchiaPrenotazione) {
+    public Prenotazioni modificaPrenotazione(Prenotazioni nuovaPrenotazione, Prenotazioni vecchiaPrenotazione) {
 
-        if(vecchiaPrenotazione == null) return false;
+        if(vecchiaPrenotazione == null) return null;
 
         ArrayList<Integer> idPostiAuto = this.getIdPostiAuto();
         ArrayList<Prenotazioni> prenotazioni = this.getPrenotazioni();
@@ -103,9 +101,12 @@ public class GestorePosti {
         if(this.verificaDisponibilta(idPostiAuto,prenotazioni,nuovaPrenotazione)){
             String comandoSql = "UPDATE Prenotazioni SET tempo_arrivo = \"" + nuovaPrenotazione.getTempo_arrivo().format(formatter) + "\", tempo_uscita = \"" + nuovaPrenotazione.getTempo_uscita().format(formatter) + "\" WHERE id = \"" + vecchiaPrenotazione.getId() + "\";";
             System.out.println(comandoSql);
-            return dbPrenotazioni.update(comandoSql);
+            dbPrenotazioni.update(comandoSql);
+            vecchiaPrenotazione.setTempo_arrivo(nuovaPrenotazione.getTempo_arrivo().format(formatter));
+            vecchiaPrenotazione.setTempo_uscita(nuovaPrenotazione.getTempo_uscita().format(formatter));
+            return vecchiaPrenotazione;
         }
-        return false;
+        return null;
     }
 
     public boolean cancellaPrenotazione(String id) {

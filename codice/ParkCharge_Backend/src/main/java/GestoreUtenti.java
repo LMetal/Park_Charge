@@ -39,7 +39,7 @@ public class GestoreUtenti {
         System.out.println(controlloSql);
         var rs = dbUtenti.query(controlloSql);
         if(!rs.isEmpty())
-            return "Username gia' esistente";
+            return "Username gia esistente";
 
         System.out.println(credenzialiSql);
         boolean credenzialiBool = dbUtenti.update(credenzialiSql);
