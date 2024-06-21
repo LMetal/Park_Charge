@@ -6,6 +6,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -33,6 +35,13 @@ public class UiUtente {
     private JPanel premiumPanel;
     private JPanel modificaDatiPanel;
     private String[] pulsantiModificaDati;
+    private JLabel nomeModificaLabel;
+    private JLabel cognomeModificaLabel;
+    private JLabel cartaModificaLabel;
+    private JTextField nomeModificaField;
+    private JTextField cognomeModificaField;
+    private JTextField cartaModificaField;
+
 
     //Attributii
     private String username;
@@ -60,14 +69,14 @@ public class UiUtente {
         registrazionePanel = new JPanel(new GridLayout(5,2));
         registrazionePanel.add(usernameLabel);
         registrazionePanel.add(usernameField);
-        registrazionePanel.add(passwordLabel);
-        registrazionePanel.add(passwordField);
         registrazionePanel.add(nomeLabel);
         registrazionePanel.add(nomeField);
         registrazionePanel.add(cognomeLabel);
         registrazionePanel.add(cognomeField);
         registrazionePanel.add(cartaLabel);
         registrazionePanel.add(cartaField);
+        registrazionePanel.add(passwordLabel);
+        registrazionePanel.add(passwordField);
         pulsantiRegistrazione = new String[2];
         pulsantiRegistrazione[0] = "Indietro";
         pulsantiRegistrazione[1] = "Crea";
@@ -82,19 +91,26 @@ public class UiUtente {
         pulsantiModificaDati = new String[2];
         pulsantiModificaDati[0] = "Indietro";
         pulsantiModificaDati[1] = "Modifica";
+        nomeModificaLabel = new JLabel("Nome");
+        cognomeModificaLabel = new JLabel("Cognome");
+        cartaModificaLabel = new JLabel("Carta");
+        nomeModificaField = new JTextField("");
+        cognomeModificaField = new JTextField("");
+        cartaModificaField = new JTextField("");
         modificaDatiPanel = new JPanel(new GridLayout(3,2));
-        modificaDatiPanel.add(nomeField);
-        modificaDatiPanel.add(nomeLabel);
-        modificaDatiPanel.add(cognomeField);
-        modificaDatiPanel.add(cognomeLabel);
-        modificaDatiPanel.add(cartaField);
-        modificaDatiPanel.add(cartaLabel);
+        modificaDatiPanel.add(nomeModificaLabel);
+        modificaDatiPanel.add(nomeModificaField);
+        modificaDatiPanel.add(cognomeModificaLabel);
+        modificaDatiPanel.add(cognomeModificaField);
+        modificaDatiPanel.add(cartaModificaLabel);
+        modificaDatiPanel.add(cartaModificaField);
 
 
         utente = new HashMap<>();
         gson = new Gson();
 
     }
+
 
     public HashMap<String,Object> avviaModificaDati(HashMap<String,Object> utente) {
         indietro = false;
@@ -135,22 +151,20 @@ public class UiUtente {
     }
 
     private void mostraFormModificaDati() {
-        scelta = showOptionDialog(null, modificaDatiPanel, "Modifica dati utente (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiModificaDati, "Modifica dati");
+        scelta = showOptionDialog(null, modificaDatiPanel, "Modifica dati (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiModificaDati, "Modifica dati");
 
         if (scelta == 0 || scelta == CLOSED_OPTION) // torna indietro
         {
-            svuotaCampi();
+            svuotaCampi(new ArrayList<>(Arrays.asList(nomeModificaField,cognomeModificaField,cartaModificaField)));
             indietro = true;
         }
-        if (scelta == 1) // Crea Utente
+        if (scelta == 1) // Modifica Dati
         {
-            username = utente.get("username").toString();
-            password = utente.get("password").toString();
-            carta = cartaField.getText();
-            nome = nomeField.getText();
-            cognome = cognomeField.getText();
+            carta = cartaModificaField.getText();
+            nome = nomeModificaField.getText();
+            cognome = cognomeModificaField.getText();
             formato = this.controlloFormato();
-            svuotaCampi();
+            svuotaCampi(new ArrayList<>(Arrays.asList(nomeModificaField,cognomeModificaField,cartaModificaField)));
         }
     }
 
@@ -229,7 +243,7 @@ public class UiUtente {
 
         if (scelta == 0 || scelta == CLOSED_OPTION) // torna indietro
         {
-            svuotaCampi();
+            svuotaCampi(new ArrayList<>(Arrays.asList(nomeField,cognomeField,cartaField,usernameField,passwordField)));
             indietro = true;
         }
         if (scelta == 1) // Crea Utente
@@ -240,7 +254,7 @@ public class UiUtente {
             nome = nomeField.getText();
             cognome = cognomeField.getText();
             formato = this.controlloFormato();
-            svuotaCampi();
+            svuotaCampi(new ArrayList<>(Arrays.asList(nomeField,cognomeField,cartaField,usernameField,passwordField)));
         }
     }
 
@@ -263,11 +277,9 @@ public class UiUtente {
         return true;
     }
 
-    private void svuotaCampi(){
-        usernameField.setText("");
-        passwordField.setText("");
-        nomeField.setText("");
-        cognomeField.setText("");
-        cartaField.setText("");
+    private void svuotaCampi(ArrayList<JTextField> textFields){
+        for(JTextField textField: textFields){
+            textField.setText("");
+        }
     }
 }
