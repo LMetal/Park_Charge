@@ -1,6 +1,7 @@
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 public class Prenotazioni {
     private int id;
@@ -17,6 +18,14 @@ public class Prenotazioni {
         this.tempo_uscita = tempo_uscita.format(formatter);
         this.utente = utente;
         this.posto = posto;
+    }
+
+    public Prenotazioni(HashMap<String, Object> prenotazioneJson) {
+        this.id = (Integer) prenotazioneJson.get("id");
+        this.tempo_arrivo = (String) prenotazioneJson.get("tempo_arrivo");
+        this.tempo_uscita = (String) prenotazioneJson.get("tempo_uscita");
+        this.utente = (String) prenotazioneJson.get("utente");
+        this.posto = (Integer) prenotazioneJson.get("posto");
     }
 
 

@@ -19,22 +19,17 @@ public class GestoreRicariche {
         String comandoSql = "SELECT * FROM Ricarica";
         var rs = dbRicariche.query(comandoSql);
 
-
-        float kilowatt;
-        int durata_ricarica;
-        int percentuale_richiesta;
-        int prenotazione;
-        int mwbot;
-
-
         for(HashMap<String, Object> record : rs){
-            kilowatt = Double.valueOf(record.get("kilowatt").toString()).floatValue();
-            durata_ricarica = (int) record.get("durata_ricarica");
-            percentuale_richiesta = (int) record.get("percentuale_richiesta");
-            prenotazione = (int) record.get("prenotazione");
-            mwbot = (int) record.get("MWBot");
-            listaRicariche.add(new Ricariche(kilowatt, durata_ricarica, percentuale_richiesta, prenotazione, mwbot));
+            listaRicariche.add(new Ricariche(record));
         }
         return listaRicariche;
+    }
+
+    public Ricariche getRicariche(int id) {
+        var ricaricaUtente = dbRicariche.query("SELECT * FROM Ricarica WHERE id = \""+ id + "\"");
+        if(ricaricaUtente == null) return null;
+        if(ricaricaUtente.size() != 1) return null;
+
+        return new Ricariche(ricaricaUtente.get(0));
     }
 }

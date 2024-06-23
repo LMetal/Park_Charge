@@ -72,7 +72,7 @@ public class RestAPI {
         }),gson::toJson);
 
         //Modifica prezzi
-        get(baseURL + "/costi", "application/json", ((request, response) -> {
+        get(baseURL + "/costo", "application/json", ((request, response) -> {
             var costi = gestorePagamenti.getCosti();
 
             response.status(200);
@@ -92,7 +92,7 @@ public class RestAPI {
         }),gson::toJson);
 
         //Modifica costi
-        put(baseURL + "/costi", "application/json", ((request, response) -> {
+        put(baseURL + "/costo", "application/json", ((request, response) -> {
             System.out.println(request.body());
 
             response.status(200);
@@ -111,6 +111,47 @@ public class RestAPI {
 
             return ricariche;
         }),gson::toJson);
+
+        //TODO aggiungi swagger
+        //richiedi ricarica, ritorna stato posteggio e ricarica utente
+        get(baseURL + "/statoUtente", "application/json", ((request, response) -> {
+            Ricariche ricaricaUtente = null;
+            HashMap<String, Object> returnJson = new HashMap<>();
+            response.status(200);
+            response.type("application/json");
+            var prenotazioneUtente = gestorePosti.getPrenotazioni(request.queryParams("user"));
+            if(prenotazioneUtente != null){
+                ricaricaUtente = gestoreRicariche.getRicariche(prenotazioneUtente.getId());
+            }
+
+            returnJson.put("utente", request.queryParams("user"));
+
+            if(prenotazioneUtente == null){
+                returnJson.put("tempo_arrivo", null);
+                returnJson.put("id_ricarica", null);
+            } else {
+                returnJson.put("tempo_arrivo", prenotazioneUtente.getTempo_arrivo().format(formatter));
+
+            }
+
+            if(ricaricaUtente == null){
+                returnJson.put("id_ricarica", null);
+            } else {
+                returnJson.put("id_ricarica", ricaricaUtente.getPrenotazione());
+            }
+
+            return returnJson;
+        }), gson::toJson);
+
+        //richiedi ricarica
+        post(baseURL + "/ricariche", "application/json", ((request, response) -> {
+            response.status(200);
+            response.type("application/json");
+
+            return null;
+        }),gson::toJson);
+
+
 
         //Crea Utente
         post(baseURL + "/utenti", "application/json", ((request, response) -> {
