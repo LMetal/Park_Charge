@@ -147,6 +147,10 @@ public class RestAPI {
         post(baseURL + "/ricariche", "application/json", ((request, response) -> {
             response.status(200);
             response.type("application/json");
+            var prenotazioni = gestorePosti.getPrenotazioni();
+            var ricaricheAccettate = gestoreRicariche.getRicariche();
+
+            EDF.isAccettable(request.queryParams("user"), 20, prenotazioni, ricaricheAccettate);
 
             return null;
         }),gson::toJson);
