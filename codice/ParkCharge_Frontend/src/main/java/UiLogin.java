@@ -29,6 +29,7 @@ public class UiLogin {
     private String esitoControllo;
     private String esitoRicerca;
     private HashMap<String,Object> utente;
+    private HashMap<String,Object> prenotazione;
 
     //Elementi Grafici
     private JLabel usernameLabel;
@@ -95,6 +96,10 @@ public class UiLogin {
         uiRicarica = new UiRicarica();
         uiMonitora = new UiMonitora();
         uiUtente = new UiUtente();
+        uiPosteggio = new UiPosteggio();
+
+        utente = new HashMap<>();
+        prenotazione = new HashMap<>();
     }
 
     public void avvioLogin(){
@@ -122,11 +127,11 @@ public class UiLogin {
                             switch (sceltaMenu) {
                                 case 0:
                                     System.out.println("Occupazione di un posto.");
-                                    uiPosteggio.avviaOccupaPosto();
+                                    prenotazione = uiPosteggio.avviaOccupaPosto(utente);
                                     break;
                                 case 1:
                                     System.out.println("Prenotazione di un posto da parte di un utente premium.");
-                                    uiPosteggio.avviaPrenotaPosto();
+                                    prenotazione = uiPosteggio.avviaPrenotaPosto(utente);
                                     break;
                                 case 2:
                                     System.out.println("Modifica della prenotazione da parte di un utente premium.");
@@ -149,7 +154,7 @@ public class UiLogin {
                             switch (sceltaMenu) {
                                 case 0:
                                     System.out.println("Occupazione di un posto.");
-                                    uiPosteggio.avviaOccupaPosto();
+                                    prenotazione = uiPosteggio.avviaOccupaPosto(utente);
                                     break;
                                 case 1:
                                     System.out.println("Richiesta di estensione della ricarica.");
