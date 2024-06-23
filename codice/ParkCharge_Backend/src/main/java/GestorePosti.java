@@ -21,7 +21,7 @@ public class GestorePosti {
         var rs = dbPrenotazioni.query(comandoSql);
 
         for(HashMap<String, Object> record : rs){
-            listaPrenotazioni.add(new Prenotazioni((Integer) record.get("id"), LocalDateTime.parse((CharSequence) record.get("tempo_arrivo"), formatter), LocalDateTime.parse((CharSequence) record.get("tempo_uscita"), formatter), (String) record.get("utente"), (Integer) record.get("posto")));
+            listaPrenotazioni.add(new Prenotazioni(record));
         }
         return listaPrenotazioni;
     }
@@ -86,5 +86,12 @@ public class GestorePosti {
 
     public ArrayList<HashMap<String, Object>> getStatoPosti() {
         return dbPrenotazioni.query("SELECT * FROM PostoAuto");
+    }
+
+    public Prenotazioni getPrenotazioni(String user) {
+        var prenotazioneUser = dbPrenotazioni.query("SELECT * FROM Prenotazioni WHERE utente = \""+user+"\"");
+        if(prenotazioneUser == null) return null;
+        if(prenotazioneUser.size() != 1) return null;
+        else return new Prenotazioni(prenotazioneUser.get(0));
     }
 }

@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class Ricariche {
     private float kilowatt;
     private int durata_ricarica;
@@ -11,6 +13,14 @@ public class Ricariche {
         this.percentuale_richiesta = percentuale_richiesta;
         this.prenotazione = prenotazione;
         this.mwbot = mwbot;
+    }
+
+    public Ricariche(HashMap<String, Object> ricaricaJson) {
+        this.kilowatt = Double.valueOf(ricaricaJson.get("kilowatt").toString()).floatValue();
+        this.durata_ricarica = (int) ricaricaJson.get("durata_ricarica");
+        this.percentuale_richiesta = (int) ricaricaJson.get("percentuale_richiesta");
+        this.prenotazione = (int) ricaricaJson.get("prenotazione");
+        this.mwbot = (int) ricaricaJson.get("MWBot");
     }
 
     public float getKilowatt() {
