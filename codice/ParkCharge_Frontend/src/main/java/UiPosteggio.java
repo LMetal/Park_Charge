@@ -41,6 +41,15 @@ public class UiPosteggio {
     private JTextField tempoArrivoPrenotaField;
     private JPanel prenotaPanel;
     private String[] pulsantiPrenota;
+    private JLabel tempoUscitaModificaLabel;
+    private JLabel tempoArrivoModificaLabel;
+    private JTextField tempoUscitaModificaField;
+    private JTextField tempoArrivoModificaField;
+    private JPanel modificaPanel;
+    private String[] pulsantiModifica;
+    private JLabel cancellaLabel;
+    private JPanel cancellaPanel;
+    private String[] pulsantiCancella;
 
 
     public UiPosteggio(){
@@ -65,6 +74,28 @@ public class UiPosteggio {
         pulsantiPrenota = new String[2];
         pulsantiPrenota[0] = "Indietro";
         pulsantiPrenota[1] = "Prenota posto";
+
+        tempoUscitaModificaLabel = new JLabel("Tempo Uscita");
+        tempoUscitaModificaField = new JTextField("",15);
+        tempoArrivoModificaLabel = new JLabel("Tempo Arrivo");
+        tempoArrivoModificaField = new JTextField("",15);
+        modificaPanel = new JPanel(new GridLayout(3,2));
+        modificaPanel.add(tempoArrivoModificaLabel);
+        modificaPanel.add(tempoArrivoModificaField);
+        modificaPanel.add(tempoUscitaModificaLabel);
+        modificaPanel.add(tempoUscitaModificaField);
+        pulsantiModifica = new String[3];
+        pulsantiModifica[0] = "Indietro";
+        pulsantiModifica[1] = "Modifica";
+        pulsantiModifica[2] = "Elimina";
+
+        cancellaLabel = new JLabel("Confermi di voler cancellare la prenotazione?");
+        cancellaPanel = new JPanel(new GridLayout(1,1));
+        cancellaPanel.add(cancellaLabel);
+        pulsantiCancella = new String[2];
+        pulsantiCancella[0] = "Indietro";
+        pulsantiCancella[1] = "Conferma";
+
 
         prenotazione = new HashMap<>();
         gson = new Gson();
@@ -122,12 +153,12 @@ public class UiPosteggio {
         if (scelta == 1) // Occupa posto
         {
             tempo_uscita = tempoUscitaOccupaField.getText();
-            formato = this.controlloFormatoOccupa();
+            formato = this.controlloFormatoTempo();
             tempoUscitaOccupaField.setText("");
         }
     }
 
-    private boolean controlloFormatoOccupa() {
+    private boolean controlloFormatoTempo() {
         String regex = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$";
         if (!Pattern.matches(regex, tempo_uscita)) {
             showMessageDialog(null, "Usa il formato yyyy-MM-dd HH:mm:ss.", "Errore", ERROR_MESSAGE);
@@ -146,9 +177,6 @@ public class UiPosteggio {
             return false;
         }
 
-    }
-
-    public void avviaModificaPrenotazione() {
     }
 
     public HashMap<String,Object> avviaPrenotaPosto(HashMap<String,Object> utente) {
@@ -206,13 +234,13 @@ public class UiPosteggio {
         {
             tempo_arrivo = tempoArrivoPrenotaField.getText();
             tempo_uscita = tempoUscitaPrenotaField.getText();
-            formato = this.controlloFormatoPrenota();
+            formato = this.controlloFormatoTempi();
             tempoArrivoPrenotaField.setText("");
             tempoUscitaPrenotaField.setText("");
         }
     }
 
-    private boolean controlloFormatoPrenota() {
+    private boolean controlloFormatoTempi() {
         String regex = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$";
 
         if (!Pattern.matches(regex, tempo_arrivo) || !Pattern.matches(regex, tempo_uscita)) {
@@ -260,6 +288,119 @@ public class UiPosteggio {
                         return prenoto;
                     }
                 }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public HashMap<String,Object> avviaModificaPrenotazione(HashMap<String,Object> utente, HashMap<String,Object> prenotazioneModifica) {
+        indietro = false;
+        formato = false;
+        if(prenotazioneModifica == null || prenotazioneModifica.get("id") == null)
+            prenotazioneModifica = this.getPrenotazioneUtente(utente);
+
+        if(prenotazioneModifica == null || prenotazioneModifica.get("id") == null){
+            JOptionPane.showMessageDialog(null,"Spiacente, non hai prenotazioni da modificare", "Errore", ERROR_MESSAGE);
+            return null;
+        }
+        this.prenotazione = prenotazioneModifica;
+
+
+        while(!indietro && !formato) {
+            this.mostraFormModificaPrenotazione(prenotazioneModifica);
+            if (!indietro && formato) {
+                try {
+                    this.prenotazione.put("tempo_arrivo", tempo_arrivo);
+                    this.prenotazione.put("tempo_uscita", tempo_uscita);
+                    String prenotazioneJson = gson.toJson(this.prenotazione);
+
+                    HttpClient client = HttpClient.newHttpClient();
+                    HttpRequest request = HttpRequest.newBuilder()
+                            .uri(new URI(baseURL + "/prenotazioni/modifica/" + prenotazioneModifica.get("id")))
+                            .header("Content-Type", "application/json")
+                            .PUT(HttpRequest.BodyPublishers.ofString(prenotazioneJson))
+                            .build();
+
+                    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                    if(response.statusCode() == 200){
+                        prenotazione = gson.fromJson(response.body(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                        JOptionPane.showMessageDialog(null, "Prenotazione modificata con successo", "Successo", INFORMATION_MESSAGE);
+                        return prenotazione;
+                    }
+                    else{
+                        showMessageDialog(null,response.body(), "Errore", ERROR_MESSAGE);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    private void mostraFormModificaPrenotazione(HashMap<String,Object> prenotazioneModifica) {
+        scelta = showOptionDialog(null, modificaPanel, "Modifca prenotazione (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiModifica, "Modifica prenotazione");
+
+        if (scelta == 0 || scelta == CLOSED_OPTION) // torna indietro
+        {
+            tempoArrivoModificaField.setText("");
+            tempoUscitaModificaField.setText("");
+            indietro = true;
+        }
+        if (scelta == 1) // Modica prenotazione
+        {
+            tempo_arrivo = tempoArrivoModificaField.getText();
+            tempo_uscita = tempoUscitaModificaField.getText();
+            formato = this.controlloFormatoTempi();
+            tempoArrivoModificaField.setText("");
+            tempoUscitaModificaField.setText("");
+        }
+        if(scelta == 2){ // Cancella prenotazione
+            this.avviaCancellaPrenotazione(prenotazioneModifica);
+            indietro = true;
+        }
+    }
+
+    private void avviaCancellaPrenotazione(HashMap<String, Object> prenotazioneModifica) {
+        this.prenotazione = prenotazioneModifica;
+        scelta = showOptionDialog(null, cancellaPanel, "Cancella prenotazione (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiCancella, "Cancella prenotazione");
+
+        if(scelta == 1){
+            try{
+                HttpClient client = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(new URI(baseURL + "/prenotazioni/" + prenotazioneModifica.get("id")))
+                        .header("Content-Type", "application/json")
+                        .DELETE()
+                        .build();
+
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                if(response.statusCode() == 204)
+                    JOptionPane.showMessageDialog(null, "Prenotazione cancellata con successo", "Successo", INFORMATION_MESSAGE);
+                else
+                    showMessageDialog(null,response.body(), "Errore", ERROR_MESSAGE);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public HashMap<String,Object> getPrenotazioneUtente(HashMap<String,Object> utente) {
+
+        try{
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/prenotazioni/" + utente.get("username")))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if(response.statusCode() == 200){
+                prenotazione = gson.fromJson(response.body(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                return prenotazione;
             }
         }catch (Exception e){
             e.printStackTrace();
