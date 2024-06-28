@@ -39,10 +39,11 @@ public class GestorePosti {
         if(this.verificaDisponibilta(idPostiAuto,prenotazioni,nuovaPrenotazione)){
             String comandoSql = "INSERT INTO Prenotazioni (tempo_arrivo, tempo_uscita, utente, posto) VALUES ('" + nuovaPrenotazione.getTempo_arrivo().format(formatter) + "', '" + nuovaPrenotazione.getTempo_uscita().format(formatter) + "', '" + nuovaPrenotazione.getUtente() + "', " + nuovaPrenotazione.getPosto() + ");";
             System.out.println(comandoSql);
-            if(dbPrenotazioni.update(comandoSql))
+            if(dbPrenotazioni.update(comandoSql)){
+                nuovaPrenotazione = this.getPrenotazioneUsername(nuovaPrenotazione.getUtente());
                 return nuovaPrenotazione;
+            }
         }
-
         return null;
     }
 
@@ -79,6 +80,18 @@ public class GestorePosti {
 
     public Prenotazioni getPrenotazione(String id) {
         String comandoSql = "SELECT * FROM Prenotazioni WHERE id = \"" + id + "\"";
+        System.out.println(comandoSql);
+        var rs = dbPrenotazioni.query(comandoSql);
+
+        if(rs.isEmpty())
+            return null;
+
+        return new Prenotazioni((Integer) rs.get(0).get("id"), LocalDateTime.parse((CharSequence) rs.get(0).get("tempo_arrivo"), formatter), LocalDateTime.parse((CharSequence) rs.get(0).get("tempo_uscita"), formatter), (String) rs.get(0).get("utente"), (Integer) rs.get(0).get("posto"));
+
+    }
+
+    public Prenotazioni getPrenotazioneUsername(String username) {
+        String comandoSql = "SELECT * FROM Prenotazioni WHERE utente = \"" + username + "\"";
         System.out.println(comandoSql);
         var rs = dbPrenotazioni.query(comandoSql);
 

@@ -135,7 +135,7 @@ public class UiLogin {
                                     break;
                                 case 2:
                                     System.out.println("Modifica della prenotazione da parte di un utente premium.");
-                                    uiPosteggio.avviaModificaPrenotazione();
+                                    prenotazione = uiPosteggio.avviaModificaPrenotazione(utente,prenotazione);
                                     break;
                                 case 3:
                                     System.out.println("Richiesta di estensione della ricarica.");

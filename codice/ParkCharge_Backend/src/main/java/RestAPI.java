@@ -231,5 +231,19 @@ public class RestAPI {
                 return "Prezzi non aggiornati";
             }
         } ),gson::toJson);
+
+        get(baseURL + "/prenotazioni/:username", "application/json", ((request, response) -> {
+            var prenotazione = gestorePosti.getPrenotazioneUsername(request.params(":username"));
+
+            if(prenotazione != null){
+                response.status(200);
+                response.type("application/json");
+                return prenotazione;
+            }
+            else{
+                response.status(404);
+                return "Nessuna prenotazione dell'utente specificato";
+            }
+        } ),gson::toJson);
     }
 }
