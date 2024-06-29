@@ -4,6 +4,7 @@ public class Ricariche {
     private float kilowatt;
     private int durata_ricarica;
     private int percentuale_richiesta;
+    private int percentuale_erogata;
     private int prenotazione;
     private int mwbot;
 
@@ -11,6 +12,7 @@ public class Ricariche {
         this.kilowatt = kilowatt;
         this.durata_ricarica = durata_ricarica;
         this.percentuale_richiesta = percentuale_richiesta;
+        this.percentuale_erogata = 0;
         this.prenotazione = prenotazione;
         this.mwbot = mwbot;
     }
@@ -33,6 +35,13 @@ public class Ricariche {
 
     public int getPercentuale_richiesta() {
         return percentuale_richiesta;
+    }
+
+    public int getPercentuale_erogata(){return percentuale_erogata;}
+
+    //TODO quanto l'MWBot fa publish dello stato aggiorno questo valore
+    public void setPercentuale_erogata(int percentuale_erogata) {
+        this.percentuale_erogata = percentuale_erogata;
     }
 
     public int getPrenotazione() {
