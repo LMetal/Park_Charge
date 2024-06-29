@@ -400,7 +400,7 @@ public class UiMonitora {
             costi.put("penale", textPosteggio.getText());
             costi.put("costo_premium", textPosteggio.getText());
 
-            if(RestAPI_Adapter.put("/costi", costi)) {
+            if(RestAPI_Adapter.put("/costo", costi)) {
                 this.mostraSuccesso("Costi modificati con successo");
             }else{
                 this.mostraErrore("Costi non modificati, errore di connessione al Backend");
