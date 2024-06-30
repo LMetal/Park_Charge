@@ -4,8 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TestEDF {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -52,5 +51,46 @@ public class TestEDF {
         assertTrue(EDF.isAccettable("b", 10, listPrenotazioni, l3, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
         assertTrue(EDF.isAccettable("b", 35, listPrenotazioni, l3, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
         assertFalse(EDF.isAccettable("b", 45, listPrenotazioni, l3, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
+    }
+
+    @Test
+    public void testScheduling(){
+        Prenotazioni p1 = new Prenotazioni(0, "2024-06-11 11:00:00", "2024-06-11 12:00:00", "a", 1);
+        Ricariche r1 = new Ricariche(30, 30, 30, 0, 1);
+        Prenotazioni p2 = new Prenotazioni(1, "2024-06-11 11:00:00", "2024-06-11 12:30:00", "b", 2);
+        Ricariche r2 = new Ricariche(30, 30, 30, 1, 1);
+        Prenotazioni p3 = new Prenotazioni(2, "2024-06-11 12:00:00", "2024-06-11 12:20:00", "c", 3);
+        Ricariche r3 = new Ricariche(10, 10, 10, 2, 1);
+        Prenotazioni p4 = new Prenotazioni(3, "2024-06-11 12:30:00", "2024-06-11 15:00:00", "mrossi", 4);
+        Ricariche r4 = new Ricariche(40, 40, 40, 3, 1);
+
+        ArrayList<Prenotazioni> prenotazioniList = new ArrayList<>();
+        ArrayList<Prenotazioni> emptyPrenotazioniList = new ArrayList<>();
+        prenotazioniList.add(p1);
+        prenotazioniList.add(p2);
+        prenotazioniList.add(p3);
+        prenotazioniList.add(p4);
+
+        ArrayList<Ricariche> emptyRicaricheList = new ArrayList<>();
+        ArrayList<Ricariche> ricaricheList = new ArrayList<>();
+        ricaricheList.add(r1);
+        ricaricheList.add(r2);
+        ricaricheList.add(r3);
+        ricaricheList.add(r4);
+
+        //nessuna prenotazione o ricarica
+        assertEquals(-1, EDF.getJobPosto(emptyPrenotazioniList, emptyRicaricheList));
+        //nessuna ricarica
+        assertEquals(-1, EDF.getJobPosto(prenotazioniList, emptyRicaricheList));
+        //nessuna prenotazione
+        assertEquals(-1, EDF.getJobPosto(emptyPrenotazioniList, ricaricheList));
+
+        // prenotazioni e ricariche
+        assertEquals(1, EDF.getJobPosto(prenotazioniList, ricaricheList));
+        //ricarica prenotazione 0 completata
+        ricaricheList.remove(0);
+        assertEquals(3, EDF.getJobPosto(prenotazioniList, ricaricheList));
+
+
     }
 }

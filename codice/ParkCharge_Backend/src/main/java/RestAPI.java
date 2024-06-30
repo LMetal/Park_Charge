@@ -1,13 +1,11 @@
-import DataBase.DbUtenti;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static spark.Spark.*;
 
@@ -143,16 +141,39 @@ public class RestAPI {
             return returnJson;
         }), gson::toJson);
 
+        //TODO swagger diverso
         //richiedi ricarica
         post(baseURL + "/ricariche", "application/json", ((request, response) -> {
+            HashMap<String, String> responseJson = new HashMap<>();
             response.status(200);
             response.type("application/json");
             var prenotazioni = gestorePosti.getPrenotazioni();
             var ricaricheAccettate = gestoreRicariche.getRicariche();
+            var user = request.queryParams("user");
+            int timeToCharge;
+            try{
+                timeToCharge = Integer.parseInt(request.queryParams("charge_time"));
+            } catch (Exception e){
+                response.status(400); //bad request
+                responseJson.put("outcome", "bad_request");
+                return responseJson;
+            }
 
-            EDF.isAccettable(request.queryParams("user"), 20, prenotazioni, ricaricheAccettate);
+            if(! EDF.isAccettable(request.queryParams("user"), timeToCharge, prenotazioni, ricaricheAccettate)) {
+                responseJson.put("outcome", "not_acceptable");
+                return responseJson;
+            }
 
-            return null;
+            int prenotazioneId = Objects.requireNonNull(prenotazioni.stream()
+                    .filter(p -> p.getUtente().equals(user))
+                    .findFirst()
+                    .orElse(null)).getId();
+            System.out.println(prenotazioneId);
+
+            //add to database
+            gestoreRicariche.addRicarica(timeToCharge, prenotazioneId);
+            responseJson.put("outcome", "ok");
+            return responseJson;
         }),gson::toJson);
 
 
