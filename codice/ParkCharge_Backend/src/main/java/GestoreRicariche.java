@@ -1,7 +1,6 @@
 import DataBase.DbPrenotazioni;
 import DataBase.DbRicariche;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,5 +30,10 @@ public class GestoreRicariche {
         if(ricaricaUtente.size() != 1) return null;
 
         return new Ricariche(ricaricaUtente.get(0));
+    }
+
+    public void addRicarica(int timeToCharge, int prenotazioneId){
+        //add new charge
+        //dbRicariche.update("");
     }
 }

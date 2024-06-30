@@ -15,6 +15,7 @@ public class EDF {
         return isAccettable(userRequesting, timeToCharge, prenotazioni, ricariche, LocalDateTime.now());
     }
 
+    //iltimoo parametro per testing
     public static boolean isAccettable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche, LocalDateTime startTime){
         Prenotazioni prenotazioneUtente = prenotazioni.stream()
                 .filter(p -> p.getUtente().equals(userRequesting))
@@ -51,7 +52,19 @@ public class EDF {
         return true;
     }
 
-    public static int getJobPosto(){
-        return 0;
+    /**
+     * @param prenotazioni list of prenotazioni
+     * @param ricariche list of ricariche
+     * @return place number for the MWBot to charge, -1 if MWBot can go idle (nothing to charge)
+     */
+    public static int getJobPosto(ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche){
+        prenotazioni.sort(Comparator.comparing(Prenotazioni::getTempo_uscita));
+
+        for(Prenotazioni p: prenotazioni){
+            if(ricariche.stream().anyMatch(r -> r.getPrenotazione() == p.getId())){
+                return p.getPosto();
+            }
+        }
+        return -1;
     }
 }
