@@ -10,7 +10,6 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -52,6 +51,7 @@ public class UiPosteggio {
     private String[] pulsantiCancella;
 
 
+    // Costruttore
     public UiPosteggio(){
         tempoUscitaOccupaLabel = new JLabel("Tempo Uscita");
         tempoUscitaOccupaField = new JTextField("",15);
@@ -101,6 +101,7 @@ public class UiPosteggio {
         gson = new Gson();
     }
 
+    // Avvia il processo di occuppazione di un posto
     public HashMap<String,Object>  avviaOccupaPosto(HashMap<String,Object> utente) {
         indietro = false;
         formato = false;
@@ -118,6 +119,7 @@ public class UiPosteggio {
                     this.prenotazione.put("tempo_uscita", tempo_uscita);
                     String prenotazioneJson = gson.toJson(this.prenotazione);
 
+                    // Richiesta post API REST per occupare un posto
                     HttpClient client = HttpClient.newHttpClient();
                     HttpRequest request = HttpRequest.newBuilder()
                             .uri(new URI(baseURL + "/prenotazioni/" + utente.get("username")))
@@ -142,6 +144,7 @@ public class UiPosteggio {
         return null;
     }
 
+    // Mostra il form per l'occipazione del posto
     private void mostraFormOccupaPosto() {
         scelta = showOptionDialog(null, occupaPanel, "Occupa posto (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiOccupa, "Occupa posto");
 
@@ -158,27 +161,37 @@ public class UiPosteggio {
         }
     }
 
+    // Controlla il formato del tempo inserito
     private boolean controlloFormatoTempo() {
+        // Definizione della regex per il formato "yyyy-MM-dd HH:mm:ss"
         String regex = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$";
+
+        // Verifica se la stringa tempo_uscita corrisponde al formato definito dalla regex
         if (!Pattern.matches(regex, tempo_uscita)) {
+            // Mostra un messaggio di errore se il formato non è corretto
             showMessageDialog(null, "Usa il formato yyyy-MM-dd HH:mm:ss.", "Errore", ERROR_MESSAGE);
             return false;
         }
 
+        // Formatter per convertire la stringa in un oggetto LocalDateTime
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
         LocalDateTime inputDateTime = LocalDateTime.parse(tempo_uscita, formatter);
+
+        // Ottiene il tempo attuale
         LocalDateTime now = LocalDateTime.now();
 
+        // Confronta l'input con il tempo attuale per verificare se è futur
         if (inputDateTime.isAfter(now)) {
             return true;
         } else {
+            // Mostra un messaggio di errore se l'input non è futuro rispetto al tempo attuale
             showMessageDialog(null, "La data e ora devono essere maggiori del tempo attuale.", "Errore", ERROR_MESSAGE);
             return false;
         }
 
     }
 
+    // Avvia il processo di prenotazione di un posto
     public HashMap<String,Object> avviaPrenotaPosto(HashMap<String,Object> utente) {
         indietro = false;
         formato = false;
@@ -197,6 +210,7 @@ public class UiPosteggio {
                     this.prenotazione.put("tempo_uscita", tempo_uscita);
                     String prenotazioneJson = gson.toJson(this.prenotazione);
 
+                    // Richiesta post API REST per prenotare un posto per un utente premium
                     HttpClient client = HttpClient.newHttpClient();
                     HttpRequest request = HttpRequest.newBuilder()
                             .uri(new URI(baseURL + "/prenotazioni/premium/" + utente.get("username")))
@@ -221,6 +235,7 @@ public class UiPosteggio {
         return null;
     }
 
+    // Mostra il form per la prenotazione del posto
     private void mostraFormPrenotaPosto() {
         scelta = showOptionDialog(null, prenotaPanel, "Prenota posto (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiPrenota, "Prenota posto");
 
@@ -240,31 +255,40 @@ public class UiPosteggio {
         }
     }
 
+    // Controlla il formato dei tempi inseriti
     private boolean controlloFormatoTempi() {
+        // Definizione della regex per il formato "yyyy-MM-dd HH:mm:ss"
         String regex = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$";
 
+        // Verifica se tempo_arrivo e tempo_uscita corrispondono al formato definito dalla regex
         if (!Pattern.matches(regex, tempo_arrivo) || !Pattern.matches(regex, tempo_uscita)) {
+            // Mostra un messaggio di errore se uno dei tempi non è nel formato corretto
             showMessageDialog(null, "Usa il formato yyyy-MM-dd HH:mm:ss.", "Errore", ERROR_MESSAGE);
-            return false;
+            return false; // Ritorna false per indicare un errore
         }
 
+        // Formatter per convertire le stringhe in oggetti LocalDateTime
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
         LocalDateTime arrivoDateTime = LocalDateTime.parse(tempo_arrivo, formatter);
         LocalDateTime uscitaDateTime = LocalDateTime.parse(tempo_uscita, formatter);
         LocalDateTime now = LocalDateTime.now();
 
+        // Verifica se entrambi gli input sono futuri rispetto al tempo attuale e se il tempo di uscita è successivo al tempo di arrivo
         if (arrivoDateTime.isAfter(now) && uscitaDateTime.isAfter(now) && uscitaDateTime.isAfter(arrivoDateTime)) {
-            return true;
+            return true; // Ritorna true se entrambi i tempi sono validi secondo i criteri
         } else {
+            // Mostra un messaggio di errore se i tempi non soddisfano i criteri richiesti
             showMessageDialog(null, "La data e ora devono essere maggiori del tempo attuale e il tempo di uscita deve essere maggiore del tempo di arrivo.", "Errore", ERROR_MESSAGE);
-            return false;
+            return false; // Ritorna false per indicare un errore
         }
     }
 
+
+    //  Avvia il processo di modifica della prenotazione
     public HashMap<String,Object> controllaPrenotazioneAttiva(HashMap<String,Object> utente, boolean provenienza) { //True corrisponde alla provenienza da prenotaPosto, altrimenti da occupaPosto
 
         try{
+            // Richiesta get API REST per ottenere tutte le prenotazioni
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(baseURL + "/prenotazioni"))
@@ -295,6 +319,7 @@ public class UiPosteggio {
         return null;
     }
 
+    // Mostra il form per la modifica della prenotazione
     public HashMap<String,Object> avviaModificaPrenotazione(HashMap<String,Object> utente, HashMap<String,Object> prenotazioneModifica) {
         indietro = false;
         formato = false;
@@ -316,6 +341,7 @@ public class UiPosteggio {
                     this.prenotazione.put("tempo_uscita", tempo_uscita);
                     String prenotazioneJson = gson.toJson(this.prenotazione);
 
+                    // Richiesta put API REST per modificare una prenotazione
                     HttpClient client = HttpClient.newHttpClient();
                     HttpRequest request = HttpRequest.newBuilder()
                             .uri(new URI(baseURL + "/prenotazioni/modifica/" + prenotazioneModifica.get("id")))
@@ -340,6 +366,7 @@ public class UiPosteggio {
         return null;
     }
 
+    // Controlla se l'utente ha già una prenotazione attiva
     private void mostraFormModificaPrenotazione(HashMap<String,Object> prenotazioneModifica) {
         scelta = showOptionDialog(null, modificaPanel, "Modifca prenotazione (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiModifica, "Modifica prenotazione");
 
@@ -363,12 +390,14 @@ public class UiPosteggio {
         }
     }
 
+    // Avvia il processo di cancellazione della prenotazione
     private void avviaCancellaPrenotazione(HashMap<String, Object> prenotazioneModifica) {
         this.prenotazione = prenotazioneModifica;
         scelta = showOptionDialog(null, cancellaPanel, "Cancella prenotazione (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiCancella, "Cancella prenotazione");
 
         if(scelta == 1){
             try{
+                // Richiesta delete API REST per cancellare una prenotazione
                 HttpClient client = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(new URI(baseURL + "/prenotazioni/" + prenotazioneModifica.get("id")))
@@ -387,9 +416,11 @@ public class UiPosteggio {
         }
     }
 
+    // Ottiene la prenotazione attiva per un determinato utente
     public HashMap<String,Object> getPrenotazioneUtente(HashMap<String,Object> utente) {
 
         try{
+            // Richiesta get API REST per ottenere la prenotazione di un utente specifico
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(baseURL + "/prenotazioni/" + utente.get("username")))
