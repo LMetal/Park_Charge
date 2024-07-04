@@ -55,6 +55,7 @@ public class UiUtente {
     private boolean formato;
     private Gson gson;
 
+    // Costruttore
     public UiUtente(){
         usernameLabel = new JLabel("Username");
         passwordLabel = new JLabel("Password");
@@ -105,13 +106,12 @@ public class UiUtente {
         modificaDatiPanel.add(cartaModificaLabel);
         modificaDatiPanel.add(cartaModificaField);
 
-
         utente = new HashMap<>();
         gson = new Gson();
-
     }
 
 
+    // Metodo per avviare la modifica dei dati dell'utente
     public HashMap<String,Object> avviaModificaDati(HashMap<String,Object> utente) {
         indietro = false;
         formato = false;
@@ -121,6 +121,7 @@ public class UiUtente {
             this.mostraFormModificaDati();
             if (!indietro && formato) {
                 try{
+                    // Aggiorna i dati dell'utente
                     utente.put("nome", nome);
                     utente.put("cognome", cognome);
                     utente.put("carta", carta);
@@ -150,6 +151,7 @@ public class UiUtente {
         return utente;
     }
 
+    // Metodo per mostrare il form per la modifica dei dati
     private void mostraFormModificaDati() {
         scelta = showOptionDialog(null, modificaDatiPanel, "Modifica dati (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiModificaDati, "Modifica dati");
 
@@ -168,6 +170,7 @@ public class UiUtente {
         }
     }
 
+    // Metodo per avviare il processo per diventare utente premium
     public HashMap<String,Object> avviaDiventaPremium(HashMap<String,Object> utente) {
         this.utente = utente;
         scelta = showOptionDialog(null, premiumPanel, "Diventa Premium (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiPremium, "Diventa Premium");
@@ -175,6 +178,7 @@ public class UiUtente {
         if (scelta == 1) // Diventa Premium
         {
             try{
+                // Effettua la richiesta API REST per aggiornare il tipo di utente a premium
                 HttpClient client = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(new URI(baseURL + "/utenti/tipo/" + utente.get("username")))
@@ -198,6 +202,7 @@ public class UiUtente {
         return utente;
     }
 
+    // Metodo per avviare il processo di creazione di un nuovo utente
     public HashMap<String,Object> avviaCreaUtente() {
         indietro = false;
         formato = false;
@@ -206,10 +211,11 @@ public class UiUtente {
             this.mostraFormRegistrazione();
             if(!indietro && formato){
                 try{
+                    // Crea un nuovo utente
                     utente.put("nome", nome);
                     utente.put("cognome", cognome);
                     utente.put("username", username);
-                    utente.put("tipo", "2");
+                    utente.put("tipo", "2"); // Tipo 2 corrisponde a un utente normale
                     utente.put("carta", carta);
                     utente.put("password", password);
 
@@ -238,6 +244,7 @@ public class UiUtente {
         return null;
     }
 
+    // Metodo per mostrare il form per la registrazione di un nuovo utente
     private void mostraFormRegistrazione() {
         scelta = showOptionDialog(null, registrazionePanel, "Crea nuovo utente (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiRegistrazione, "Crea utente");
 
@@ -258,17 +265,20 @@ public class UiUtente {
         }
     }
 
+    // Metodo per controllare il formato dei dati inseriti dall'utente
     private boolean controlloFormato() {
         if(nome.isEmpty() || cognome.isEmpty() || carta.isEmpty()){
             JOptionPane.showMessageDialog(null, "Tutti i campi devono essere completati", "Errore", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
+        // Requisito non funzionale 12
         if (username.length() < 4) {
             JOptionPane.showMessageDialog(null, "L'username deve essere di almeno 4 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
+        // Requisito non funzionale 13
         if(password.length() < 6 || !Pattern.compile("[0-9]").matcher(password).find()){
             JOptionPane.showMessageDialog(null, "La password deve essere di almeno 6 caratteri e contenere almeno un numero", "Errore", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -277,6 +287,7 @@ public class UiUtente {
         return true;
     }
 
+    // Metodo per svuotare i campi di input dei dati
     private void svuotaCampi(ArrayList<JTextField> textFields){
         for(JTextField textField: textFields){
             textField.setText("");

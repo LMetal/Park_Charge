@@ -46,6 +46,7 @@ public class UiLogin {
     private JList<String> menuList;
     private JPanel menuPanel;
 
+    // Costruttore
     public UiLogin(){
         usernameLabel = new JLabel("Username");
         passwordLabel = new JLabel("Password");
@@ -102,6 +103,7 @@ public class UiLogin {
         prenotazione = new HashMap<>();
     }
 
+    // metodo per avviare il processo di login e interazione
     public void avvioLogin(){
         do {
             this.mostraFormLogin();
@@ -110,12 +112,15 @@ public class UiLogin {
                 utente = uiUtente.avviaCreaUtente();
             }
             if (scelta == 1) {
+                // Ricerca delle credenziali
                 esitoRicerca = ricercaCredenziali(username, password);
                 if (esitoRicerca.contains("errore"))
                     this.mostraErrore(esitoRicerca);
                 else {
+                    // Ricerca dell'utente corrispondente
                     utente = ricercaUtente(username);
                     do {
+                        // Mostra il menu appropriato in base al tipo di utente
                         this.mostraMenu((String) utente.get("nome"), (String) utente.get("tipo"));
                         String tipoUtente = (String) utente.get("tipo");
                         if (tipoUtente.equals("3")) {
@@ -180,6 +185,7 @@ public class UiLogin {
         } while (scelta != -1);
     }
 
+    // metodo per la ricerca di utente tramite get API REST
     private HashMap<String, Object> ricercaUtente(String username) {
         HttpURLConnection con = null;
         HashMap<String,Object> utente = new HashMap<>();
@@ -192,6 +198,7 @@ public class UiLogin {
 
             int responseCode = con.getResponseCode();
             if(responseCode == 200) {
+                // Se la risposta è 200, l'utente è stato trovato e viene convertito da JSON a HashMap
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
                 String inputLine;
                 StringBuilder response = new StringBuilder();
@@ -207,6 +214,7 @@ public class UiLogin {
                 return utente;
             }
             else{
+                // Se il codice di risposta non è 200, si verifica un errore nella ricerca
                 System.out.println("Errore nella ricerca dell'utente, codice di risposta: " + responseCode);
                 return null;
             }
@@ -220,6 +228,7 @@ public class UiLogin {
         }
     }
 
+    // Metodo per la ricerca delle credenziali tramite get API REST
     private String ricercaCredenziali(String username, String password) {
         if(username.isEmpty() && password.isEmpty())
             return "erroreCredenziali";
@@ -237,10 +246,12 @@ public class UiLogin {
 
             int responseCode = con.getResponseCode();
             if(responseCode == 200) {
+                // Se la risposta è 200, le credenziali sono corrette
                 System.out.println("Credenziali corrette.");
                 return "corretto";
             }
             else {
+                // Altrimenti, le credenziali sono errate o l'utente non è presente<
                 System.out.println("Credenziali errate o utente non presente, codice di risposta: " + responseCode);
                 return "erroreAssente";
             }
@@ -255,6 +266,7 @@ public class UiLogin {
         }
     }
 
+    // Metodo per mostrare il menu in base al tipo di utente
     private void mostraMenu(String nome, String tipo) {
         int pulsante;
         String tipoCliente = "";
@@ -287,6 +299,7 @@ public class UiLogin {
             sceltaMenu = -1;
     }
 
+    // Metodo per mostrare il form di login
     private void mostraFormLogin() {
         scelta = showOptionDialog(null, loginPanel, "Login (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiLogin, "Login");
 
@@ -307,6 +320,7 @@ public class UiLogin {
         }
     }
 
+    // Metodo per mostrare un messaggio di errore
     private void mostraErrore(String tipoErrore){
         String messaggio="";
 
