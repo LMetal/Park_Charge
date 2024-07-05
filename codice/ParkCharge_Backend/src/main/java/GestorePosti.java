@@ -27,7 +27,7 @@ public class GestorePosti {
 
         // Converte i risultati della query in oggetti Prenotazioni e li aggiunge alla lista
         for(HashMap<String, Object> record : rs){
-            listaPrenotazioni.add(new Prenotazioni((Integer) record.get("id"), LocalDateTime.parse((CharSequence) record.get("tempo_arrivo"), formatter), LocalDateTime.parse((CharSequence) record.get("tempo_uscita"), formatter), (String) record.get("utente"), (Integer) record.get("posto")));
+            listaPrenotazioni.add(new Prenotazioni(record));
         }
         return listaPrenotazioni;
     }
@@ -158,5 +158,16 @@ public class GestorePosti {
 
         // Esegue la query per cancellare la prenotazione dal database e restituisce true se l'operazione ha successo, altrimenti false
         return dbPrenotazioni.update(comandoSql);
+    }
+
+    public ArrayList<HashMap<String, Object>> getStatoPosti() {
+        return dbPrenotazioni.query("SELECT * FROM PostoAuto");
+    }
+
+    public Prenotazioni getPrenotazioni(String user) {
+        var prenotazioneUser = dbPrenotazioni.query("SELECT * FROM Prenotazioni WHERE utente = \""+user+"\"");
+        if(prenotazioneUser == null) return null;
+        if(prenotazioneUser.size() != 1) return null;
+        else return new Prenotazioni(prenotazioneUser.get(0));
     }
 }

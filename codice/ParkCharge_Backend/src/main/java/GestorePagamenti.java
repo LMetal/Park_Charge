@@ -45,4 +45,12 @@ public class GestorePagamenti {
         // Esegue la query di aggiornamento nel database storico e restituisce il risultato
         return dbStorico.update(comandoSql);
     }
+
+    public ArrayList<HashMap<String, Object>> getStorico() {
+        String comandoSql = "SELECT * FROM Pagamenti\n" +
+                "JOIN PrezzoPosteggio \n" +
+                "WHERE Pagamenti.costo = PrezzoPosteggio.id";
+
+        return dbStorico.query(comandoSql);
+    }
 }

@@ -1,16 +1,17 @@
-import DataBase.DbUtenti;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static spark.Spark.*;
 
 public class RestAPI {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     public static void main(String[] args) {
         // Imposta la porta su cui il server ascolterà
         int port = 4568;
@@ -55,6 +56,7 @@ public class RestAPI {
         }),gson::toJson);
 
         // Endpoint per ottenere informazioni su un utente
+        //Login
         get(baseURL + "/utenti/:username","application/json", ((request, response) -> {
             // Recupera le informazioni dell'utente usando il gestore
             Utente utente = gestoreUtenti.getUtente(request.params(":username"));
@@ -76,7 +78,8 @@ public class RestAPI {
             return finalJson;
         }),gson::toJson);
 
-        get(baseURL + "/costi", "application/json", ((request, response) -> {
+        //Modifica prezzi
+        get(baseURL + "/costo", "application/json", ((request, response) -> {
             var costi = gestorePagamenti.getCosti();
 
             response.status(200);
@@ -85,6 +88,7 @@ public class RestAPI {
             return costi;
         }),gson::toJson);
 
+        //monitora prenotazioni
         get(baseURL + "/prenotazioni", "application/json", ((request, response) -> {
             var prenotazioni = gestorePosti.getPrenotazioni();
 
@@ -94,6 +98,18 @@ public class RestAPI {
             return prenotazioni;
         }),gson::toJson);
 
+        //Modifica costi
+        put(baseURL + "/costo", "application/json", ((request, response) -> {
+            System.out.println(request.body());
+
+            response.status(200);
+            response.type("application/json");
+
+            return null;
+        }),gson::toJson);
+
+
+        //Monitora ricariche prenotate
         get(baseURL + "/ricariche", "application/json", ((request, response) -> {
             var ricariche = gestoreRicariche.getRicariche();
 
@@ -102,6 +118,74 @@ public class RestAPI {
 
             return ricariche;
         }),gson::toJson);
+
+        //TODO aggiungi swagger
+        //richiedi ricarica, ritorna stato posteggio e ricarica utente
+        get(baseURL + "/statoUtente", "application/json", ((request, response) -> {
+            Ricariche ricaricaUtente = null;
+            HashMap<String, Object> returnJson = new HashMap<>();
+            response.status(200);
+            response.type("application/json");
+            var prenotazioneUtente = gestorePosti.getPrenotazioni(request.queryParams("user"));
+            if(prenotazioneUtente != null){
+                ricaricaUtente = gestoreRicariche.getRicariche(prenotazioneUtente.getId());
+            }
+
+            returnJson.put("utente", request.queryParams("user"));
+
+            if(prenotazioneUtente == null){
+                returnJson.put("tempo_arrivo", null);
+                returnJson.put("id_ricarica", null);
+            } else {
+                returnJson.put("tempo_arrivo", prenotazioneUtente.getTempo_arrivo().format(formatter));
+
+            }
+
+            if(ricaricaUtente == null){
+                returnJson.put("id_ricarica", null);
+            } else {
+                returnJson.put("id_ricarica", ricaricaUtente.getPrenotazione());
+            }
+
+            return returnJson;
+        }), gson::toJson);
+
+        //TODO swagger diverso
+        //richiedi ricarica
+        post(baseURL + "/ricariche", "application/json", ((request, response) -> {
+            HashMap<String, String> responseJson = new HashMap<>();
+            response.status(200);
+            response.type("application/json");
+            var prenotazioni = gestorePosti.getPrenotazioni();
+            var ricaricheAccettate = gestoreRicariche.getRicariche();
+            var user = request.queryParams("user");
+            int timeToCharge;
+            try{
+                timeToCharge = Integer.parseInt(request.queryParams("charge_time"));
+            } catch (Exception e){
+                response.status(400); //bad request
+                responseJson.put("outcome", "bad_request");
+                return responseJson;
+            }
+
+            if(! EDF.isAccettable(request.queryParams("user"), timeToCharge, prenotazioni, ricaricheAccettate)) {
+                responseJson.put("outcome", "not_acceptable");
+                return responseJson;
+            }
+
+            int prenotazioneId = Objects.requireNonNull(prenotazioni.stream()
+                    .filter(p -> p.getUtente().equals(user))
+                    .findFirst()
+                    .orElse(null)).getId();
+            System.out.println(prenotazioneId);
+
+            //add to database
+            gestoreRicariche.addRicarica(timeToCharge, prenotazioneId);
+            responseJson.put("outcome", "ok");
+            return responseJson;
+        }),gson::toJson);
+
+
 
         //Crea Utente
         // Endpoint per creare un nuovo utente
@@ -263,6 +347,40 @@ public class RestAPI {
                 response.status(404);  // Se l'utente non ha prenotazioni, restituisce errore 404
                 return "Nessuna prenotazione dell'utente specificato";
             }
-        }), gson::toJson);
+        } ),gson::toJson);
+
+
+        //TODO aggiungi a swagger
+        //monitora posti
+        get(baseURL + "/posti", "application/json", ((request, response) -> {
+            var ricariche = gestorePosti.getStatoPosti();
+
+            response.status(200);
+            response.type("application/json");
+
+            return ricariche;
+        }),gson::toJson);
+
+        //TODO aggiungi a swagger
+        //monitora storico
+        get(baseURL + "/storico", "application/json", ((request, response) -> {
+            var storico = gestorePagamenti.getStorico();
+            ArrayList<HashMap<String, Object>> storicoFiltrato = new ArrayList<>();
+
+            int year = Integer.parseInt(request.queryParams("year"));
+            int month = Integer.parseInt(request.queryParams("month"));
+
+            for(var p: storico){
+                LocalDateTime tempoArrivo = LocalDateTime.parse((CharSequence) p.get("tempo_arrivo"), formatter);
+                if(tempoArrivo.getYear() == year && tempoArrivo.getMonthValue() == month){
+                    storicoFiltrato.add(p);
+                }
+            }
+
+            response.status(200);
+            response.type("application/json");
+
+            return storicoFiltrato;
+        }),gson::toJson);
     }
 }

@@ -1,29 +1,25 @@
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import javax.swing.*;
-
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 import static javax.swing.JOptionPane.*;
 
 public class UiMonitora {
-    private String baseURL = "http://localhost:4568/api/v1.0";
     private int scelta;
     private int sceltaMenu;
-    private JPanel monitoraMenu;
     private String pulsantiScelta[];
     private JList<String> menuList;
     private JLabel menuLabel1;
     private JLabel menuLabel2;
     private JPanel menuPanel;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public UiMonitora(){
         pulsantiScelta = new String[5];
@@ -58,7 +54,8 @@ public class UiMonitora {
                     this.mostraModificaPrezzi();
                 if(sceltaMenu == 1)
                     this.mostraStatoPosti();
-
+                if(sceltaMenu == 2)
+                    this.mostraStorico();
                 if(sceltaMenu == 3)
                     this.mostraRicariche();
                 if(sceltaMenu == 4)
@@ -72,8 +69,99 @@ public class UiMonitora {
 
     }
 
+    private void mostraStorico() {
+        String inputYear = showInputDialog(null, "Inserisci l'anno (yyyy):", "Filtro Storico", QUESTION_MESSAGE);
+        String inputMonth = showInputDialog(null, "Inserisci il mese (MM):", "Filtro Storico", QUESTION_MESSAGE);
+
+        int year;
+        int month;
+        try {
+            year = Integer.parseInt(inputYear);
+            month = Integer.parseInt(inputMonth);
+            if (month < 1 || month > 12) {
+                throw new NumberFormatException();
+            }
+
+            //parcheggio aperto nel 2020
+            if (year < 2020 || year > LocalDateTime.now().getYear()) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            this.mostraErrore("Formato anno o mese non valido. Usa yyyy per l'anno e MM per il mese");
+            return;
+        }
+
+        var storicoFiltrato = RestAPI_Adapter.get("/storico?year="+year+"&month="+month);
+
+        if(storicoFiltrato.isEmpty()){
+            this.mostraErrore("Nessun dato trovato");
+            return;
+        }
+
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel headerUtente = new JLabel("Utente");
+        JLabel headerArrivo = new JLabel("Tempo di Arrivo");
+        JLabel headerUscita = new JLabel("Tempo di Uscita");
+        JLabel headerPosto = new JLabel("Posto");
+        JLabel headerPosteggio = new JLabel("Costo posteggio");
+        JLabel headerRicarica = new JLabel("Costo ricarica");
+        JLabel headerPenale = new JLabel("Costo penale");
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(headerUtente, gbc);
+        gbc.gridx = 1;
+        panel.add(headerArrivo, gbc);
+        gbc.gridx = 2;
+        panel.add(headerUscita, gbc);
+        gbc.gridx = 3;
+        panel.add(headerPosto, gbc);
+        gbc.gridx = 4;
+        panel.add(headerPosteggio, gbc);
+        gbc.gridx = 5;
+        panel.add(headerRicarica, gbc);
+        gbc.gridx = 6;
+        panel.add(headerPenale, gbc);
+
+        int row = 1;
+
+        for (HashMap<String, Object> prenotazione: storicoFiltrato) {
+            JLabel labelUtente = new JLabel(prenotazione.get("utente").toString());
+            JLabel labelArrivo = new JLabel(prenotazione.get("tempo_arrivo").toString());
+            JLabel labelUscita = new JLabel(prenotazione.get("tempo_uscita").toString());
+            JLabel labelPosto = new JLabel(prenotazione.get("posto").toString());
+            JLabel labelPosteggio = new JLabel(prenotazione.get("costo_posteggio").toString());
+            JLabel labelRicarica = new JLabel(prenotazione.get("costo_ricarica").toString());
+            JLabel labelPenale = new JLabel(prenotazione.get("penale").toString());
+
+            gbc.gridx = 0;
+            gbc.gridy = row;
+            panel.add(labelUtente, gbc);
+            gbc.gridx = 1;
+            panel.add(labelArrivo, gbc);
+            gbc.gridx = 2;
+            panel.add(labelUscita, gbc);
+            gbc.gridx = 3;
+            panel.add(labelPosto, gbc);
+            gbc.gridx = 4;
+            panel.add(labelPosteggio, gbc);
+            gbc.gridx = 5;
+            panel.add(labelRicarica, gbc);
+            gbc.gridx = 6;
+            panel.add(labelPenale, gbc);
+
+            row++;
+        }
+
+        showConfirmDialog(null, panel, "Lista storico", DEFAULT_OPTION, QUESTION_MESSAGE, null);
+    }
+
     private void mostraRicariche() {
-        var listaRicariche = this.getApi("/ricariche");
+        var listaRicariche = RestAPI_Adapter.get("/ricariche");
         System.out.println(listaRicariche);
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -126,7 +214,9 @@ public class UiMonitora {
     }
 
     private void mostraStatoPosti() {
-        /* panel = new JPanel(new GridBagLayout());
+        var listaPosti = RestAPI_Adapter.get("/posti");
+        System.out.println(listaPosti);
+        JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -141,9 +231,15 @@ public class UiMonitora {
         panel.add(headerStato, gbc);
 
         int row = 1;
-        for (Posto posto : posti) {
-            JLabel labelNumeroPosto = new JLabel(Integer.toString(posto.getNumero()));
-            JLabel labelStato = new JLabel(posto.getStato());
+        for (HashMap<String, Object> posto : listaPosti) {
+            JLabel labelNumeroPosto = new JLabel(posto.get("id").toString());
+            JLabel labelStato;
+            if(posto.get("disponibilita").toString().equals("1.0")){
+                labelStato = new JLabel("OCCUPATO");
+            } else {
+                labelStato = new JLabel("LIBERO");
+            }
+
 
             gbc.gridx = 0;
             gbc.gridy = row;
@@ -152,12 +248,12 @@ public class UiMonitora {
             panel.add(labelStato, gbc);
 
             row++;
-        }*/
-
+        }
+        showConfirmDialog(null, panel, "Stato posti", DEFAULT_OPTION, QUESTION_MESSAGE, null);
     }
 
     private void mostraPrenotazioni() {
-        var listaPrenotazioni = this.getApi("/prenotazioni");
+        var listaPrenotazioni = RestAPI_Adapter.get("/prenotazioni");
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -184,7 +280,7 @@ public class UiMonitora {
 
         int row = 1;
 
-        for (HashMap<String, Object> prenotazione : listaPrenotazioni) {
+        for (HashMap<String, Object> prenotazione: listaPrenotazioni) {
             JLabel labelId = new JLabel(prenotazione.get("id").toString());
             JLabel labelArrivo = new JLabel(prenotazione.get("tempo_arrivo").toString());
             JLabel labelUscita = new JLabel(prenotazione.get("tempo_uscita").toString());
@@ -211,7 +307,7 @@ public class UiMonitora {
     }
 
     private void mostraModificaPrezzi() {
-        var costiAttuali = this.getApi("/costi").get(0);
+        var costiAttuali = RestAPI_Adapter.get("/costi").get(0);
 
         JFrame frame = new JFrame("Modifica prezzi Parcheggio (X per uscire)");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -233,10 +329,10 @@ public class UiMonitora {
         JTextField textPenale = new JTextField(10);
         JTextField textPremium = new JTextField(10);
 
-        JLabel currentPosteggio = new JLabel(costiAttuali.get("costo_posteggio").toString());
-        JLabel currentRicarica = new JLabel(costiAttuali.get("costo_ricarica").toString());
-        JLabel currentPenale = new JLabel(costiAttuali.get("penale").toString());
-        JLabel currentPremium = new JLabel(costiAttuali.get("costo_premium").toString());
+        JLabel currentPosteggio = new JLabel(costiAttuali.get("costo_posteggio").toString() + " euro/ora");
+        JLabel currentRicarica = new JLabel(costiAttuali.get("costo_ricarica").toString() + " euro/KW");
+        JLabel currentPenale = new JLabel(costiAttuali.get("penale").toString() + " euro");
+        JLabel currentPremium = new JLabel(costiAttuali.get("costo_premium").toString() + " euro");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -274,49 +370,50 @@ public class UiMonitora {
         scelta = showConfirmDialog(null, panel, "Modifica prezzi", DEFAULT_OPTION, QUESTION_MESSAGE, null);
 
         if(scelta == OK_OPTION){
-            System.out.println("PUT dati");
+            //verifica dati
+            System.out.println(textPosteggio.getText());
+            try{
+                if(Integer.parseInt(textPosteggio.getText()) < 0){
+                    this.mostraErrore("Costo posteggio minore di zero");
+                    return;
+                }
+                if(Integer.parseInt(textRicarica.getText()) < 0){
+                    this.mostraErrore("Costo ricarica minore di zero");
+                    return;
+                }
+                if(Integer.parseInt(textPenale.getText()) < 0){
+                    this.mostraErrore("Costo penale minore di zero");
+                    return;
+                }
+                if(Integer.parseInt(textPremium.getText()) < 0){
+                    this.mostraErrore("Costo premium minore di zero");
+                    return;
+                }
+            } catch (Exception e){
+                this.mostraErrore("Errore inserimento dati");
+                return;
+            }
+
+            Map<String, Object> costi = new HashMap<>();
+            costi.put("costo_posteggio", textPosteggio.getText());
+            costi.put("costo_ricarica", textPosteggio.getText());
+            costi.put("penale", textPosteggio.getText());
+            costi.put("costo_premium", textPosteggio.getText());
+
+            if(RestAPI_Adapter.put("/costo", costi)) {
+                this.mostraSuccesso("Costi modificati con successo");
+            }else{
+                this.mostraErrore("Costi non modificati, errore di connessione al Backend");
+            }
         }
     }
 
-    private ArrayList<HashMap<String,Object>> getApi(String resource) {
-        HttpURLConnection con = null;
-        ArrayList<HashMap<String,Object>> prenotazioni;
+    private void mostraErrore(String testoErrore){
+        showMessageDialog(null, testoErrore, "Errore", ERROR_MESSAGE);
+    }
 
-        try {
-            URL url = new URL(baseURL + resource);
-            con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Accept", "application/json");
-
-            int responseCode = con.getResponseCode();
-            if(responseCode == 200) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                Gson gson = new Gson();
-
-                Type type = new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType();
-                prenotazioni = gson.fromJson(String.valueOf(response), type);
-                return prenotazioni;
-            }
-            else
-                return null;
-
-        }catch (Exception e){
-            e.printStackTrace();
-            //return null;
-        }
-        finally {
-            if(con != null)
-                con.disconnect();
-        }
-        return null;
+    private void mostraSuccesso(String testoSuccesso){
+        showMessageDialog(null, testoSuccesso, "Successo", INFORMATION_MESSAGE);
     }
 }
 
