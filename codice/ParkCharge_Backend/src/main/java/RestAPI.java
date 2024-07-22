@@ -164,8 +164,6 @@ public class RestAPI {
             return responseJson;
         }),gson::toJson);
 
-
-
         //Crea Utente
         // Endpoint per creare un nuovo utente
         post(baseURL + "/utenti", "application/json", ((request, response) -> {
@@ -185,6 +183,16 @@ public class RestAPI {
                 return created;
             }
         } ),gson::toJson);
+
+        get(baseURL + "/costo", "application/json", ((request, response) -> {
+            var costi = gestorePagamenti.getCosti();
+
+            response.status(200);
+            response.type("application/json");
+
+            return costi;
+        }),gson::toJson);
+
 
         //Modifica Dati Utente
         // Endpoint per modificare i dati di un utente

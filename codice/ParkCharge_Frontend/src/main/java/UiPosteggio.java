@@ -3,6 +3,8 @@ import com.google.gson.reflect.TypeToken;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -307,16 +309,17 @@ public class UiPosteggio {
                             if(provenienza)
                                 JOptionPane.showMessageDialog(null,"Spiacente, hai gia una prenotazione attiva","Errore", ERROR_MESSAGE);
                             else{
-                                /*
                                 // Formatter per convertire la stringa in un oggetto LocalDateTime
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                                LocalDateTime tempoArrivo = LocalDateTime.parse((CharSequence) prenotazione.get("tempo_arrivo"), formatter);
+                                LocalDateTime tempoArrivo = LocalDateTime.parse((CharSequence) prenoto.get("tempo_arrivo"), formatter);
 
                                 // Ottiene il tempo attuale
                                 LocalDateTime tempoAttuale = LocalDateTime.now();
-                                if(tempoAttuale.isAfter(tempoArrivo.plusMinutes(2))){
+
+                                if(tempoAttuale.isAfter(tempoArrivo.plusMinutes(1))){
                                     // Richiesta post API REST per ootenere il costo della penale
-                                    client = HttpClient.newHttpClient();request = HttpRequest.newBuilder()
+                                    client = HttpClient.newHttpClient();
+                                    request = HttpRequest.newBuilder()
                                             .uri(new URI(baseURL + "/costo"))
                                             .header("Content-Type", "application/json")
                                             .GET()
@@ -325,11 +328,12 @@ public class UiPosteggio {
                                     response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
                                     if(response.statusCode() == 200){
-                                        HashMap<String,Object> costiAttuali = this.gson.fromJson(response.body(), new TypeToken<HashMap<String,Object>>() {}.getType());
-                                        JOptionPane.showMessageDialog(null, "Ben arrivato, il posto a te assegnato e il numero: " + prenotazione.get("posto") + "\ne ti e stato addebitato un costo di " + costiAttuali.get("costo_penale") + " euro a causa del ritardo superiore ai 30 minuti", "Successo", INFORMATION_MESSAGE);
+                                        ArrayList<HashMap<String, Object>> costiAttuali = gson.fromJson(response.body(), new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType());
+                                        JOptionPane.showMessageDialog(null, "Ben arrivato, il posto a te assegnato e il numero: " + prenoto.get("posto") + "\ne ti e stato addebitato un costo di " + costiAttuali.get(0).get("penale") + " euro a causa del ritardo superiore ai 30 minuti", "Successo", INFORMATION_MESSAGE);
                                     }
-                                }*/
-                                JOptionPane.showMessageDialog(null, "Ben arrivato caro, il posto a te assegnato e il numero: " + prenoto.get("posto"), "Successo", INFORMATION_MESSAGE);
+                                }
+                                else
+                                    JOptionPane.showMessageDialog(null, "Ben arrivato caro, il posto a te assegnato e il numero: " + prenoto.get("posto"), "Successo", INFORMATION_MESSAGE);
                             }
                         }
                         else
