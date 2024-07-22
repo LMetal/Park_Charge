@@ -9,20 +9,20 @@ public class DiventaPremium{
 
     @Test
     public void testDiventaPremium(){
-        dbUtenti.update("INSERT INTO Credenziali (username,password) VALUES ('UsernameTest','PasswordTest')");
-        dbUtenti.update("INSERT INTO Utente (username,nome,cognome,tipo,carta) VALUES ('UsernameTest','NomeTest','CognomeTest', 2 ,'CartaTest')");
+        dbUtenti.update("INSERT INTO Credenziali (username,password) VALUES ('UsernameTestPremium','PasswordTest')");
+        dbUtenti.update("INSERT INTO Utente (username,nome,cognome,tipo,carta) VALUES ('UsernameTestPremium','NomeTest','CognomeTest', 2 ,'CartaTest')");
 
-        Utente utente = gestoreUtenti.getUtente("UsernameTest");
+        Utente utente = gestoreUtenti.getUtente("UsernameTestPremium");
         assertEquals(utente.getTipo(),2);
 
-        boolean update = gestoreUtenti.diventaPremium("UsernameTest");
+        boolean update = gestoreUtenti.diventaPremium("UsernameTestPremium");
         assertTrue(update);
 
-        utente = gestoreUtenti.getUtente("UsernameTest");
+        utente = gestoreUtenti.getUtente("UsernameTestPremium");
         assertEquals(utente.getTipo(),1);
 
-        dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
-        dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
+        dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTestPremium'");
+        dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTestPremium'");
     }
 
     @Test

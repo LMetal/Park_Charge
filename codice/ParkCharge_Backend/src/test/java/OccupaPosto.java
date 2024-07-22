@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class OccupaPosto {
     DbPrenotazioni dbPrenotazioni = new DbPrenotazioni();
@@ -19,8 +19,9 @@ public class OccupaPosto {
         nuovaPrenotazione.setTempo_uscita(LocalDateTime.now().plusHours(2).format(formatter));
         nuovaPrenotazione.setUtente("utente1");
 
-        String risultato = gestorePosti.creaPrenotazione(nuovaPrenotazione, 2, "occupa");
-        assertEquals("Successo", risultato);
+        Prenotazioni risultato = gestorePosti.creaPrenotazione(nuovaPrenotazione, 2, "occupa");
+        assertNotNull(risultato);
+
 
         dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE utente = 'utente1'");
     }
@@ -33,9 +34,10 @@ public class OccupaPosto {
             nuovaPrenotazione.setTempo_uscita(LocalDateTime.now().plusHours(2).format(formatter));
             nuovaPrenotazione.setUtente("utente1");
 
-            String risultato = gestorePosti.creaPrenotazione(nuovaPrenotazione, 2, "occupa");
-            if(i != 10) assertEquals("Successo", risultato);
-            else assertEquals("Nessun posto disponibile nel periodo richiesto", risultato);
+            Prenotazioni risultato = gestorePosti.creaPrenotazione(nuovaPrenotazione, 2, "occupa");
+            if(i != 10) assertNotNull( risultato);
+            else assertNull(risultato);
+
         }
 
         for (int i = 0; i < 10; i++){

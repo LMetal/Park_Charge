@@ -34,5 +34,7 @@ public class ModificaDati{
         Utente utenteModifiche = new Utente("TestNome","TestCognome",null,0,"TestCarta");
         boolean update = gestoreUtenti.modificaDatiUtente("TestUsername",utenteModifiche);
         assertFalse(update);
+        dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
+        dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
     }
 }
