@@ -1,6 +1,17 @@
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +27,7 @@ public class UiRicarica {
     private JLabel menuLabel2;
     private JPanel menuPanel;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private String baseURL = "http://localhost:4568/api/v1.0";
 
     public UiRicarica(){
         pulsantiScelta = new String[3];
@@ -38,7 +50,7 @@ public class UiRicarica {
         menuPanel.add(menuList,BorderLayout.SOUTH);
     }
 
-    public void avviaGestioneRicarica() {
+    /*public void avviaGestioneRicarica() {
         menuList.setListData(pulsantiScelta);
 
         do{
@@ -56,7 +68,7 @@ public class UiRicarica {
                 sceltaMenu = -1;
 
         } while (sceltaMenu != -1);
-    }
+    }*/
 
     private void mostraEstensioneRicarica() {
         JTextField percentualeAttuale = new JTextField(10);
@@ -82,6 +94,7 @@ public class UiRicarica {
         scelta = showConfirmDialog(null, panel, "Richiedi estensione ricarica", OK_CANCEL_OPTION, QUESTION_MESSAGE);
 
         if(scelta == OK_OPTION){
+            /*
             String attuale = percentualeAttuale.getText();
             String nuovaPercentualeRichiesta = nuovaPercentuale.getText();
 
@@ -94,10 +107,12 @@ public class UiRicarica {
             } else {
                 mostraErrore("Errore nella richiesta di estensione ricarica");
             }
+
+             */
         }
     }
 
-    private void mostraInterrompiRicarica() {
+    private void mostraInterrompiRicarica(Object n) {
         JTextField interrompiRicarica = new JTextField(10);
 
         JPanel panel = new JPanel(new GridBagLayout());
@@ -107,14 +122,12 @@ public class UiRicarica {
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(new JLabel("Interrompi"), gbc);
-        gbc.gridx = 1;
-        panel.add(interrompiRicarica, gbc);
+        panel.add(new JLabel("Interrompere ricarica in corso?"), gbc);
 
         scelta = showConfirmDialog(null, panel, "Interrompi ricarica", OK_CANCEL_OPTION, QUESTION_MESSAGE);
 
         if(scelta == OK_OPTION){
-            String nuovaPercentuale = interrompiRicarica.getText();
+            /*String nuovaPercentuale = interrompiRicarica.getText();
 
             Map<String, Object> interruzione = new HashMap<>();
             interruzione.put("interrompiRicarica", nuovaPercentuale);
@@ -123,7 +136,25 @@ public class UiRicarica {
                 mostraSuccesso("Ricarica interrotta con successo");
             } else {
                 mostraErrore("Errore nell'interruzione della ricarica");
+            }*/
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = null;
+            HttpResponse<String> response = null;
+            Gson gson = new Gson();
+            Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
+            try {
+                request = HttpRequest.newBuilder()
+                        .uri(new URI(baseURL + "/ricariche?id="+n))
+                        .DELETE()
+                        .header("Content-Type", "application/json")
+                        .build();
+                response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            } catch (URISyntaxException | IOException | InterruptedException e) {
+                this.mostraErrore("Errore comunicazione server");
             }
+            HashMap<String, Object> esitoEliminazione = gson.fromJson(response.body(), type);
+            if(esitoEliminazione.get("esito") == "ok") this.mostraSuccesso("Ricarica interrotta");
+            else this.mostraErrore("Errore: ricarica non interrotta");
         }
     }
 
@@ -135,10 +166,27 @@ public class UiRicarica {
         showMessageDialog(null, testoSuccesso, "Successo", INFORMATION_MESSAGE);
     }
 
-    public void avviaInterrompiRicarica() {
+    public void avviaInterrompiRicarica(HashMap<String,Object> utente) {
+        HttpClient client = HttpClient.newHttpClient();
+        Gson gson = new Gson();
+        Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/statoUtente?user="+utente.get("username")))
+                    .header("Content-Type", "application/json")
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body());
+            HashMap<String, Object> statoUtente = gson.fromJson(response.body(), type);
+
+            if(statoUtente.get("id_ricarica") != null) this.mostraInterrompiRicarica(statoUtente.get("id_ricarica"));
+            else this.mostraErrore("Nessuna ricarica in corso");
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            this.mostraErrore("Errore comunicazione server");
+        }
     }
 
-    public void avviaRichiediRicarica() {
+    public void avviaRichiediRicarica(HashMap<String,Object> utente) {
         this.mostraFormRicarica();
     }
 

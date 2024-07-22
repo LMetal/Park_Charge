@@ -19,6 +19,7 @@ import java.util.Map;
 public class RestAPI_Adapter {
     private static final String baseURL = "http://localhost:4568/api/v1.0";
     static Gson gson = new Gson();
+
     public static ArrayList<HashMap<String,Object>> get(String resource) {
         HttpURLConnection con = null;
         ArrayList<HashMap<String,Object>> prenotazioni;
@@ -80,5 +81,11 @@ public class RestAPI_Adapter {
         }
 
         return true;
+    }
+    public static ArrayList<HashMap<String, Object>> bodyToMap(String body) {
+        System.out.println("HEREEEEEEEE");
+
+        Type type = new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType();
+        return gson.fromJson(body, type);
     }
 }
