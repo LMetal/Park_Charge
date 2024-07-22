@@ -3,10 +3,10 @@ import com.google.gson.reflect.TypeToken;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 
 import static javax.swing.JOptionPane.*;
@@ -187,44 +187,32 @@ public class UiLogin {
 
     // metodo per la ricerca di utente tramite get API REST
     private HashMap<String, Object> ricercaUtente(String username) {
-        HttpURLConnection con = null;
         HashMap<String,Object> utente = new HashMap<>();
 
         try {
-            URL url = new URL(baseURL + "/utenti/"+username);
-            con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Accept", "application/json");
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/utenti/" + username))
+                    .header("Content-Type","application/json")
+                    .GET()
+                    .build();
 
-            int responseCode = con.getResponseCode();
-            if(responseCode == 200) {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if(response.statusCode() == 200) {
                 // Se la risposta è 200, l'utente è stato trovato e viene convertito da JSON a HashMap
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
                 Gson gson = new Gson();
-                utente = gson.fromJson(response.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+                utente = gson.fromJson(response.body(), new TypeToken<HashMap<String, Object>>() {}.getType());
                 System.out.println("Utente trovato: " + utente.toString());
                 return utente;
             }
             else{
                 // Se il codice di risposta non è 200, si verifica un errore nella ricerca
-                System.out.println("Errore nella ricerca dell'utente, codice di risposta: " + responseCode);
+                System.out.println("Errore nella ricerca dell'utente, codice di risposta: " + response.statusCode());
                 return null;
             }
         }catch (Exception e){
             e.printStackTrace();
             return null;
-        }
-        finally {
-            if(con != null)
-                con.disconnect();
         }
     }
 
@@ -237,32 +225,28 @@ public class UiLogin {
         else if(password.isEmpty())
             return "errorePassword";
 
-        HttpURLConnection con = null;
         try {
-            URL url = new URL(baseURL + "/credenziali/"+username+"/"+password);
-            con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Accept", "application/json");
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/credenziali/"+username+"/"+password))
+                    .header("Content-Type","application/json")
+                    .GET()
+                    .build();
 
-            int responseCode = con.getResponseCode();
-            if(responseCode == 200) {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if(response.statusCode() == 200) {
                 // Se la risposta è 200, le credenziali sono corrette
                 System.out.println("Credenziali corrette.");
                 return "corretto";
             }
-            else {
-                // Altrimenti, le credenziali sono errate o l'utente non è presente<
-                System.out.println("Credenziali errate o utente non presente, codice di risposta: " + responseCode);
+            else{
+                // Altrimenti, le credenziali sono errate o l'utente non è presente
+                System.out.println("Credenziali errate o utente non presente, codice di risposta: " + response.statusCode());
                 return "erroreAssente";
             }
-
         }catch (Exception e){
             e.printStackTrace();
             return "erroreConnessione";
-        }
-        finally {
-            if(con != null)
-                con.disconnect();
         }
     }
 

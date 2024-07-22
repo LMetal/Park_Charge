@@ -25,6 +25,6 @@ public class CreaUtente{
         Credenziali credenziali = new Credenziali("UsernameTest","PasswordTest");
         String created = gestoreUtenti.creaUtenti(utente,credenziali);
 
-        assertEquals(created,"Username gia' esistente");
+        assertEquals(created,"Username gia esistente");
     }
 }
