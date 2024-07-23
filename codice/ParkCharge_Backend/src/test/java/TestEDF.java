@@ -28,29 +28,29 @@ public class TestEDF {
 
         var listRicariche = new ArrayList<Ricariche>();
         //coda ricariche vuota, tempo ricarica < tempo sosta
-        assertTrue(EDF.isAccettable("mrossi", 20, listPrenotazioni, listRicariche, LocalDateTime.parse("2024-06-11 12:30:00", formatter)));
+        assertTrue(EDF.isAcceptable("mrossi", 20, listPrenotazioni, listRicariche, LocalDateTime.parse("2024-06-11 12:30:00", formatter)));
         //coda ricariche vuota, tempo ricarica > tempo sosta
-        assertFalse(EDF.isAccettable("b", 40, listPrenotazioni, listRicariche, LocalDateTime.parse("2024-06-11 12:30:00", formatter)));
+        assertFalse(EDF.isAcceptable("b", 40, listPrenotazioni, listRicariche, LocalDateTime.parse("2024-06-11 12:30:00", formatter)));
 
         //coda con una ricarica accettata
         var l1 = new ArrayList<Ricariche>();
         //meno priorità
         l1.add(r1);
-        assertTrue(EDF.isAccettable("b", 20, listPrenotazioni, l1, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
-        assertFalse(EDF.isAccettable("b", 70, listPrenotazioni, l1, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
+        assertTrue(EDF.isAcceptable("b", 20, listPrenotazioni, l1, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
+        assertFalse(EDF.isAcceptable("b", 70, listPrenotazioni, l1, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
         //più priorità
         var l2 = new ArrayList<Ricariche>();
         l2.add(r2);
-        assertTrue(EDF.isAccettable("a", 20, listPrenotazioni, l2, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
-        assertFalse(EDF.isAccettable("a", 70, listPrenotazioni, l2, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
+        assertTrue(EDF.isAcceptable("a", 20, listPrenotazioni, l2, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
+        assertFalse(EDF.isAcceptable("a", 70, listPrenotazioni, l2, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
 
         var l3 = new ArrayList<Ricariche>();
         l3.add(r1);
         l3.add(r3);
         l3.add(r4);
-        assertTrue(EDF.isAccettable("b", 10, listPrenotazioni, l3, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
-        assertTrue(EDF.isAccettable("b", 35, listPrenotazioni, l3, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
-        assertFalse(EDF.isAccettable("b", 45, listPrenotazioni, l3, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
+        assertTrue(EDF.isAcceptable("b", 10, listPrenotazioni, l3, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
+        assertTrue(EDF.isAcceptable("b", 35, listPrenotazioni, l3, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
+        assertFalse(EDF.isAcceptable("b", 45, listPrenotazioni, l3, LocalDateTime.parse("2024-06-11 11:00:00", formatter)));
     }
 
     @Test

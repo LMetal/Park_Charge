@@ -11,12 +11,12 @@ public class EDF {
      * @param ricariche list of charges already accepted
      * @return true if charge is acceptable(completable before the end of the prenotazione), false otherwise
      */
-    public static boolean isAccettable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche){
-        return isAccettable(userRequesting, timeToCharge, prenotazioni, ricariche, LocalDateTime.now());
+    public static boolean isAcceptable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche){
+        return isAcceptable(userRequesting, timeToCharge, prenotazioni, ricariche, LocalDateTime.now());
     }
 
     //iltimoo parametro per testing
-    public static boolean isAccettable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche, LocalDateTime startTime){
+    public static boolean isAcceptable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche, LocalDateTime startTime){
         Prenotazioni prenotazioneUtente = prenotazioni.stream()
                 .filter(p -> p.getUtente().equals(userRequesting))
                 .findFirst()

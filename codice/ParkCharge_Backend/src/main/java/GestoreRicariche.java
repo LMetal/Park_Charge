@@ -34,6 +34,15 @@ public class GestoreRicariche {
 
     public void addRicarica(int timeToCharge, int prenotazioneId){
         //add new charge
-        //dbRicariche.update("");
+        dbRicariche.update("INSERT INTO Ricarica(prenotazione, kilowatt, durata_ricarica, percentuale_richiesta, MWBot) VALUES ("+prenotazioneId+", "+timeToCharge+", "+timeToCharge+", "+timeToCharge+", '1');");
+    }
+
+    public boolean stopRicarica(int id_ricarica) {
+        try{
+            dbRicariche.update("DELETE FROM Ricarica WHERE prenotazione = \"" + id_ricarica + "\";");
+        } catch (Exception e){
+            return false;
+        }
+        return true;
     }
 }

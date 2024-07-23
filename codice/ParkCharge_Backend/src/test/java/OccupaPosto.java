@@ -19,7 +19,7 @@ public class OccupaPosto {
         nuovaPrenotazione.setTempo_uscita(LocalDateTime.now().plusHours(2).format(formatter));
         nuovaPrenotazione.setUtente("utente1");
 
-        String risultato = gestorePosti.creaPrenotazione(nuovaPrenotazione, 2, "occupa");
+        String risultato = String.valueOf(gestorePosti.creaPrenotazione(nuovaPrenotazione, 2, "occupa"));
         assertEquals("Successo", risultato);
 
         dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE utente = 'utente1'");
@@ -33,7 +33,7 @@ public class OccupaPosto {
             nuovaPrenotazione.setTempo_uscita(LocalDateTime.now().plusHours(2).format(formatter));
             nuovaPrenotazione.setUtente("utente1");
 
-            String risultato = gestorePosti.creaPrenotazione(nuovaPrenotazione, 2, "occupa");
+            String risultato = String.valueOf(gestorePosti.creaPrenotazione(nuovaPrenotazione, 2, "occupa"));
             if(i != 10) assertEquals("Successo", risultato);
             else assertEquals("Nessun posto disponibile nel periodo richiesto", risultato);
         }
