@@ -168,7 +168,7 @@ public class RestAPI {
                 return responseJson;
             }
 
-            if(! EDF.isAccettable(request.queryParams("user"), timeToCharge, prenotazioni, ricaricheAccettate)) {
+            if(! EDF.isAcceptable(request.queryParams("user"), timeToCharge, prenotazioni, ricaricheAccettate)) {
                 responseJson.put("outcome", "not_acceptable");
                 return responseJson;
             }
@@ -381,6 +381,29 @@ public class RestAPI {
             response.type("application/json");
 
             return storicoFiltrato;
+        }),gson::toJson);
+
+        //interrompi ricarica
+        //TODO aggiungi swagger
+        delete(baseURL + "/ricariche", "application/json", ((request, response) -> {
+            HashMap<String, Object> json = new HashMap<>();
+            int id_ricarica = Integer.parseInt(request.queryParams("id"));
+
+            System.out.println();
+
+            var r = gestoreRicariche.getRicariche(id_ricarica);
+            if(r == null) {
+                json.put("esito", "ricarica non trovata");
+                return json;
+            }
+
+            if(gestoreRicariche.stopRicarica(r.getPrenotazione())){
+                response.status(200);
+                json.put("esito", "ok" + id_ricarica);
+            } else {
+                json.put("esito", "errore");
+            }
+            return json;
         }),gson::toJson);
     }
 }
