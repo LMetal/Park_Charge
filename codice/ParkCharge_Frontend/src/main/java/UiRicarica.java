@@ -50,25 +50,6 @@ public class UiRicarica {
         menuPanel.add(menuList,BorderLayout.SOUTH);
     }
 
-    /*public void avviaGestioneRicarica() {
-        menuList.setListData(pulsantiScelta);
-
-        do{
-            scelta = showConfirmDialog(null, menuPanel, "Menu gestione ricarica", DEFAULT_OPTION, QUESTION_MESSAGE, null);
-            if (scelta == OK_OPTION){
-                sceltaMenu = menuList.getSelectedIndex();
-                if(sceltaMenu == 0)
-                    this.mostraFormRicarica();
-                if(sceltaMenu == 1)
-                    this.mostraEstensioneRicarica();
-                if(sceltaMenu == 2)
-                    this.mostraInterrompiRicarica();
-            }
-            else
-                sceltaMenu = -1;
-
-        } while (sceltaMenu != -1);
-    }*/
 
     private void mostraEstensioneRicarica() {
         JTextField percentualeAttuale = new JTextField(10);
@@ -112,9 +93,7 @@ public class UiRicarica {
         }
     }
 
-    private void mostraInterrompiRicarica(Object n) {
-        JTextField interrompiRicarica = new JTextField(10);
-
+    private void mostraInterrompiRicarica(Object id_prenotazione) {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -127,16 +106,6 @@ public class UiRicarica {
         scelta = showConfirmDialog(null, panel, "Interrompi ricarica", OK_CANCEL_OPTION, QUESTION_MESSAGE);
 
         if(scelta == OK_OPTION){
-            /*String nuovaPercentuale = interrompiRicarica.getText();
-
-            Map<String, Object> interruzione = new HashMap<>();
-            interruzione.put("interrompiRicarica", nuovaPercentuale);
-
-            if(RestAPI_Adapter.put("/interrompi_ricarica", interruzione)) {
-                mostraSuccesso("Ricarica interrotta con successo");
-            } else {
-                mostraErrore("Errore nell'interruzione della ricarica");
-            }*/
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = null;
             HttpResponse<String> response = null;
@@ -144,17 +113,21 @@ public class UiRicarica {
             Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
             try {
                 request = HttpRequest.newBuilder()
-                        .uri(new URI(baseURL + "/ricariche?id="+n))
+                        .uri(new URI(baseURL + "/ricariche?id_prenotazione="+id_prenotazione))
                         .DELETE()
                         .header("Content-Type", "application/json")
                         .build();
+                System.out.println(request.uri());
                 response = client.send(request, HttpResponse.BodyHandlers.ofString());
             } catch (URISyntaxException | IOException | InterruptedException e) {
                 this.mostraErrore("Errore comunicazione server");
             }
-            HashMap<String, Object> esitoEliminazione = gson.fromJson(response.body(), type);
-            if(esitoEliminazione.get("esito") == "ok") this.mostraSuccesso("Ricarica interrotta");
-            else this.mostraErrore("Errore: ricarica non interrotta");
+            if(response == null){
+                this.mostraErrore("Errore comunicazione server");
+                return;
+            }
+            if(response.statusCode() == 200) this.mostraSuccesso("Ricarica interrotta");
+            else if(response.statusCode() == 404 || response.statusCode() == 500) this.mostraErrore("Errore: ricarica non interrotta");
         }
     }
 
@@ -179,7 +152,8 @@ public class UiRicarica {
             System.out.println(response.body());
             HashMap<String, Object> statoUtente = gson.fromJson(response.body(), type);
 
-            if(statoUtente.get("id_ricarica") != null) this.mostraInterrompiRicarica(statoUtente.get("id_ricarica"));
+            System.out.println(statoUtente.get("caricando"));
+            if(statoUtente.get("caricando").toString().equals("si")) this.mostraInterrompiRicarica(statoUtente.get("id_prenotazione"));
             else this.mostraErrore("Nessuna ricarica in corso");
         } catch (URISyntaxException | IOException | InterruptedException e) {
             this.mostraErrore("Errore comunicazione server");
@@ -187,10 +161,10 @@ public class UiRicarica {
     }
 
     public void avviaRichiediRicarica(HashMap<String,Object> utente) {
-        this.mostraFormRicarica();
+        this.mostraFormRicarica(utente);
     }
 
-    private void mostraFormRicarica() {
+    private void mostraFormRicarica(HashMap<String,Object> utente) {
 
     }
 }
