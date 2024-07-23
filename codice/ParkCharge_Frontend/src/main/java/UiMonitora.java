@@ -347,7 +347,7 @@ public class UiMonitora {
     }
 
     private void mostraModificaPrezzi() {
-        var costiAttuali = RestAPI_Adapter.get("/costi").get(0);
+        var costiAttuali = RestAPI_Adapter.get("/costo").get(0);
 
         JFrame frame = new JFrame("Modifica prezzi Parcheggio (X per uscire)");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
