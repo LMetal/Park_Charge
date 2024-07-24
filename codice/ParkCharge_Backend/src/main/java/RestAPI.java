@@ -128,23 +128,25 @@ public class RestAPI {
             response.type("application/json");
             var prenotazioneUtente = gestorePosti.getPrenotazioni(request.queryParams("user"));
             if(prenotazioneUtente != null){
-                ricaricaUtente = gestoreRicariche.getRicariche(prenotazioneUtente.getId());
+                ricaricaUtente = gestoreRicariche.getRicaricheByPrenotazione(Integer.toString(prenotazioneUtente.getId()));
             }
 
             returnJson.put("utente", request.queryParams("user"));
 
             if(prenotazioneUtente == null){
-                returnJson.put("tempo_arrivo", null);
-                returnJson.put("id_ricarica", null);
+                returnJson.put("tempo_arrivo", -1);
+                returnJson.put("id_prenotazione", -1);
+                returnJson.put("occupazione_iniziata", "no");
             } else {
                 returnJson.put("tempo_arrivo", prenotazioneUtente.getTempo_arrivo().format(formatter));
-
+                returnJson.put("id_prenotazione", prenotazioneUtente.getId());
+                returnJson.put("occupazione_iniziata", "si");
             }
 
             if(ricaricaUtente == null){
-                returnJson.put("id_ricarica", null);
+                returnJson.put("caricando", "no");
             } else {
-                returnJson.put("id_ricarica", ricaricaUtente.getPrenotazione());
+                returnJson.put("caricando", "si");
             }
 
             return returnJson;
@@ -386,24 +388,21 @@ public class RestAPI {
         //interrompi ricarica
         //TODO aggiungi swagger
         delete(baseURL + "/ricariche", "application/json", ((request, response) -> {
-            HashMap<String, Object> json = new HashMap<>();
-            int id_ricarica = Integer.parseInt(request.queryParams("id"));
+            System.out.println("DELETE "+ request.queryParams("id_prenotazione"));
 
             System.out.println();
 
-            var r = gestoreRicariche.getRicariche(id_ricarica);
-            if(r == null) {
-                json.put("esito", "ricarica non trovata");
-                return json;
+            if(gestoreRicariche.getRicaricheByPrenotazione(request.queryParams("id_prenotazione")) == null) {
+                response.status(404);
+                return null;
             }
 
-            if(gestoreRicariche.stopRicarica(r.getPrenotazione())){
+            if(gestoreRicariche.stopRicaricaByPrenotazione(request.queryParams("id_prenotazione"))){
                 response.status(200);
-                json.put("esito", "ok" + id_ricarica);
             } else {
-                json.put("esito", "errore");
+                response.status(500);
             }
-            return json;
+            return null;
         }),gson::toJson);
     }
 }

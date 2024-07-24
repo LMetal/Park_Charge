@@ -32,6 +32,7 @@ public class EDF {
                         .findFirst()
                         .orElse(null);
 
+                if(ricaricaPrenotazione == null) return false;
                 if(t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica() - ricaricaPrenotazione.getPercentuale_erogata()).isAfter(p.getTempo_uscita())){
                     return false;
                 }
