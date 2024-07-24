@@ -15,7 +15,7 @@ public class EDF {
         return isAcceptable(userRequesting, timeToCharge, prenotazioni, ricariche, LocalDateTime.now());
     }
 
-    //iltimoo parametro per testing
+    //ultimoo parametro per testing
     public static boolean isAcceptable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche, LocalDateTime startTime){
         Prenotazioni prenotazioneUtente = prenotazioni.stream()
                 .filter(p -> p.getUtente().equals(userRequesting))
@@ -33,7 +33,9 @@ public class EDF {
                         .orElse(null);
 
                 if(ricaricaPrenotazione == null) return false;
+                System.out.println("Testing ricarica di prenotazione: " + p.getUtente()+ " inizio prenotazione: "+ p.getTempo_arrivo() + " tempo ricarica "+ricaricaPrenotazione.getDurata_ricarica());
                 if(t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica() - ricaricaPrenotazione.getPercentuale_erogata()).isAfter(p.getTempo_uscita())){
+                    System.out.println("fine ricarica: "+ t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica()) + " after " + p.getTempo_uscita());
                     return false;
                 }
                 t = t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica());

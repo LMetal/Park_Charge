@@ -126,16 +126,24 @@ public class RestAPI {
             HashMap<String, Object> returnJson = new HashMap<>();
             response.status(200);
             response.type("application/json");
+
+
+            if(gestoreUtenti.getUtente(request.queryParams("user")) == null){
+                returnJson.put("utente", "null");
+            } else {
+                returnJson.put("utente", request.queryParams("user"));
+            }
+
+
             var prenotazioneUtente = gestorePosti.getPrenotazioni(request.queryParams("user"));
             if(prenotazioneUtente != null){
                 ricaricaUtente = gestoreRicariche.getRicaricheByPrenotazione(Integer.toString(prenotazioneUtente.getId()));
             }
 
-            returnJson.put("utente", request.queryParams("user"));
 
             if(prenotazioneUtente == null){
-                returnJson.put("tempo_arrivo", -1);
-                returnJson.put("id_prenotazione", -1);
+                returnJson.put("tempo_arrivo", "null");
+                returnJson.put("id_prenotazione", "null");
                 returnJson.put("occupazione_iniziata", "no");
             } else {
                 returnJson.put("tempo_arrivo", prenotazioneUtente.getTempo_arrivo().format(formatter));
@@ -161,16 +169,18 @@ public class RestAPI {
             var prenotazioni = gestorePosti.getPrenotazioni();
             var ricaricheAccettate = gestoreRicariche.getRicariche();
             var user = request.queryParams("user");
-            int timeToCharge;
+            float timeToCharge;
             try{
-                timeToCharge = Integer.parseInt(request.queryParams("charge_time"));
+                System.out.println(request.queryParams());
+                System.out.println(request.queryParams("charge_time"));
+                timeToCharge = Float.parseFloat(request.queryParams("charge_time"));
             } catch (Exception e){
                 response.status(400); //bad request
                 responseJson.put("outcome", "bad_request");
                 return responseJson;
             }
 
-            if(! EDF.isAcceptable(request.queryParams("user"), timeToCharge, prenotazioni, ricaricheAccettate)) {
+            if(! EDF.isAcceptable(request.queryParams("user"), (int) timeToCharge, prenotazioni, ricaricheAccettate)) {
                 responseJson.put("outcome", "not_acceptable");
                 return responseJson;
             }
@@ -182,7 +192,7 @@ public class RestAPI {
             System.out.println(prenotazioneId);
 
             //add to database
-            gestoreRicariche.addRicarica(timeToCharge, prenotazioneId);
+            gestoreRicariche.addRicarica((int) timeToCharge, prenotazioneId);
             responseJson.put("outcome", "ok");
             return responseJson;
         }),gson::toJson);
