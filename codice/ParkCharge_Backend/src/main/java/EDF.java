@@ -12,11 +12,11 @@ public class EDF {
      * @return true if charge is acceptable(completable before the end of the prenotazione), false otherwise
      */
     public static boolean isAcceptable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche){
-        return isAcceptable(userRequesting, timeToCharge, prenotazioni, ricariche, LocalDateTime.now());
+        return isAcceptable(userRequesting, timeToCharge, prenotazioni, ricariche, LocalDateTime.now(), false);
     }
 
     //ultimoo parametro per testing
-    public static boolean isAcceptable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche, LocalDateTime startTime){
+    public static boolean isAcceptable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche, LocalDateTime startTime, boolean test){
         Prenotazioni prenotazioneUtente = prenotazioni.stream()
                 .filter(p -> p.getUtente().equals(userRequesting))
                 .findFirst()
@@ -26,6 +26,11 @@ public class EDF {
         LocalDateTime t = startTime;
 
         for(Prenotazioni p: prenotazioni){
+            //ignoro prenotazioni concluse, col sistema al lavoro non dovrebbe mai accadere, ma nel testing è utile.
+            //EDF per ricariche di prenotazioni concluse nel passato (nel database per testing, ma che nella realtà dovrebbero essere nello storico)
+            //non funziona, nel caso sia un test non serve
+            if(!test && p.getTempo_uscita().isBefore(LocalDateTime.now())) continue;
+
             if(ricariche.stream().anyMatch(r -> r.getPrenotazione() == p.getId())){
                 Ricariche ricaricaPrenotazione = ricariche.stream()
                         .filter(r -> r.getPrenotazione() == p.getId())
