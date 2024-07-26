@@ -24,7 +24,7 @@ public class GestoreRicariche {
         return listaRicariche;
     }
 
-    public Ricariche getRicariche(int id) {
+    public Ricariche getRicariche(String id) {
         var ricaricaUtente = dbRicariche.query("SELECT * FROM Ricarica WHERE id = \""+ id + "\"");
         if(ricaricaUtente == null) return null;
         if(ricaricaUtente.size() != 1) return null;
@@ -34,6 +34,24 @@ public class GestoreRicariche {
 
     public void addRicarica(int timeToCharge, int prenotazioneId){
         //add new charge
-        //dbRicariche.update("");
+        dbRicariche.update("INSERT INTO Ricarica(prenotazione, kilowatt, durata_ricarica, percentuale_richiesta, MWBot) VALUES ("+prenotazioneId+", "+timeToCharge+", "+timeToCharge+", "+timeToCharge+", '1');");
+    }
+
+    public boolean stopRicaricaByPrenotazione(String id_prenotazione) {
+        try{
+            dbRicariche.update("DELETE FROM Ricarica WHERE prenotazione = \"" + id_prenotazione + "\";");
+        } catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+
+    public Ricariche getRicaricheByPrenotazione(String id_prenotazione) {
+        var ricaricaUtente = dbRicariche.query("SELECT * FROM Ricarica WHERE prenotazione = \""+ id_prenotazione + "\"");
+        if(ricaricaUtente == null) return null;
+        if(ricaricaUtente.size() != 1) return null;
+
+        return new Ricariche(ricaricaUtente.get(0));
     }
 }

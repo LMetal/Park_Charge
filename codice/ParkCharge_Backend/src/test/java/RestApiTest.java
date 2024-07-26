@@ -1,4 +1,5 @@
 import DataBase.DbPrenotazioni;
+import DataBase.DbRicariche;
 import DataBase.DbStorico;
 import DataBase.DbUtenti;
 import com.google.gson.Gson;
@@ -7,14 +8,18 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.URISyntaxException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static spark.Spark.stop;
 
 import java.net.URI;
@@ -31,10 +36,12 @@ public class RestApiTest {
     DbUtenti dbUtenti = new DbUtenti();
     DbPrenotazioni dbPrenotazioni = new DbPrenotazioni();
     DbStorico dbStorico = new DbStorico();
+    DbRicariche dbRicariche = new DbRicariche();
 
     GestorePagamenti gestorePagamenti = new GestorePagamenti();
     GestoreUtenti gestoreUtenti = new GestoreUtenti();
     GestorePosti gestorePosti = new GestorePosti();
+    GestoreRicariche gestoreRicariche = new GestoreRicariche();
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -641,5 +648,167 @@ public class RestApiTest {
         }
     }
 
+    @Test
+    public void testStatoUtente() throws URISyntaxException, IOException, InterruptedException {
+        Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
 
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(baseURL + "/statoUtente?user=lverdi"))
+                .GET()
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HashMap<String, Object> statoUtente = gson.fromJson(response.body(), type);
+
+        assertEquals("lverdi", statoUtente.get("utente"));
+        assertEquals("si", statoUtente.get("occupazione_iniziata"));
+        assertEquals("2024-06-01 09:00:00", statoUtente.get("tempo_arrivo"));
+        assertEquals("si", statoUtente.get("caricando"));
+        assertEquals(2.0, statoUtente.get("id_prenotazione"));
+
+
+        //nuovo utente
+        gestoreUtenti.creaUtenti(new Utente("nom", "cogn", "prova", 1, "1234"), new Credenziali("prova", "pass123"));
+        request = HttpRequest.newBuilder()
+                .uri(new URI(baseURL + "/statoUtente?user=prova"))
+                .GET()
+                .header("Content-Type", "application/json")
+                .build();
+
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        statoUtente = gson.fromJson(response.body(), type);
+
+        assertEquals("prova", statoUtente.get("utente"));
+        assertEquals("no", statoUtente.get("occupazione_iniziata"));
+        assertEquals("null", statoUtente.get("tempo_arrivo"));
+        assertEquals("no", statoUtente.get("caricando"));
+        assertEquals("null", statoUtente.get("id_prenotazione"));
+
+
+        LocalDateTime now = LocalDateTime.now();
+        //nuova prenotazione
+        gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1), 1, "occupa");
+
+        request = HttpRequest.newBuilder()
+                .uri(new URI(baseURL + "/statoUtente?user=prova"))
+                .GET()
+                .header("Content-Type", "application/json")
+                .build();
+
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        statoUtente = gson.fromJson(response.body(), type);
+
+        assertNotNull(gestorePosti.getPrenotazioni().stream().filter(p -> p.getUtente().equals("prova")));
+        assertEquals("prova", statoUtente.get("utente"));
+        assertEquals("si", statoUtente.get("occupazione_iniziata"));
+        assertEquals(now.truncatedTo(ChronoUnit.SECONDS), LocalDateTime.parse((CharSequence) statoUtente.get("tempo_arrivo"), formatter));
+        assertEquals("no", statoUtente.get("caricando"));
+
+        dbUtenti.update("DELETE FROM Credenziali WHERE username = 'prova'");
+        dbUtenti.update("DELETE FROM Utente WHERE username = 'prova'");
+        dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE Utente = 'prova'");
+    }
+
+    @Test
+    public void testStatoUtenteErrato() throws URISyntaxException, IOException, InterruptedException {
+        Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(baseURL + "/statoUtente?user=userInesistente"))
+                .GET()
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HashMap<String, Object> statoUtente = gson.fromJson(response.body(), type);
+
+        assertEquals("null", statoUtente.get("utente"));
+        assertEquals("no", statoUtente.get("occupazione_iniziata"));
+        assertEquals("null", statoUtente.get("tempo_arrivo"));
+        assertEquals("no", statoUtente.get("caricando"));
+        assertEquals("null", statoUtente.get("id_prenotazione"));
+    }
+
+    @Test
+    public void testRichiediRicarica() throws URISyntaxException, IOException, InterruptedException {
+        //setup utente, prenotazione
+        LocalDateTime now = LocalDateTime.now();
+        gestoreUtenti.creaUtenti(new Utente("nom", "cogn", "prova", 1, "1234"), new Credenziali("prova", "pass123"));
+        gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1), 1, "occupa");
+        int id_prenotazione = gestorePosti.getPrenotazioneUsername("prova").getId();
+
+        //nuova ricarica
+        var client = HttpClient.newHttpClient();
+        var request = HttpRequest.newBuilder()
+                .uri(new URI(baseURL + "/ricariche?user=prova&charge_time=30"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
+
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(200, response.statusCode());
+        assertTrue(response.body().contains("ok"));
+        Ricariche ricarica = gestoreRicariche.getRicariche()
+                .stream()
+                .filter(r -> r.getPrenotazione() == id_prenotazione)
+                .findFirst()
+                .orElse(null);
+
+        System.out.println(ricarica.getDurata_ricarica());
+
+        assertNotNull(ricarica);
+        assertEquals(30, ricarica.getDurata_ricarica());
+
+        //elimino dati creati
+        dbUtenti.update("DELETE FROM Credenziali WHERE username = 'prova'");
+        dbUtenti.update("DELETE FROM Utente WHERE username = 'prova'");
+        dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE Utente = 'prova'");
+        dbRicariche.update("DELETE FROM Ricarica WHERE prenotazione = '"+id_prenotazione+"'");
+    }
+
+    @Test
+    public void testMonitoraPostiAmministratore() throws URISyntaxException, IOException, InterruptedException {
+        Type type = new TypeToken<List<Map<String, Object>>>(){}.getType();
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(baseURL + "/posti"))
+                .GET()
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        List<Map<String, String>> stato = gson.fromJson(response.body(), type);
+
+        assertEquals(10, stato.size());
+
+        assertEquals(1.0, stato.get(0).get("id"));
+        assertEquals(0.0, stato.get(0).get("disponibilita"));
+
+        assertEquals(2.0, stato.get(1).get("id"));
+        assertEquals(0.0, stato.get(1).get("disponibilita"));
+
+        assertEquals(10.0, stato.get(9).get("id"));
+        assertEquals(1.0, stato.get(9).get("disponibilita"));
+    }
+
+
+    @Test
+    public void testMonitoraPrenotazioneAmministratore() throws URISyntaxException, IOException, InterruptedException {
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(baseURL + "/prenotazioni"))
+                .GET()
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        Type listType = new TypeToken<List<Prenotazioni>>() {}.getType();
+        List<Prenotazioni> prenotazioniList = gson.fromJson(response.body(), listType);
+
+        assertEquals(9, prenotazioniList.size());
+    }
 }
