@@ -164,10 +164,4 @@ public class GestorePosti {
         return dbPrenotazioni.query("SELECT * FROM PostoAuto");
     }
 
-    public Prenotazioni getPrenotazioni(String user) {
-        var prenotazioneUser = dbPrenotazioni.query("SELECT * FROM Prenotazioni WHERE utente = \""+user+"\"");
-        if(prenotazioneUser == null) return null;
-        if(prenotazioneUser.size() != 1) return null;
-        else return new Prenotazioni(prenotazioneUser.get(0));
-    }
 }
