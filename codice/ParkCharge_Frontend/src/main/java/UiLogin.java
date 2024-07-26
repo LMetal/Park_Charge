@@ -144,11 +144,11 @@ public class UiLogin {
                                     break;
                                 case 3:
                                     System.out.println("Richiesta di estensione della ricarica.");
-                                    uiRicarica.avviaRichiediRicarica();
+                                    uiRicarica.avviaRichiediRicarica(utente);
                                     break;
                                 case 4:
                                     System.out.println("Interruzione della ricarica.");
-                                    uiRicarica.avviaInterrompiRicarica();
+                                    uiRicarica.avviaInterrompiRicarica(utente);
                                     break;
                                 case 5:
                                     System.out.println("Modifica dei dati dell'utente.");
@@ -163,11 +163,11 @@ public class UiLogin {
                                     break;
                                 case 1:
                                     System.out.println("Richiesta di estensione della ricarica.");
-                                    uiRicarica.avviaRichiediRicarica();
+                                    uiRicarica.avviaRichiediRicarica(utente);
                                     break;
                                 case 2:
                                     System.out.println("Interruzione della ricarica.");
-                                    uiRicarica.avviaInterrompiRicarica();
+                                    uiRicarica.avviaInterrompiRicarica(utente);
                                     break;
                                 case 3:
                                     System.out.println("Un cliente sta cercando di diventare premium.");

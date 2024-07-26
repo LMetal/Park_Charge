@@ -1,7 +1,15 @@
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -20,8 +28,15 @@ public class UiMonitora {
     private JLabel menuLabel2;
     private JPanel menuPanel;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private String baseURL = "http://localhost:4568/api/v1.0";
+
+    private static Type type;
+    private static Gson gson;
 
     public UiMonitora(){
+        type = new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType();
+        gson = new Gson();
+
         pulsantiScelta = new String[5];
         pulsantiScelta[0] = "Aggiorna prezzi";
         pulsantiScelta[1] = "Visualizza stato posti";
@@ -91,7 +106,19 @@ public class UiMonitora {
             return;
         }
 
-        var storicoFiltrato = RestAPI_Adapter.get("/storico?year="+year+"&month="+month);
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = null;
+        HttpResponse<String> response = null;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/storico?year="+year+"&month="+month))
+                    .header("Content-Type", "application/json")
+                    .build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            this.mostraErrore("Errore comunicazione server");
+        }
+        ArrayList<HashMap<String, Object>> storicoFiltrato = gson.fromJson(response.body(), type);
 
         if(storicoFiltrato.isEmpty()){
             this.mostraErrore("Nessun dato trovato");
@@ -161,8 +188,21 @@ public class UiMonitora {
     }
 
     private void mostraRicariche() {
-        var listaRicariche = RestAPI_Adapter.get("/ricariche");
-        System.out.println(listaRicariche);
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = null;
+        HttpResponse<String> response = null;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/ricariche"))
+                    .header("Content-Type", "application/json")
+                    .build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            this.mostraErrore("Errore comunicazione server");
+        }
+        ArrayList<HashMap<String, Object>> listaRicariche = gson.fromJson(response.body(), type);
+
+
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -307,7 +347,7 @@ public class UiMonitora {
     }
 
     private void mostraModificaPrezzi() {
-        var costiAttuali = RestAPI_Adapter.get("/costi").get(0);
+        var costiAttuali = RestAPI_Adapter.get("/costo").get(0);
 
         JFrame frame = new JFrame("Modifica prezzi Parcheggio (X per uscire)");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -11,12 +11,12 @@ public class EDF {
      * @param ricariche list of charges already accepted
      * @return true if charge is acceptable(completable before the end of the prenotazione), false otherwise
      */
-    public static boolean isAccettable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche){
-        return isAccettable(userRequesting, timeToCharge, prenotazioni, ricariche, LocalDateTime.now());
+    public static boolean isAcceptable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche){
+        return isAcceptable(userRequesting, timeToCharge, prenotazioni, ricariche, LocalDateTime.now(), false);
     }
 
-    //iltimoo parametro per testing
-    public static boolean isAccettable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche, LocalDateTime startTime){
+    //ultimoo parametro per testing
+    public static boolean isAcceptable(String userRequesting, int timeToCharge, ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche, LocalDateTime startTime, boolean test){
         Prenotazioni prenotazioneUtente = prenotazioni.stream()
                 .filter(p -> p.getUtente().equals(userRequesting))
                 .findFirst()
@@ -26,13 +26,21 @@ public class EDF {
         LocalDateTime t = startTime;
 
         for(Prenotazioni p: prenotazioni){
+            //ignoro prenotazioni concluse, col sistema al lavoro non dovrebbe mai accadere, ma nel testing è utile.
+            //EDF per ricariche di prenotazioni concluse nel passato (nel database per testing, ma che nella realtà dovrebbero essere nello storico)
+            //non funziona, nel caso sia un test non serve
+            if(!test && p.getTempo_uscita().isBefore(LocalDateTime.now())) continue;
+
             if(ricariche.stream().anyMatch(r -> r.getPrenotazione() == p.getId())){
                 Ricariche ricaricaPrenotazione = ricariche.stream()
                         .filter(r -> r.getPrenotazione() == p.getId())
                         .findFirst()
                         .orElse(null);
 
+                if(ricaricaPrenotazione == null) return false;
+                System.out.println("Testing ricarica di prenotazione: " + p.getUtente()+ " inizio prenotazione: "+ p.getTempo_arrivo() + " tempo ricarica "+ricaricaPrenotazione.getDurata_ricarica());
                 if(t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica() - ricaricaPrenotazione.getPercentuale_erogata()).isAfter(p.getTempo_uscita())){
+                    System.out.println("fine ricarica: "+ t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica()) + " after " + p.getTempo_uscita());
                     return false;
                 }
                 t = t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica());
