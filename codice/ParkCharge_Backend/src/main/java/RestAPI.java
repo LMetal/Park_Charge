@@ -78,16 +78,6 @@ public class RestAPI {
             return finalJson;
         }),gson::toJson);
 
-        //Modifica prezzi
-        get(baseURL + "/costo", "application/json", ((request, response) -> {
-            var costi = gestorePagamenti.getCosti();
-
-            response.status(200);
-            response.type("application/json");
-
-            return costi;
-        }),gson::toJson);
-
         //monitora prenotazioni
         get(baseURL + "/prenotazioni", "application/json", ((request, response) -> {
             var prenotazioni = gestorePosti.getPrenotazioni();
@@ -97,17 +87,6 @@ public class RestAPI {
 
             return prenotazioni;
         }),gson::toJson);
-
-        //Modifica costi
-        put(baseURL + "/costo", "application/json", ((request, response) -> {
-            System.out.println(request.body());
-
-            response.status(200);
-            response.type("application/json");
-
-            return null;
-        }),gson::toJson);
-
 
         //Monitora ricariche prenotate
         get(baseURL + "/ricariche", "application/json", ((request, response) -> {
@@ -126,7 +105,7 @@ public class RestAPI {
             HashMap<String, Object> returnJson = new HashMap<>();
             response.status(200);
             response.type("application/json");
-            var prenotazioneUtente = gestorePosti.getPrenotazioni(request.queryParams("user"));
+            var prenotazioneUtente = gestorePosti.getPrenotazioneUsername(request.queryParams("user"));
             if(prenotazioneUtente != null){
                 ricaricaUtente = gestoreRicariche.getRicariche(prenotazioneUtente.getId());
             }
@@ -185,8 +164,6 @@ public class RestAPI {
             return responseJson;
         }),gson::toJson);
 
-
-
         //Crea Utente
         // Endpoint per creare un nuovo utente
         post(baseURL + "/utenti", "application/json", ((request, response) -> {
@@ -206,6 +183,16 @@ public class RestAPI {
                 return created;
             }
         } ),gson::toJson);
+
+        get(baseURL + "/costo", "application/json", ((request, response) -> {
+            var costi = gestorePagamenti.getCosti();
+
+            response.status(200);
+            response.type("application/json");
+
+            return costi;
+        }),gson::toJson);
+
 
         //Modifica Dati Utente
         // Endpoint per modificare i dati di un utente
@@ -310,12 +297,11 @@ public class RestAPI {
             boolean delete = gestorePosti.cancellaPrenotazione(request.params(":id"));
             if (delete) {
                 response.status(204);  // Se la cancellazione ha successo, restituisce 204 No Content
-                response.type("application/json");
-                return "Prenotazione eliminata";
             } else {
                 response.status(404);  // Se la prenotazione non esiste, restituisce errore 404
                 return "Errore nell'eliminazione della prenotazione";
             }
+            return null;
         }), gson::toJson);
 
         //Aggiorna Prezzi

@@ -2,6 +2,7 @@ import DataBase.DbPrenotazioni;
 import DataBase.DbStorico;
 import DataBase.DbUtenti;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -159,6 +160,8 @@ public class RestApiTest {
             dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
             dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
         } catch (Exception e) {
+            dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
+            dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
             fail("Exception occurred: " + e.getMessage());
         }
     }
@@ -186,12 +189,14 @@ public class RestApiTest {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             String responseString = gson.fromJson(response.body(), String.class);
-            assertEquals(400, response.statusCode());
+            assertEquals(404, response.statusCode());
             assertEquals(responseString,"Utente non trovato");
 
             dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
             dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
         } catch (Exception e) {
+            dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
+            dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
             fail("Exception occurred: " + e.getMessage());
         }
     }
@@ -227,6 +232,8 @@ public class RestApiTest {
             dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
 
         } catch (Exception e) {
+            dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
+            dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
             fail("Exception occurred: " + e.getMessage());
         }
     }
@@ -257,7 +264,7 @@ public class RestApiTest {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             assertEquals(400, response.statusCode());
-            String expectedResponse = "Username gia' esistente";
+            String expectedResponse = "Username gia esistente";
             String actualResponse = gson.fromJson(response.body(), String.class);
 
             assertEquals(expectedResponse, actualResponse);
@@ -292,6 +299,8 @@ public class RestApiTest {
             dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
             dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
         } catch (Exception e) {
+            dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
+            dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
             fail("Exception occurred: " + e.getMessage());
         }
     }
@@ -312,12 +321,14 @@ public class RestApiTest {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             String responseString = gson.fromJson(response.body(), String.class);
-            assertEquals(400, response.statusCode());
+            assertEquals(404, response.statusCode());
             assertEquals(responseString,"Utente non trovato");
 
             dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
             dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
         } catch (Exception e) {
+            dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
+            dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
             fail("Exception occurred: " + e.getMessage());
         }
     }
@@ -475,7 +486,7 @@ public class RestApiTest {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            String expectedResponse = "Nessun posto disponibile nel periodo richiesto";
+            String expectedResponse = "Nessun posto disponibile al momento";
             String actualResponse = gson.fromJson(response.body(), String.class);
             assertEquals(400, response.statusCode());
             assertEquals(expectedResponse, actualResponse);
@@ -501,6 +512,7 @@ public class RestApiTest {
             String prenotazioneModificata = gson.toJson(modificaPrenotazioneMap);
 
             ArrayList<Prenotazioni> prenotazioni = gestorePosti.getPrenotazioni();
+
             Prenotazioni prenotazioneVecchia = null;
             for (Prenotazioni prenotazione : prenotazioni){
                 if(prenotazione.getUtente().equals("utenteTest")){
@@ -517,12 +529,10 @@ public class RestApiTest {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            String expectedResponse = "Prenotazione modificata";
-            String actualResponse = gson.fromJson(response.body(), String.class);
+            HashMap<String,Object> prenotazioneResponse = gson.fromJson(response.body(), new TypeToken<HashMap<String,Object>>() {}.getType());
 
             assertEquals(200, response.statusCode());
-            assertEquals(expectedResponse, actualResponse);
-
+            assertEquals("2024-06-12 09:00:00", prenotazioneResponse.get("tempo_arrivo"));
             dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE id = '" + prenotazioneVecchia.getId() + "'");
         } catch (Exception e) {
             fail("Exception occurred: " + e.getMessage());
@@ -550,7 +560,7 @@ public class RestApiTest {
             String expectedResponse = "Prenotazione non modificata";
             String actualResponse = gson.fromJson(response.body(), String.class);
 
-            assertEquals(400, response.statusCode());
+            assertEquals(404, response.statusCode());
             assertEquals(expectedResponse, actualResponse);
         } catch (Exception e) {
             fail("Exception occurred: " + e.getMessage());
@@ -569,11 +579,8 @@ public class RestApiTest {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String expectedResponse = "Prenotazione eliminata";
-            String actualResponse = gson.fromJson(response.body(), String.class);
+            assertEquals(204, response.statusCode());
 
-            assertEquals(200, response.statusCode());
-            assertEquals(expectedResponse, actualResponse);
         }catch (Exception e) {
             fail("Exception occurred: " + e.getMessage());
         }
@@ -593,7 +600,7 @@ public class RestApiTest {
             String expectedResponse = "Errore nell'eliminazione della prenotazione";
             String actualResponse = gson.fromJson(response.body(), String.class);
 
-            assertEquals(400, response.statusCode());
+            assertEquals(404, response.statusCode());
             assertEquals(expectedResponse, actualResponse);
         }catch (Exception e) {
             fail("Exception occurred: " + e.getMessage());
@@ -621,12 +628,11 @@ public class RestApiTest {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            String expectedResponse = "Prezzi aggiornati";
-            String actualResponse = gson.fromJson(response.body(), String.class);
+            System.out.println(response.body());
+            HashMap<String,Object> prezziResponse = gson.fromJson(response.body(), new TypeToken<HashMap<String,Object>>() {}.getType());
 
             assertEquals(200, response.statusCode());
-            assertEquals(expectedResponse,actualResponse);
+            assertEquals(10.0,prezziResponse.get("costo_posteggio"));
 
 
             dbStorico.update("UPDATE Costi SET costo_posteggio = \"" + prezziIniziali.get(0).get("costo_posteggio") + "\", costo_ricarica = \"" + prezziIniziali.get(0).get("costo_ricarica") + "\", penale = \"" + prezziIniziali.get(0).get("penale") + "\", costo_premium = \"" + prezziIniziali.get(0).get("costo_premium") + "\" WHERE id = '1'");
