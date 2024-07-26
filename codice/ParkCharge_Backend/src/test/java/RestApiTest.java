@@ -1,4 +1,5 @@
 import DataBase.DbPrenotazioni;
+import DataBase.DbRicariche;
 import DataBase.DbStorico;
 import DataBase.DbUtenti;
 import com.google.gson.Gson;
@@ -35,6 +36,7 @@ public class RestApiTest {
     DbUtenti dbUtenti = new DbUtenti();
     DbPrenotazioni dbPrenotazioni = new DbPrenotazioni();
     DbStorico dbStorico = new DbStorico();
+    DbRicariche dbRicariche = new DbRicariche();
 
     GestorePagamenti gestorePagamenti = new GestorePagamenti();
     GestoreUtenti gestoreUtenti = new GestoreUtenti();
@@ -725,12 +727,13 @@ public class RestApiTest {
         assertEquals("null", statoUtente.get("id_prenotazione"));
     }
 
-    //@Test
+    @Test
     public void testRichiediRicarica() throws URISyntaxException, IOException, InterruptedException {
         //setup utente, prenotazione
         LocalDateTime now = LocalDateTime.now();
         gestoreUtenti.creaUtenti(new Utente("nom", "cogn", "prova", 1, "1234"), new Credenziali("prova", "pass123"));
         gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1), 1, "occupa");
+        int id_prenotazione = gestorePosti.getPrenotazioneUsername("prova").getId();
 
         //nuova ricarica
         var client = HttpClient.newHttpClient();
@@ -744,12 +747,22 @@ public class RestApiTest {
 
         assertEquals(200, response.statusCode());
         assertTrue(response.body().contains("ok"));
-        assertNotNull(gestoreRicariche.getRicariche().stream().filter(r -> r.getPrenotazione() == 1000));
-        //assertEquals();
+        Ricariche ricarica = gestoreRicariche.getRicariche()
+                .stream()
+                .filter(r -> r.getPrenotazione() == id_prenotazione)
+                .findFirst()
+                .orElse(null);
 
+        System.out.println(ricarica.getDurata_ricarica());
+
+        assertNotNull(ricarica);
+        assertEquals(30, ricarica.getDurata_ricarica());
+
+        //elimino dati creati
         dbUtenti.update("DELETE FROM Credenziali WHERE username = 'prova'");
         dbUtenti.update("DELETE FROM Utente WHERE username = 'prova'");
         dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE Utente = 'prova'");
+        dbRicariche.update("DELETE FROM Ricarica WHERE prenotazione = '"+id_prenotazione+"'");
     }
 
     @Test
