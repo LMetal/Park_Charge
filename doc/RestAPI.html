@@ -767,6 +767,15 @@
     }
   }
 };
+            defs["inline_response_201_1"] = {
+  "type" : "object",
+  "properties" : {
+    "outcome" : {
+      "type" : "string",
+      "enum" : [ "ok", "not acceptable", "bad request" ]
+    }
+  }
+};
             defs["inline_response_400"] = {
   "type" : "object",
   "properties" : {
@@ -775,7 +784,7 @@
     }
   }
 };
-            defs["modfica_id_body"] = {
+            defs["modifica_id_body"] = {
   "type" : "object",
   "properties" : {
     "tempo_arrivo" : {
@@ -915,6 +924,63 @@
     }
   }
 };
+            defs["Stato_Utente"] = {
+  "required" : [ "caricando", "id_prenotazione", "occupazione_iniziale", "tempo_arrivo", "utente" ],
+  "type" : "object",
+  "properties" : {
+    "utente" : {
+      "type" : "string"
+    },
+    "occupazione_iniziale" : {
+      "type" : "string"
+    },
+    "tempo_arrivo" : {
+      "$ref" : "#/components/schemas/Prenotazioni_tempo_arrivo"
+    },
+    "caricando" : {
+      "type" : "string"
+    },
+    "id_prenotazione" : {
+      "type" : "integer"
+    }
+  }
+};
+            defs["Storico"] = {
+  "required" : [ "costo", "costo_posteggio", "costo_ricarica", "id", "penale", "posto", "ricarica", "tempo_arrivo", "tempo_uscita", "utente" ],
+  "type" : "object",
+  "properties" : {
+    "utente" : {
+      "type" : "string"
+    },
+    "penale" : {
+      "type" : "integer"
+    },
+    "posto" : {
+      "type" : "integer"
+    },
+    "costo" : {
+      "type" : "integer"
+    },
+    "costo_posteggio" : {
+      "type" : "number"
+    },
+    "costo_ricarica" : {
+      "type" : "number"
+    },
+    "tempo_arrivo" : {
+      "$ref" : "#/components/schemas/Prenotazioni_tempo_arrivo"
+    },
+    "tempo_uscita" : {
+      "$ref" : "#/components/schemas/Prenotazioni_tempo_uscita"
+    },
+    "ricarica" : {
+      "type" : "integer"
+    },
+    "id" : {
+      "type" : "integer"
+    }
+  }
+};
             defs["Utenti"] = {
   "required" : [ "carta", "cognome", "nome", "tipo", "username" ],
   "type" : "object",
@@ -974,11 +1040,12 @@
                       <a href="#api-Costi-costoPut">costoPut</a>
                     </li>
                   <li class="nav-header" data-group="Credenziali"><a href="#api-Credenziali">API Methods - Credenziali</a></li>
-                    <li data-group="Credenziali" data-name="credenzialiPost" class="">
-                      <a href="#api-Credenziali-credenzialiPost">credenzialiPost</a>
-                    </li>
                     <li data-group="Credenziali" data-name="credenzialiUsernamePasswordGet" class="">
                       <a href="#api-Credenziali-credenzialiUsernamePasswordGet">credenzialiUsernamePasswordGet</a>
+                    </li>
+                  <li class="nav-header" data-group="PostoAuto"><a href="#api-PostoAuto">API Methods - PostoAuto</a></li>
+                    <li data-group="PostoAuto" data-name="postiGet" class="">
+                      <a href="#api-PostoAuto-postiGet">postiGet</a>
                     </li>
                   <li class="nav-header" data-group="Prenotazioni"><a href="#api-Prenotazioni">API Methods - Prenotazioni</a></li>
                     <li data-group="Prenotazioni" data-name="prenotazioniGet" class="">
@@ -987,19 +1054,22 @@
                     <li data-group="Prenotazioni" data-name="prenotazioniIdDelete" class="">
                       <a href="#api-Prenotazioni-prenotazioniIdDelete">prenotazioniIdDelete</a>
                     </li>
-                    <li data-group="Prenotazioni" data-name="prenotazioniIdGet" class="">
-                      <a href="#api-Prenotazioni-prenotazioniIdGet">prenotazioniIdGet</a>
-                    </li>
-                    <li data-group="Prenotazioni" data-name="prenotazioniModficaIdPut" class="">
-                      <a href="#api-Prenotazioni-prenotazioniModficaIdPut">prenotazioniModficaIdPut</a>
+                    <li data-group="Prenotazioni" data-name="prenotazioniModificaIdPut" class="">
+                      <a href="#api-Prenotazioni-prenotazioniModificaIdPut">prenotazioniModificaIdPut</a>
                     </li>
                     <li data-group="Prenotazioni" data-name="prenotazioniPremiumUsernamePost" class="">
                       <a href="#api-Prenotazioni-prenotazioniPremiumUsernamePost">prenotazioniPremiumUsernamePost</a>
+                    </li>
+                    <li data-group="Prenotazioni" data-name="prenotazioniUsernameGet" class="">
+                      <a href="#api-Prenotazioni-prenotazioniUsernameGet">prenotazioniUsernameGet</a>
                     </li>
                     <li data-group="Prenotazioni" data-name="prenotazioniUsernamePost" class="">
                       <a href="#api-Prenotazioni-prenotazioniUsernamePost">prenotazioniUsernamePost</a>
                     </li>
                   <li class="nav-header" data-group="Ricariche"><a href="#api-Ricariche">API Methods - Ricariche</a></li>
+                    <li data-group="Ricariche" data-name="ricaricheDelete" class="">
+                      <a href="#api-Ricariche-ricaricheDelete">ricaricheDelete</a>
+                    </li>
                     <li data-group="Ricariche" data-name="ricaricheGet" class="">
                       <a href="#api-Ricariche-ricaricheGet">ricaricheGet</a>
                     </li>
@@ -1009,10 +1079,15 @@
                     <li data-group="Ricariche" data-name="ricarichePrenotazioneGet" class="">
                       <a href="#api-Ricariche-ricarichePrenotazioneGet">ricarichePrenotazioneGet</a>
                     </li>
-                  <li class="nav-header" data-group="Utenti"><a href="#api-Utenti">API Methods - Utenti</a></li>
-                    <li data-group="Utenti" data-name="utentiGet" class="">
-                      <a href="#api-Utenti-utentiGet">utentiGet</a>
+                  <li class="nav-header" data-group="StatoUtente"><a href="#api-StatoUtente">API Methods - StatoUtente</a></li>
+                    <li data-group="StatoUtente" data-name="statoUtenteGet" class="">
+                      <a href="#api-StatoUtente-statoUtenteGet">statoUtenteGet</a>
                     </li>
+                  <li class="nav-header" data-group="Storico"><a href="#api-Storico">API Methods - Storico</a></li>
+                    <li data-group="Storico" data-name="storicoGet" class="">
+                      <a href="#api-Storico-storicoGet">storicoGet</a>
+                    </li>
+                  <li class="nav-header" data-group="Utenti"><a href="#api-Utenti">API Methods - Utenti</a></li>
                     <li data-group="Utenti" data-name="utentiPost" class="">
                       <a href="#api-Utenti-utentiPost">utentiPost</a>
                     </li>
@@ -1760,458 +1835,6 @@ except ApiException as e:
                   </section>
                 <section id="api-Credenziali">
                   <h1>Credenziali</h1>
-                    <div id="api-Credenziali-credenzialiPost">
-                      <article id="api-Credenziali-credenzialiPost-0" data-group="User" data-name="credenzialiPost" data-version="0">
-                        <div class="pull-left">
-                          <h1>credenzialiPost</h1>
-                          <p></p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked">Crea le credenziali per un nuovo utente</p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/credenziali</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Credenziali-credenzialiPost-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Credenziali-credenzialiPost-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Credenziali-credenzialiPost-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Credenziali-credenzialiPost-0-python">Python</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Credenziali-credenzialiPost-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
--H "Accept: application/json"\
--H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/credenziali"</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-java">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.CredenzialiApi;
-
-import java.io.File;
-import java.util.*;
-
-public class CredenzialiApiExample {
-
-    public static void main(String[] args) {
-        
-        CredenzialiApi apiInstance = new CredenzialiApi();
-        Credenziali body = ; // Credenziali | 
-        try {
-            Credenziali result = apiInstance.credenzialiPost(body);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling CredenzialiApi#credenzialiPost");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.CredenzialiApi;
-
-public class CredenzialiApiExample {
-
-    public static void main(String[] args) {
-        CredenzialiApi apiInstance = new CredenzialiApi();
-        Credenziali body = ; // Credenziali | 
-        try {
-            Credenziali result = apiInstance.credenzialiPost(body);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling CredenzialiApi#credenzialiPost");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Credenziali *body = ; // 
-
-CredenzialiApi *apiInstance = [[CredenzialiApi alloc] init];
-
-[apiInstance credenzialiPostWith:body
-              completionHandler: ^(Credenziali output, NSError* error) {
-                            if (output) {
-                                NSLog(@"%@", output);
-                            }
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var GestioneParcheggioSmart = require('gestione_parcheggio_smart');
-
-var api = new GestioneParcheggioSmart.CredenzialiApi()
-var body = ; // {{Credenziali}} 
-
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully. Returned data: ' + data);
-  }
-};
-api.credenzialiPost(body, callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using IO.Swagger.Api;
-using IO.Swagger.Client;
-using IO.Swagger.Model;
-
-namespace Example
-{
-    public class credenzialiPostExample
-    {
-        public void main()
-        {
-
-            var apiInstance = new CredenzialiApi();
-            var body = new Credenziali(); // Credenziali | 
-
-            try
-            {
-                Credenziali result = apiInstance.credenzialiPost(body);
-                Debug.WriteLine(result);
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling CredenzialiApi.credenzialiPost: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-$api_instance = new Swagger\Client\ApiCredenzialiApi();
-$body = ; // Credenziali | 
-
-try {
-    $result = $api_instance->credenzialiPost($body);
-    print_r($result);
-} catch (Exception $e) {
-    echo 'Exception when calling CredenzialiApi->credenzialiPost: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::CredenzialiApi;
-
-my $api_instance = WWW::SwaggerClient::CredenzialiApi->new();
-my $body = WWW::SwaggerClient::Object::Credenziali->new(); # Credenziali | 
-
-eval { 
-    my $result = $api_instance->credenzialiPost(body => $body);
-    print Dumper($result);
-};
-if ($@) {
-    warn "Exception when calling CredenzialiApi->credenzialiPost: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Credenziali-credenzialiPost-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import swagger_client
-from swagger_client.rest import ApiException
-from pprint import pprint
-
-# create an instance of the API class
-api_instance = swagger_client.CredenzialiApi()
-body =  # Credenziali | 
-
-try: 
-    api_response = api_instance.credenziali_post(body)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling CredenzialiApi->credenzialiPost: %s\n" % e)</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Parameters</h2>
-
-
-
-                            <div class="methodsubtabletitle">Body parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                                <tr><td style="width:150px;">body <span style="color:red;">*</span></td>
-                                <td>
-                                
-                                
-                                <script>
-                                $(document).ready(function() {
-                                  var schemaWrapper = {
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/Credenziali"
-      }
-    }
-  },
-  "required" : true
-};
-                                  var schema = schemaWrapper.content["application/json"].schema;
-                                  if (schema.$ref != null) {
-                                    schema = defsParser.$refs.get(schema.$ref);
-                                  } else {
-                                    schemaWrapper.components = {};
-                                    schemaWrapper.components.schemas = Object.assign({}, defs);
-                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                      console.log(err);
-                                    });
-                                  }
-                                
-                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
-                                  var result = $('#d2e199_credenzialiPost_body');
-                                  result.empty();
-                                  result.append(view.render());
-                                });
-                                </script>
-                                <div id="d2e199_credenzialiPost_body"></div>
-                                </td>
-                                </tr>
-                            </table>
-
-
-
-                          <h2>Responses</h2>
-                            <h3> Status: 201 - Credenziali create con successo </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-credenzialiPost-201-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-credenzialiPost-201-schema">
-                                  <div id='responses-credenzialiPost-201-schema-201' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Credenziali create con successo",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/Credenziali"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-credenzialiPost-201-schema-data').val(stringify(schema));
-                                        var result = $('#responses-credenzialiPost-201-schema-201');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-credenzialiPost-201-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                            <h3> Status: 400 - Richiesta non valida </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-credenzialiPost-400-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-credenzialiPost-400-schema">
-                                  <div id='responses-credenzialiPost-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Richiesta non valida",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/inline_response_400"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-credenzialiPost-400-schema-data').val(stringify(schema));
-                                        var result = $('#responses-credenzialiPost-400-schema-400');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-credenzialiPost-400-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                            <h3> Status: 401 - Accesso non autorizzato </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-credenzialiPost-401-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-credenzialiPost-401-schema">
-                                  <div id='responses-credenzialiPost-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Accesso non autorizzato",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/inline_response_400"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-credenzialiPost-401-schema-data').val(stringify(schema));
-                                        var result = $('#responses-credenzialiPost-401-schema-401');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-credenzialiPost-401-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                            <h3> Status: 500 - Errore interno </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-credenzialiPost-500-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-credenzialiPost-500-schema">
-                                  <div id='responses-credenzialiPost-500-schema-500' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Errore interno",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/inline_response_400"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-credenzialiPost-500-schema-data').val(stringify(schema));
-                                        var result = $('#responses-credenzialiPost-500-schema-500');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-credenzialiPost-500-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                        </article>
-                      </div>
-                      <hr>
                     <div id="api-Credenziali-credenzialiUsernamePasswordGet">
                       <article id="api-Credenziali-credenzialiUsernamePasswordGet-0" data-group="User" data-name="credenzialiUsernamePasswordGet" data-version="0">
                         <div class="pull-left">
@@ -2224,7 +1847,7 @@ except ApiException as e:
                         <p class="marked">Ritorna le credenziali di un utente specifico dall&#x27;username e password</p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/credenziali/{username}/{password}/</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/credenziali/{username}/{password}</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
@@ -2246,7 +1869,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Credenziali-credenzialiUsernamePasswordGet-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/credenziali/{username}/{password}/"</code></pre>
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/credenziali/{username}/{password}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Credenziali-credenzialiUsernamePasswordGet-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -2576,6 +2199,268 @@ except ApiException as e:
                                     </script>
                                   </div>
                                   <input id='responses-credenzialiUsernamePasswordGet-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                  </section>
+                <section id="api-PostoAuto">
+                  <h1>PostoAuto</h1>
+                    <div id="api-PostoAuto-postiGet">
+                      <article id="api-PostoAuto-postiGet-0" data-group="User" data-name="postiGet" data-version="0">
+                        <div class="pull-left">
+                          <h1>postiGet</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Ritorna lo stato dei posti auto</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/posti</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-PostoAuto-postiGet-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-PostoAuto-postiGet-0-java">Java</a></li>
+                          <li class=""><a href="#examples-PostoAuto-postiGet-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-PostoAuto-postiGet-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-PostoAuto-postiGet-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-PostoAuto-postiGet-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-PostoAuto-postiGet-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-PostoAuto-postiGet-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-PostoAuto-postiGet-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-PostoAuto-postiGet-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-PostoAuto-postiGet-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-PostoAuto-postiGet-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+-H "Accept: application/json"\
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/posti"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-PostoAuto-postiGet-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.PostoAutoApi;
+
+import java.io.File;
+import java.util.*;
+
+public class PostoAutoApiExample {
+
+    public static void main(String[] args) {
+        
+        PostoAutoApi apiInstance = new PostoAutoApi();
+        try {
+            array[Posto_Auto] result = apiInstance.postiGet();
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PostoAutoApi#postiGet");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-PostoAuto-postiGet-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.PostoAutoApi;
+
+public class PostoAutoApiExample {
+
+    public static void main(String[] args) {
+        PostoAutoApi apiInstance = new PostoAutoApi();
+        try {
+            array[Posto_Auto] result = apiInstance.postiGet();
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PostoAutoApi#postiGet");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-PostoAuto-postiGet-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-PostoAuto-postiGet-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">
+PostoAutoApi *apiInstance = [[PostoAutoApi alloc] init];
+
+[apiInstance postiGetWithCompletionHandler: 
+              ^(array[Posto_Auto] output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostoAuto-postiGet-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var GestioneParcheggioSmart = require('gestione_parcheggio_smart');
+
+var api = new GestioneParcheggioSmart.PostoAutoApi()
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.postiGet(callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-PostoAuto-postiGet-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-PostoAuto-postiGet-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class postiGetExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new PostoAutoApi();
+
+            try
+            {
+                array[Posto_Auto] result = apiInstance.postiGet();
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling PostoAutoApi.postiGet: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostoAuto-postiGet-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiPostoAutoApi();
+
+try {
+    $result = $api_instance->postiGet();
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling PostoAutoApi->postiGet: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostoAuto-postiGet-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::PostoAutoApi;
+
+my $api_instance = WWW::SwaggerClient::PostoAutoApi->new();
+
+eval { 
+    my $result = $api_instance->postiGet();
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling PostoAutoApi->postiGet: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostoAuto-postiGet-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.PostoAutoApi()
+
+try: 
+    api_response = api_instance.posti_get()
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling PostoAutoApi->postiGet: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - Stato posti auto ritornato con successo </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-postiGet-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-postiGet-200-schema">
+                                  <div id='responses-postiGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Stato posti auto ritornato con successo",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Posto_Auto"
+        },
+        "x-content-type" : "application/json"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-postiGet-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-postiGet-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-postiGet-200-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
 
@@ -3000,7 +2885,7 @@ except ApiException as e:
                         <p class="marked">Elimina una prenotazione specifica dall&#x27;id</p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/prenotazioni/{id}/</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/prenotazioni/{id}</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
@@ -3022,7 +2907,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Prenotazioni-prenotazioniIdDelete-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/prenotazioni/{id}/"</code></pre>
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/prenotazioni/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Prenotazioni-prenotazioniIdDelete-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -3277,496 +3162,10 @@ except ApiException as e:
                         </article>
                       </div>
                       <hr>
-                    <div id="api-Prenotazioni-prenotazioniIdGet">
-                      <article id="api-Prenotazioni-prenotazioniIdGet-0" data-group="User" data-name="prenotazioniIdGet" data-version="0">
+                    <div id="api-Prenotazioni-prenotazioniModificaIdPut">
+                      <article id="api-Prenotazioni-prenotazioniModificaIdPut-0" data-group="User" data-name="prenotazioniModificaIdPut" data-version="0">
                         <div class="pull-left">
-                          <h1>prenotazioniIdGet</h1>
-                          <p></p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked">Ritorna una prenotazione specifica dall&#x27;id</p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/prenotazioni/{id}/</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Prenotazioni-prenotazioniIdGet-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniIdGet-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniIdGet-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Prenotazioni-prenotazioniIdGet-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniIdGet-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniIdGet-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Prenotazioni-prenotazioniIdGet-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniIdGet-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniIdGet-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniIdGet-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniIdGet-0-python">Python</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Prenotazioni-prenotazioniIdGet-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
--H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/prenotazioni/{id}/"</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-Prenotazioni-prenotazioniIdGet-0-java">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.PrenotazioniApi;
-
-import java.io.File;
-import java.util.*;
-
-public class PrenotazioniApiExample {
-
-    public static void main(String[] args) {
-        
-        PrenotazioniApi apiInstance = new PrenotazioniApi();
-        Integer id = 56; // Integer | 
-        try {
-            array[Prenotazioni] result = apiInstance.prenotazioniIdGet(id);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling PrenotazioniApi#prenotazioniIdGet");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-Prenotazioni-prenotazioniIdGet-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.PrenotazioniApi;
-
-public class PrenotazioniApiExample {
-
-    public static void main(String[] args) {
-        PrenotazioniApi apiInstance = new PrenotazioniApi();
-        Integer id = 56; // Integer | 
-        try {
-            array[Prenotazioni] result = apiInstance.prenotazioniIdGet(id);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling PrenotazioniApi#prenotazioniIdGet");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-Prenotazioni-prenotazioniIdGet-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniIdGet-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Integer *id = 56; // 
-
-PrenotazioniApi *apiInstance = [[PrenotazioniApi alloc] init];
-
-[apiInstance prenotazioniIdGetWith:id
-              completionHandler: ^(array[Prenotazioni] output, NSError* error) {
-                            if (output) {
-                                NSLog(@"%@", output);
-                            }
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniIdGet-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var GestioneParcheggioSmart = require('gestione_parcheggio_smart');
-
-var api = new GestioneParcheggioSmart.PrenotazioniApi()
-var id = 56; // {{Integer}} 
-
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully. Returned data: ' + data);
-  }
-};
-api.prenotazioniIdGet(id, callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-Prenotazioni-prenotazioniIdGet-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniIdGet-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using IO.Swagger.Api;
-using IO.Swagger.Client;
-using IO.Swagger.Model;
-
-namespace Example
-{
-    public class prenotazioniIdGetExample
-    {
-        public void main()
-        {
-
-            var apiInstance = new PrenotazioniApi();
-            var id = 56;  // Integer | 
-
-            try
-            {
-                array[Prenotazioni] result = apiInstance.prenotazioniIdGet(id);
-                Debug.WriteLine(result);
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling PrenotazioniApi.prenotazioniIdGet: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniIdGet-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-$api_instance = new Swagger\Client\ApiPrenotazioniApi();
-$id = 56; // Integer | 
-
-try {
-    $result = $api_instance->prenotazioniIdGet($id);
-    print_r($result);
-} catch (Exception $e) {
-    echo 'Exception when calling PrenotazioniApi->prenotazioniIdGet: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniIdGet-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::PrenotazioniApi;
-
-my $api_instance = WWW::SwaggerClient::PrenotazioniApi->new();
-my $id = 56; # Integer | 
-
-eval { 
-    my $result = $api_instance->prenotazioniIdGet(id => $id);
-    print Dumper($result);
-};
-if ($@) {
-    warn "Exception when calling PrenotazioniApi->prenotazioniIdGet: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniIdGet-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import swagger_client
-from swagger_client.rest import ApiException
-from pprint import pprint
-
-# create an instance of the API class
-api_instance = swagger_client.PrenotazioniApi()
-id = 56 # Integer | 
-
-try: 
-    api_response = api_instance.prenotazioni_id_get(id)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling PrenotazioniApi->prenotazioniIdGet: %s\n" % e)</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Parameters</h2>
-
-                            <div class="methodsubtabletitle">Path parameters</div>
-                            <table id="methodsubtable">
-                                <tr>
-                                  <th width="150px">Name</th>
-                                  <th>Description</th>
-                                </tr>
-                                  <tr><td style="width:150px;">id*</td>
-                                  <td>
-                                  
-                                  
-                                      <div id="d2e199_prenotazioniIdGet_id">
-                                          <div class="json-schema-view">
-                                              <div class="primitive">
-                                                  <span class="type">
-                                                      Integer
-                                                  </span>
-                                  
-                                              </div>
-                                                  <div class="inner required">
-                                                      Required
-                                                  </div>
-                                          </div>
-                                      </div>
-                                  </td>
-                                  </tr>
-                            </table>
-
-
-
-
-
-                          <h2>Responses</h2>
-                            <h3> Status: 200 - Prenotazione ritornata con successo </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-prenotazioniIdGet-200-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-prenotazioniIdGet-200-schema">
-                                  <div id='responses-prenotazioniIdGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Prenotazione ritornata con successo",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "type" : "array",
-        "items" : {
-          "$ref" : "#/components/schemas/Prenotazioni"
-        },
-        "x-content-type" : "application/json"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-prenotazioniIdGet-200-schema-data').val(stringify(schema));
-                                        var result = $('#responses-prenotazioniIdGet-200-schema-200');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-prenotazioniIdGet-200-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                            <h3> Status: 400 - Richiesta non valida </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-prenotazioniIdGet-400-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-prenotazioniIdGet-400-schema">
-                                  <div id='responses-prenotazioniIdGet-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Richiesta non valida",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/inline_response_400"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-prenotazioniIdGet-400-schema-data').val(stringify(schema));
-                                        var result = $('#responses-prenotazioniIdGet-400-schema-400');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-prenotazioniIdGet-400-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                            <h3> Status: 401 - Accesso non autorizzato </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-prenotazioniIdGet-401-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-prenotazioniIdGet-401-schema">
-                                  <div id='responses-prenotazioniIdGet-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Accesso non autorizzato",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/inline_response_400"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-prenotazioniIdGet-401-schema-data').val(stringify(schema));
-                                        var result = $('#responses-prenotazioniIdGet-401-schema-401');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-prenotazioniIdGet-401-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                            <h3> Status: 404 - Risorsa non trovata </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-prenotazioniIdGet-404-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-prenotazioniIdGet-404-schema">
-                                  <div id='responses-prenotazioniIdGet-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Risorsa non trovata",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/inline_response_400"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-prenotazioniIdGet-404-schema-data').val(stringify(schema));
-                                        var result = $('#responses-prenotazioniIdGet-404-schema-404');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-prenotazioniIdGet-404-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                            <h3> Status: 500 - Errore interno </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-prenotazioniIdGet-500-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-prenotazioniIdGet-500-schema">
-                                  <div id='responses-prenotazioniIdGet-500-schema-500' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Errore interno",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/inline_response_400"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-prenotazioniIdGet-500-schema-data').val(stringify(schema));
-                                        var result = $('#responses-prenotazioniIdGet-500-schema-500');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-prenotazioniIdGet-500-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                        </article>
-                      </div>
-                      <hr>
-                    <div id="api-Prenotazioni-prenotazioniModficaIdPut">
-                      <article id="api-Prenotazioni-prenotazioniModficaIdPut-0" data-group="User" data-name="prenotazioniModficaIdPut" data-version="0">
-                        <div class="pull-left">
-                          <h1>prenotazioniModficaIdPut</h1>
+                          <h1>prenotazioniModificaIdPut</h1>
                           <p></p>
                         </div>
                         <div class="pull-right"></div>
@@ -3775,32 +3174,32 @@ except ApiException as e:
                         <p class="marked">Cambia i tempi di una prenotazione specifica</p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="put"><code><span class="pln">/prenotazioni/modfica/{id}/</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="put"><code><span class="pln">/prenotazioni/modifica/{id}</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Prenotazioni-prenotazioniModficaIdPut-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModficaIdPut-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModficaIdPut-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Prenotazioni-prenotazioniModficaIdPut-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModficaIdPut-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModficaIdPut-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Prenotazioni-prenotazioniModficaIdPut-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModficaIdPut-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModficaIdPut-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModficaIdPut-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModficaIdPut-0-python">Python</a></li>
+                          <li class="active"><a href="#examples-Prenotazioni-prenotazioniModificaIdPut-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModificaIdPut-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModificaIdPut-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Prenotazioni-prenotazioniModificaIdPut-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModificaIdPut-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModificaIdPut-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Prenotazioni-prenotazioniModificaIdPut-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModificaIdPut-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModificaIdPut-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModificaIdPut-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniModificaIdPut-0-python">Python</a></li>
                         </ul>
 
                         <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Prenotazioni-prenotazioniModficaIdPut-0-curl">
+                          <div class="tab-pane active" id="examples-Prenotazioni-prenotazioniModificaIdPut-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/prenotazioni/modfica/{id}/"</code></pre>
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/prenotazioni/modifica/{id}"</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModficaIdPut-0-java">
+                          <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModificaIdPut-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
 import io.swagger.client.auth.*;
 import io.swagger.client.model.*;
@@ -3814,49 +3213,49 @@ public class PrenotazioniApiExample {
     public static void main(String[] args) {
         
         PrenotazioniApi apiInstance = new PrenotazioniApi();
-        Modfica_id_body body = ; // Modfica_id_body | 
+        Modifica_id_body body = ; // Modifica_id_body | 
         Integer id = 56; // Integer | 
         try {
-            Prenotazioni result = apiInstance.prenotazioniModficaIdPut(body, id);
+            Prenotazioni result = apiInstance.prenotazioniModificaIdPut(body, id);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling PrenotazioniApi#prenotazioniModficaIdPut");
+            System.err.println("Exception when calling PrenotazioniApi#prenotazioniModificaIdPut");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModficaIdPut-0-android">
+                          <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModificaIdPut-0-android">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.PrenotazioniApi;
 
 public class PrenotazioniApiExample {
 
     public static void main(String[] args) {
         PrenotazioniApi apiInstance = new PrenotazioniApi();
-        Modfica_id_body body = ; // Modfica_id_body | 
+        Modifica_id_body body = ; // Modifica_id_body | 
         Integer id = 56; // Integer | 
         try {
-            Prenotazioni result = apiInstance.prenotazioniModficaIdPut(body, id);
+            Prenotazioni result = apiInstance.prenotazioniModificaIdPut(body, id);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling PrenotazioniApi#prenotazioniModficaIdPut");
+            System.err.println("Exception when calling PrenotazioniApi#prenotazioniModificaIdPut");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
   <!--
-  <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModficaIdPut-0-groovy">
+  <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModificaIdPut-0-groovy">
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
-                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModficaIdPut-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Modfica_id_body *body = ; // 
+                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModificaIdPut-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Modifica_id_body *body = ; // 
 Integer *id = 56; // 
 
 PrenotazioniApi *apiInstance = [[PrenotazioniApi alloc] init];
 
-[apiInstance prenotazioniModficaIdPutWith:body
+[apiInstance prenotazioniModificaIdPutWith:body
     id:id
               completionHandler: ^(Prenotazioni output, NSError* error) {
                             if (output) {
@@ -3869,11 +3268,11 @@ PrenotazioniApi *apiInstance = [[PrenotazioniApi alloc] init];
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModficaIdPut-0-javascript">
+                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModificaIdPut-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var GestioneParcheggioSmart = require('gestione_parcheggio_smart');
 
 var api = new GestioneParcheggioSmart.PrenotazioniApi()
-var body = ; // {{Modfica_id_body}} 
+var body = ; // {{Modifica_id_body}} 
 var id = 56; // {{Integer}} 
 
 var callback = function(error, data, response) {
@@ -3883,14 +3282,14 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.prenotazioniModficaIdPut(bodyid, callback);
+api.prenotazioniModificaIdPut(bodyid, callback);
 </code></pre>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-Prenotazioni-prenotazioniModficaIdPut-0-angular">
+                            <!--<div class="tab-pane" id="examples-Prenotazioni-prenotazioniModificaIdPut-0-angular">
               <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
             </div>-->
-                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModficaIdPut-0-csharp">
+                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModificaIdPut-0-csharp">
                               <pre class="prettyprint"><code class="language-cs">using System;
 using System.Diagnostics;
 using IO.Swagger.Api;
@@ -3899,23 +3298,23 @@ using IO.Swagger.Model;
 
 namespace Example
 {
-    public class prenotazioniModficaIdPutExample
+    public class prenotazioniModificaIdPutExample
     {
         public void main()
         {
 
             var apiInstance = new PrenotazioniApi();
-            var body = new Modfica_id_body(); // Modfica_id_body | 
+            var body = new Modifica_id_body(); // Modifica_id_body | 
             var id = 56;  // Integer | 
 
             try
             {
-                Prenotazioni result = apiInstance.prenotazioniModficaIdPut(body, id);
+                Prenotazioni result = apiInstance.prenotazioniModificaIdPut(body, id);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
             {
-                Debug.Print("Exception when calling PrenotazioniApi.prenotazioniModficaIdPut: " + e.Message );
+                Debug.Print("Exception when calling PrenotazioniApi.prenotazioniModificaIdPut: " + e.Message );
             }
         }
     }
@@ -3923,42 +3322,42 @@ namespace Example
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModficaIdPut-0-php">
+                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModificaIdPut-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\ApiPrenotazioniApi();
-$body = ; // Modfica_id_body | 
+$body = ; // Modifica_id_body | 
 $id = 56; // Integer | 
 
 try {
-    $result = $api_instance->prenotazioniModficaIdPut($body, $id);
+    $result = $api_instance->prenotazioniModificaIdPut($body, $id);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling PrenotazioniApi->prenotazioniModficaIdPut: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling PrenotazioniApi->prenotazioniModificaIdPut: ', $e->getMessage(), PHP_EOL;
 }
 ?></code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModficaIdPut-0-perl">
+                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModificaIdPut-0-perl">
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::PrenotazioniApi;
 
 my $api_instance = WWW::SwaggerClient::PrenotazioniApi->new();
-my $body = WWW::SwaggerClient::Object::Modfica_id_body->new(); # Modfica_id_body | 
+my $body = WWW::SwaggerClient::Object::Modifica_id_body->new(); # Modifica_id_body | 
 my $id = 56; # Integer | 
 
 eval { 
-    my $result = $api_instance->prenotazioniModficaIdPut(body => $body, id => $id);
+    my $result = $api_instance->prenotazioniModificaIdPut(body => $body, id => $id);
     print Dumper($result);
 };
 if ($@) {
-    warn "Exception when calling PrenotazioniApi->prenotazioniModficaIdPut: $@\n";
+    warn "Exception when calling PrenotazioniApi->prenotazioniModificaIdPut: $@\n";
 }</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModficaIdPut-0-python">
+                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniModificaIdPut-0-python">
                               <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
 import time
 import swagger_client
@@ -3967,14 +3366,14 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.PrenotazioniApi()
-body =  # Modfica_id_body | 
+body =  # Modifica_id_body | 
 id = 56 # Integer | 
 
 try: 
-    api_response = api_instance.prenotazioni_modfica_id_put(body, id)
+    api_response = api_instance.prenotazioni_modifica_id_put(body, id)
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling PrenotazioniApi->prenotazioniModficaIdPut: %s\n" % e)</code></pre>
+    print("Exception when calling PrenotazioniApi->prenotazioniModificaIdPut: %s\n" % e)</code></pre>
                             </div>
                           </div>
 
@@ -3990,7 +3389,7 @@ except ApiException as e:
                                   <td>
                                   
                                   
-                                      <div id="d2e199_prenotazioniModficaIdPut_id">
+                                      <div id="d2e199_prenotazioniModificaIdPut_id">
                                           <div class="json-schema-view">
                                               <div class="primitive">
                                                   <span class="type">
@@ -4024,7 +3423,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/modfica_id_body"
+        "$ref" : "#/components/schemas/modifica_id_body"
       }
     }
   },
@@ -4042,12 +3441,12 @@ except ApiException as e:
                                   }
                                 
                                   var view = new JSONSchemaView(schema,2,{isBodyParam: true});
-                                  var result = $('#d2e199_prenotazioniModficaIdPut_body');
+                                  var result = $('#d2e199_prenotazioniModificaIdPut_body');
                                   result.empty();
                                   result.append(view.render());
                                 });
                                 </script>
-                                <div id="d2e199_prenotazioniModficaIdPut_body"></div>
+                                <div id="d2e199_prenotazioniModificaIdPut_body"></div>
                                 </td>
                                 </tr>
                             </table>
@@ -4059,14 +3458,14 @@ except ApiException as e:
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                                 <li class="active">
-                                  <a data-toggle="tab" href="#responses-prenotazioniModficaIdPut-200-schema">Schema</a>
+                                  <a data-toggle="tab" href="#responses-prenotazioniModificaIdPut-200-schema">Schema</a>
                                 </li>
 
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-prenotazioniModficaIdPut-200-schema">
-                                  <div id='responses-prenotazioniModficaIdPut-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                <div class="tab-pane active" id="responses-prenotazioniModificaIdPut-200-schema">
+                                  <div id='responses-prenotazioniModificaIdPut-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
                                     <script>
                                       $(document).ready(function() {
                                         var schemaWrapper = {
@@ -4092,14 +3491,14 @@ except ApiException as e:
 
                                         //console.log(JSON.stringify(schema));
                                         var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-prenotazioniModficaIdPut-200-schema-data').val(stringify(schema));
-                                        var result = $('#responses-prenotazioniModficaIdPut-200-schema-200');
+                                        $('#responses-prenotazioniModificaIdPut-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-prenotazioniModificaIdPut-200-schema-200');
                                         result.empty();
                                         result.append(view.render());
                                       });
                                     </script>
                                   </div>
-                                  <input id='responses-prenotazioniModficaIdPut-200-schema-data' type='hidden' value=''></input>
+                                  <input id='responses-prenotazioniModificaIdPut-200-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
 
@@ -4107,14 +3506,14 @@ except ApiException as e:
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                                 <li class="active">
-                                  <a data-toggle="tab" href="#responses-prenotazioniModficaIdPut-404-schema">Schema</a>
+                                  <a data-toggle="tab" href="#responses-prenotazioniModificaIdPut-404-schema">Schema</a>
                                 </li>
 
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-prenotazioniModficaIdPut-404-schema">
-                                  <div id='responses-prenotazioniModficaIdPut-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                <div class="tab-pane active" id="responses-prenotazioniModificaIdPut-404-schema">
+                                  <div id='responses-prenotazioniModificaIdPut-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
                                     <script>
                                       $(document).ready(function() {
                                         var schemaWrapper = {
@@ -4140,14 +3539,14 @@ except ApiException as e:
 
                                         //console.log(JSON.stringify(schema));
                                         var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-prenotazioniModficaIdPut-404-schema-data').val(stringify(schema));
-                                        var result = $('#responses-prenotazioniModficaIdPut-404-schema-404');
+                                        $('#responses-prenotazioniModificaIdPut-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-prenotazioniModificaIdPut-404-schema-404');
                                         result.empty();
                                         result.append(view.render());
                                       });
                                     </script>
                                   </div>
-                                  <input id='responses-prenotazioniModficaIdPut-404-schema-data' type='hidden' value=''></input>
+                                  <input id='responses-prenotazioniModificaIdPut-404-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
 
@@ -4166,7 +3565,7 @@ except ApiException as e:
                         <p class="marked">Crea una nuova prenotazione tramite prenota posto</p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/prenotazioni/premium/{username}/</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/prenotazioni/premium/{username}</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
@@ -4189,7 +3588,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/prenotazioni/premium/{username}/"</code></pre>
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/prenotazioni/premium/{username}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Prenotazioni-prenotazioniPremiumUsernamePost-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -4539,6 +3938,492 @@ except ApiException as e:
                                     </script>
                                   </div>
                                   <input id='responses-prenotazioniPremiumUsernamePost-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Prenotazioni-prenotazioniUsernameGet">
+                      <article id="api-Prenotazioni-prenotazioniUsernameGet-0" data-group="User" data-name="prenotazioniUsernameGet" data-version="0">
+                        <div class="pull-left">
+                          <h1>prenotazioniUsernameGet</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Ritorna una prenotazione specifica dall&#x27;username</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/prenotazioni/{username}</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Prenotazioni-prenotazioniUsernameGet-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniUsernameGet-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniUsernameGet-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Prenotazioni-prenotazioniUsernameGet-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniUsernameGet-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniUsernameGet-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Prenotazioni-prenotazioniUsernameGet-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniUsernameGet-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniUsernameGet-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniUsernameGet-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Prenotazioni-prenotazioniUsernameGet-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Prenotazioni-prenotazioniUsernameGet-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+-H "Accept: application/json"\
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/prenotazioni/{username}"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Prenotazioni-prenotazioniUsernameGet-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.PrenotazioniApi;
+
+import java.io.File;
+import java.util.*;
+
+public class PrenotazioniApiExample {
+
+    public static void main(String[] args) {
+        
+        PrenotazioniApi apiInstance = new PrenotazioniApi();
+        String username = username_example; // String | 
+        try {
+            array[Prenotazioni] result = apiInstance.prenotazioniUsernameGet(username);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PrenotazioniApi#prenotazioniUsernameGet");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Prenotazioni-prenotazioniUsernameGet-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.PrenotazioniApi;
+
+public class PrenotazioniApiExample {
+
+    public static void main(String[] args) {
+        PrenotazioniApi apiInstance = new PrenotazioniApi();
+        String username = username_example; // String | 
+        try {
+            array[Prenotazioni] result = apiInstance.prenotazioniUsernameGet(username);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PrenotazioniApi#prenotazioniUsernameGet");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Prenotazioni-prenotazioniUsernameGet-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniUsernameGet-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">String *username = username_example; // 
+
+PrenotazioniApi *apiInstance = [[PrenotazioniApi alloc] init];
+
+[apiInstance prenotazioniUsernameGetWith:username
+              completionHandler: ^(array[Prenotazioni] output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniUsernameGet-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var GestioneParcheggioSmart = require('gestione_parcheggio_smart');
+
+var api = new GestioneParcheggioSmart.PrenotazioniApi()
+var username = username_example; // {{String}} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.prenotazioniUsernameGet(username, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Prenotazioni-prenotazioniUsernameGet-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniUsernameGet-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class prenotazioniUsernameGetExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new PrenotazioniApi();
+            var username = username_example;  // String | 
+
+            try
+            {
+                array[Prenotazioni] result = apiInstance.prenotazioniUsernameGet(username);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling PrenotazioniApi.prenotazioniUsernameGet: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniUsernameGet-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiPrenotazioniApi();
+$username = username_example; // String | 
+
+try {
+    $result = $api_instance->prenotazioniUsernameGet($username);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling PrenotazioniApi->prenotazioniUsernameGet: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniUsernameGet-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::PrenotazioniApi;
+
+my $api_instance = WWW::SwaggerClient::PrenotazioniApi->new();
+my $username = username_example; # String | 
+
+eval { 
+    my $result = $api_instance->prenotazioniUsernameGet(username => $username);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling PrenotazioniApi->prenotazioniUsernameGet: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Prenotazioni-prenotazioniUsernameGet-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.PrenotazioniApi()
+username = username_example # String | 
+
+try: 
+    api_response = api_instance.prenotazioni_username_get(username)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling PrenotazioniApi->prenotazioniUsernameGet: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">username*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_prenotazioniUsernameGet_username">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - Prenotazione ritornata con successo </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-prenotazioniUsernameGet-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-prenotazioniUsernameGet-200-schema">
+                                  <div id='responses-prenotazioniUsernameGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Prenotazione ritornata con successo",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Prenotazioni"
+        },
+        "x-content-type" : "application/json"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-prenotazioniUsernameGet-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-prenotazioniUsernameGet-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-prenotazioniUsernameGet-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 400 - Richiesta non valida </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-prenotazioniUsernameGet-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-prenotazioniUsernameGet-400-schema">
+                                  <div id='responses-prenotazioniUsernameGet-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Richiesta non valida",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-prenotazioniUsernameGet-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-prenotazioniUsernameGet-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-prenotazioniUsernameGet-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 401 - Accesso non autorizzato </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-prenotazioniUsernameGet-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-prenotazioniUsernameGet-401-schema">
+                                  <div id='responses-prenotazioniUsernameGet-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Accesso non autorizzato",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-prenotazioniUsernameGet-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-prenotazioniUsernameGet-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-prenotazioniUsernameGet-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 404 - Risorsa non trovata </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-prenotazioniUsernameGet-404-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-prenotazioniUsernameGet-404-schema">
+                                  <div id='responses-prenotazioniUsernameGet-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Risorsa non trovata",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-prenotazioniUsernameGet-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-prenotazioniUsernameGet-404-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-prenotazioniUsernameGet-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 500 - Errore interno </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-prenotazioniUsernameGet-500-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-prenotazioniUsernameGet-500-schema">
+                                  <div id='responses-prenotazioniUsernameGet-500-schema-500' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Errore interno",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-prenotazioniUsernameGet-500-schema-data').val(stringify(schema));
+                                        var result = $('#responses-prenotazioniUsernameGet-500-schema-500');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-prenotazioniUsernameGet-500-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
 
@@ -4939,6 +4824,343 @@ except ApiException as e:
                   </section>
                 <section id="api-Ricariche">
                   <h1>Ricariche</h1>
+                    <div id="api-Ricariche-ricaricheDelete">
+                      <article id="api-Ricariche-ricaricheDelete-0" data-group="User" data-name="ricaricheDelete" data-version="0">
+                        <div class="pull-left">
+                          <h1>ricaricheDelete</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Interrompe una ricarica dato l&#x27;id della prenotazione</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/ricariche</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Ricariche-ricaricheDelete-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Ricariche-ricaricheDelete-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Ricariche-ricaricheDelete-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Ricariche-ricaricheDelete-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Ricariche-ricaricheDelete-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Ricariche-ricaricheDelete-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Ricariche-ricaricheDelete-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Ricariche-ricaricheDelete-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Ricariche-ricaricheDelete-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Ricariche-ricaricheDelete-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Ricariche-ricaricheDelete-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Ricariche-ricaricheDelete-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
+-H "Accept: application/json"\
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/ricariche?id_prenotazione="</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Ricariche-ricaricheDelete-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.RicaricheApi;
+
+import java.io.File;
+import java.util.*;
+
+public class RicaricheApiExample {
+
+    public static void main(String[] args) {
+        
+        RicaricheApi apiInstance = new RicaricheApi();
+        String idPrenotazione = idPrenotazione_example; // String | 
+        try {
+            apiInstance.ricaricheDelete(idPrenotazione);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling RicaricheApi#ricaricheDelete");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Ricariche-ricaricheDelete-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.RicaricheApi;
+
+public class RicaricheApiExample {
+
+    public static void main(String[] args) {
+        RicaricheApi apiInstance = new RicaricheApi();
+        String idPrenotazione = idPrenotazione_example; // String | 
+        try {
+            apiInstance.ricaricheDelete(idPrenotazione);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling RicaricheApi#ricaricheDelete");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Ricariche-ricaricheDelete-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Ricariche-ricaricheDelete-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">String *idPrenotazione = idPrenotazione_example; // 
+
+RicaricheApi *apiInstance = [[RicaricheApi alloc] init];
+
+[apiInstance ricaricheDeleteWith:idPrenotazione
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Ricariche-ricaricheDelete-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var GestioneParcheggioSmart = require('gestione_parcheggio_smart');
+
+var api = new GestioneParcheggioSmart.RicaricheApi()
+var idPrenotazione = idPrenotazione_example; // {{String}} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.ricaricheDelete(idPrenotazione, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Ricariche-ricaricheDelete-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Ricariche-ricaricheDelete-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class ricaricheDeleteExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new RicaricheApi();
+            var idPrenotazione = idPrenotazione_example;  // String | 
+
+            try
+            {
+                apiInstance.ricaricheDelete(idPrenotazione);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling RicaricheApi.ricaricheDelete: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Ricariche-ricaricheDelete-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiRicaricheApi();
+$idPrenotazione = idPrenotazione_example; // String | 
+
+try {
+    $api_instance->ricaricheDelete($idPrenotazione);
+} catch (Exception $e) {
+    echo 'Exception when calling RicaricheApi->ricaricheDelete: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Ricariche-ricaricheDelete-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::RicaricheApi;
+
+my $api_instance = WWW::SwaggerClient::RicaricheApi->new();
+my $idPrenotazione = idPrenotazione_example; # String | 
+
+eval { 
+    $api_instance->ricaricheDelete(idPrenotazione => $idPrenotazione);
+};
+if ($@) {
+    warn "Exception when calling RicaricheApi->ricaricheDelete: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Ricariche-ricaricheDelete-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.RicaricheApi()
+idPrenotazione = idPrenotazione_example # String | 
+
+try: 
+    api_instance.ricariche_delete(idPrenotazione)
+except ApiException as e:
+    print("Exception when calling RicaricheApi->ricaricheDelete: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">id_prenotazione*</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_ricaricheDelete_idPrenotazione">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    String
+                                                </span>
+                                
+                                            </div>
+                                                <div class="inner required">
+                                                    Required
+                                                </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                            </table>
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - Ricarica interrotta con successo </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 404 - Risorsa non trovata </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-ricaricheDelete-404-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-ricaricheDelete-404-schema">
+                                  <div id='responses-ricaricheDelete-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Risorsa non trovata",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-ricaricheDelete-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-ricaricheDelete-404-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-ricaricheDelete-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 500 - Errore interno </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-ricaricheDelete-500-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-ricaricheDelete-500-schema">
+                                  <div id='responses-ricaricheDelete-500-schema-500' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Errore interno",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_400"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-ricaricheDelete-500-schema-data').val(stringify(schema));
+                                        var result = $('#responses-ricaricheDelete-500-schema-500');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-ricaricheDelete-500-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-Ricariche-ricaricheGet">
                       <article id="api-Ricariche-ricaricheGet-0" data-group="User" data-name="ricaricheGet" data-version="0">
                         <div class="pull-left">
@@ -5351,7 +5573,7 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked">Crea una nuova ricarica</p>
+                        <p class="marked">Effettua una ricarica per un utente specifico con un tempo di ricarica definito</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/ricariche</span></code></pre>
@@ -5376,8 +5598,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Ricariche-ricarichePost-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
--H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/ricariche"</code></pre>
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/ricariche?user=&charge_time="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Ricariche-ricarichePost-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -5393,9 +5614,10 @@ public class RicaricheApiExample {
     public static void main(String[] args) {
         
         RicaricheApi apiInstance = new RicaricheApi();
-        Ricariche body = ; // Ricariche | 
+        String user = user_example; // String | 
+        Integer chargeTime = 56; // Integer | 
         try {
-            Ricariche result = apiInstance.ricarichePost(body);
+            inline_response_201_1 result = apiInstance.ricarichePost(user, chargeTime);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling RicaricheApi#ricarichePost");
@@ -5412,9 +5634,10 @@ public class RicaricheApiExample {
 
     public static void main(String[] args) {
         RicaricheApi apiInstance = new RicaricheApi();
-        Ricariche body = ; // Ricariche | 
+        String user = user_example; // String | 
+        Integer chargeTime = 56; // Integer | 
         try {
-            Ricariche result = apiInstance.ricarichePost(body);
+            inline_response_201_1 result = apiInstance.ricarichePost(user, chargeTime);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling RicaricheApi#ricarichePost");
@@ -5428,12 +5651,14 @@ public class RicaricheApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Ricariche-ricarichePost-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Ricariche *body = ; // 
+                              <pre class="prettyprint"><code class="language-cpp">String *user = user_example; // 
+Integer *chargeTime = 56; // 
 
 RicaricheApi *apiInstance = [[RicaricheApi alloc] init];
 
-[apiInstance ricarichePostWith:body
-              completionHandler: ^(Ricariche output, NSError* error) {
+[apiInstance ricarichePostWith:user
+    chargeTime:chargeTime
+              completionHandler: ^(inline_response_201_1 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -5448,7 +5673,8 @@ RicaricheApi *apiInstance = [[RicaricheApi alloc] init];
                               <pre class="prettyprint"><code class="language-js">var GestioneParcheggioSmart = require('gestione_parcheggio_smart');
 
 var api = new GestioneParcheggioSmart.RicaricheApi()
-var body = ; // {{Ricariche}} 
+var user = user_example; // {{String}} 
+var chargeTime = 56; // {{Integer}} 
 
 var callback = function(error, data, response) {
   if (error) {
@@ -5457,7 +5683,7 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.ricarichePost(body, callback);
+api.ricarichePost(user, chargeTime, callback);
 </code></pre>
                             </div>
 
@@ -5479,11 +5705,12 @@ namespace Example
         {
 
             var apiInstance = new RicaricheApi();
-            var body = new Ricariche(); // Ricariche | 
+            var user = user_example;  // String | 
+            var chargeTime = 56;  // Integer | 
 
             try
             {
-                Ricariche result = apiInstance.ricarichePost(body);
+                inline_response_201_1 result = apiInstance.ricarichePost(user, chargeTime);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -5501,10 +5728,11 @@ namespace Example
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\ApiRicaricheApi();
-$body = ; // Ricariche | 
+$user = user_example; // String | 
+$chargeTime = 56; // Integer | 
 
 try {
-    $result = $api_instance->ricarichePost($body);
+    $result = $api_instance->ricarichePost($user, $chargeTime);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling RicaricheApi->ricarichePost: ', $e->getMessage(), PHP_EOL;
@@ -5518,10 +5746,11 @@ use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::RicaricheApi;
 
 my $api_instance = WWW::SwaggerClient::RicaricheApi->new();
-my $body = WWW::SwaggerClient::Object::Ricariche->new(); # Ricariche | 
+my $user = user_example; # String | 
+my $chargeTime = 56; # Integer | 
 
 eval { 
-    my $result = $api_instance->ricarichePost(body => $body);
+    my $result = $api_instance->ricarichePost(user => $user, chargeTime => $chargeTime);
     print Dumper($result);
 };
 if ($@) {
@@ -5538,10 +5767,11 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.RicaricheApi()
-body =  # Ricariche | 
+user = user_example # String | 
+chargeTime = 56 # Integer | 
 
 try: 
-    api_response = api_instance.ricariche_post(body)
+    api_response = api_instance.ricariche_post(user, chargeTime)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling RicaricheApi->ricarichePost: %s\n" % e)</code></pre>
@@ -5552,51 +5782,53 @@ except ApiException as e:
 
 
 
-                            <div class="methodsubtabletitle">Body parameters</div>
+
+
+                            <div class="methodsubtabletitle">Query parameters</div>
                             <table id="methodsubtable">
                               <tr>
                                 <th width="150px">Name</th>
                                 <th>Description</th>
                               </tr>
-                                <tr><td style="width:150px;">body <span style="color:red;">*</span></td>
+                                <tr><td style="width:150px;">user*</td>
                                 <td>
                                 
                                 
-                                <script>
-                                $(document).ready(function() {
-                                  var schemaWrapper = {
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/Ricariche"
-      }
-    }
-  },
-  "required" : true
-};
-                                  var schema = schemaWrapper.content["application/json"].schema;
-                                  if (schema.$ref != null) {
-                                    schema = defsParser.$refs.get(schema.$ref);
-                                  } else {
-                                    schemaWrapper.components = {};
-                                    schemaWrapper.components.schemas = Object.assign({}, defs);
-                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                      console.log(err);
-                                    });
-                                  }
+                                    <div id="d2e199_ricarichePost_user">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    String
+                                                </span>
                                 
-                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
-                                  var result = $('#d2e199_ricarichePost_body');
-                                  result.empty();
-                                  result.append(view.render());
-                                });
-                                </script>
-                                <div id="d2e199_ricarichePost_body"></div>
+                                            </div>
+                                                <div class="inner required">
+                                                    Required
+                                                </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                                <tr><td style="width:150px;">charge_time*</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_ricarichePost_chargeTime">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    Integer
+                                                </span>
+                                
+                                            </div>
+                                                <div class="inner required">
+                                                    Required
+                                                </div>
+                                        </div>
+                                    </div>
                                 </td>
                                 </tr>
                             </table>
-
-
 
                           <h2>Responses</h2>
                             <h3> Status: 201 - Ricarica creata con successo </h3>
@@ -5618,7 +5850,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/Ricariche"
+        "$ref" : "#/components/schemas/inline_response_201_1"
       }
     }
   }
@@ -5695,102 +5927,6 @@ except ApiException as e:
                                 </div>
                             </div>
 
-                            <h3> Status: 401 - Accesso non autorizzato </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-ricarichePost-401-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-ricarichePost-401-schema">
-                                  <div id='responses-ricarichePost-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Accesso non autorizzato",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/inline_response_400"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-ricarichePost-401-schema-data').val(stringify(schema));
-                                        var result = $('#responses-ricarichePost-401-schema-401');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-ricarichePost-401-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                            <h3> Status: 500 - Errore interno </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-ricarichePost-500-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-ricarichePost-500-schema">
-                                  <div id='responses-ricarichePost-500-schema-500' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Errore interno",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/inline_response_400"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-ricarichePost-500-schema-data').val(stringify(schema));
-                                        var result = $('#responses-ricarichePost-500-schema-500');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-ricarichePost-500-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
                         </article>
                       </div>
                       <hr>
@@ -5806,7 +5942,7 @@ except ApiException as e:
                         <p class="marked">Ritorna una ricarica specifica dalla prenotazione</p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/ricariche/{prenotazione}/</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/ricariche/{prenotazione}</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
@@ -5828,7 +5964,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Ricariche-ricarichePrenotazioneGet-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/ricariche/{prenotazione}/"</code></pre>
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/ricariche/{prenotazione}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Ricariche-ricarichePrenotazioneGet-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -6281,96 +6417,99 @@ except ApiException as e:
                       </div>
                       <hr>
                   </section>
-                <section id="api-Utenti">
-                  <h1>Utenti</h1>
-                    <div id="api-Utenti-utentiGet">
-                      <article id="api-Utenti-utentiGet-0" data-group="User" data-name="utentiGet" data-version="0">
+                <section id="api-StatoUtente">
+                  <h1>StatoUtente</h1>
+                    <div id="api-StatoUtente-statoUtenteGet">
+                      <article id="api-StatoUtente-statoUtenteGet-0" data-group="User" data-name="statoUtenteGet" data-version="0">
                         <div class="pull-left">
-                          <h1>utentiGet</h1>
+                          <h1>statoUtenteGet</h1>
                           <p></p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked">Ritorna una lista di utenti</p>
+                        <p class="marked">Ritorna lo stato dell&#x27;utente(posteggio e ricarica)</p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/utenti</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/statoUtente</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Utenti-utentiGet-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Utenti-utentiGet-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Utenti-utentiGet-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Utenti-utentiGet-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Utenti-utentiGet-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Utenti-utentiGet-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Utenti-utentiGet-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Utenti-utentiGet-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Utenti-utentiGet-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Utenti-utentiGet-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Utenti-utentiGet-0-python">Python</a></li>
+                          <li class="active"><a href="#examples-StatoUtente-statoUtenteGet-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-StatoUtente-statoUtenteGet-0-java">Java</a></li>
+                          <li class=""><a href="#examples-StatoUtente-statoUtenteGet-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-StatoUtente-statoUtenteGet-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-StatoUtente-statoUtenteGet-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-StatoUtente-statoUtenteGet-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-StatoUtente-statoUtenteGet-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-StatoUtente-statoUtenteGet-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-StatoUtente-statoUtenteGet-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-StatoUtente-statoUtenteGet-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-StatoUtente-statoUtenteGet-0-python">Python</a></li>
                         </ul>
 
                         <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Utenti-utentiGet-0-curl">
+                          <div class="tab-pane active" id="examples-StatoUtente-statoUtenteGet-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/utenti"</code></pre>
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/statoUtente?user="</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-Utenti-utentiGet-0-java">
+                          <div class="tab-pane" id="examples-StatoUtente-statoUtenteGet-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
 import io.swagger.client.auth.*;
 import io.swagger.client.model.*;
-import io.swagger.client.api.UtentiApi;
+import io.swagger.client.api.StatoUtenteApi;
 
 import java.io.File;
 import java.util.*;
 
-public class UtentiApiExample {
+public class StatoUtenteApiExample {
 
     public static void main(String[] args) {
         
-        UtentiApi apiInstance = new UtentiApi();
+        StatoUtenteApi apiInstance = new StatoUtenteApi();
+        String user = user_example; // String | 
         try {
-            array[Utenti] result = apiInstance.utentiGet();
+            array[Stato_Utente] result = apiInstance.statoUtenteGet(user);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling UtentiApi#utentiGet");
+            System.err.println("Exception when calling StatoUtenteApi#statoUtenteGet");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-Utenti-utentiGet-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.UtentiApi;
+                          <div class="tab-pane" id="examples-StatoUtente-statoUtenteGet-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.StatoUtenteApi;
 
-public class UtentiApiExample {
+public class StatoUtenteApiExample {
 
     public static void main(String[] args) {
-        UtentiApi apiInstance = new UtentiApi();
+        StatoUtenteApi apiInstance = new StatoUtenteApi();
+        String user = user_example; // String | 
         try {
-            array[Utenti] result = apiInstance.utentiGet();
+            array[Stato_Utente] result = apiInstance.statoUtenteGet(user);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling UtentiApi#utentiGet");
+            System.err.println("Exception when calling StatoUtenteApi#statoUtenteGet");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
   <!--
-  <div class="tab-pane" id="examples-Utenti-utentiGet-0-groovy">
+  <div class="tab-pane" id="examples-StatoUtente-statoUtenteGet-0-groovy">
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
-                            <div class="tab-pane" id="examples-Utenti-utentiGet-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">
-UtentiApi *apiInstance = [[UtentiApi alloc] init];
+                            <div class="tab-pane" id="examples-StatoUtente-statoUtenteGet-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">String *user = user_example; // 
 
-[apiInstance utentiGetWithCompletionHandler: 
-              ^(array[Utenti] output, NSError* error) {
+StatoUtenteApi *apiInstance = [[StatoUtenteApi alloc] init];
+
+[apiInstance statoUtenteGetWith:user
+              completionHandler: ^(array[Stato_Utente] output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -6381,10 +6520,12 @@ UtentiApi *apiInstance = [[UtentiApi alloc] init];
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Utenti-utentiGet-0-javascript">
+                            <div class="tab-pane" id="examples-StatoUtente-statoUtenteGet-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var GestioneParcheggioSmart = require('gestione_parcheggio_smart');
 
-var api = new GestioneParcheggioSmart.UtentiApi()
+var api = new GestioneParcheggioSmart.StatoUtenteApi()
+var user = user_example; // {{String}} 
+
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -6392,14 +6533,14 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.utentiGet(callback);
+api.statoUtenteGet(user, callback);
 </code></pre>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-Utenti-utentiGet-0-angular">
+                            <!--<div class="tab-pane" id="examples-StatoUtente-statoUtenteGet-0-angular">
               <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
             </div>-->
-                            <div class="tab-pane" id="examples-Utenti-utentiGet-0-csharp">
+                            <div class="tab-pane" id="examples-StatoUtente-statoUtenteGet-0-csharp">
                               <pre class="prettyprint"><code class="language-cs">using System;
 using System.Diagnostics;
 using IO.Swagger.Api;
@@ -6408,21 +6549,22 @@ using IO.Swagger.Model;
 
 namespace Example
 {
-    public class utentiGetExample
+    public class statoUtenteGetExample
     {
         public void main()
         {
 
-            var apiInstance = new UtentiApi();
+            var apiInstance = new StatoUtenteApi();
+            var user = user_example;  // String | 
 
             try
             {
-                array[Utenti] result = apiInstance.utentiGet();
+                array[Stato_Utente] result = apiInstance.statoUtenteGet(user);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
             {
-                Debug.Print("Exception when calling UtentiApi.utentiGet: " + e.Message );
+                Debug.Print("Exception when calling StatoUtenteApi.statoUtenteGet: " + e.Message );
             }
         }
     }
@@ -6430,38 +6572,40 @@ namespace Example
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Utenti-utentiGet-0-php">
+                            <div class="tab-pane" id="examples-StatoUtente-statoUtenteGet-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\ApiUtentiApi();
+$api_instance = new Swagger\Client\ApiStatoUtenteApi();
+$user = user_example; // String | 
 
 try {
-    $result = $api_instance->utentiGet();
+    $result = $api_instance->statoUtenteGet($user);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling UtentiApi->utentiGet: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling StatoUtenteApi->statoUtenteGet: ', $e->getMessage(), PHP_EOL;
 }
 ?></code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Utenti-utentiGet-0-perl">
+                            <div class="tab-pane" id="examples-StatoUtente-statoUtenteGet-0-perl">
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::UtentiApi;
+use WWW::SwaggerClient::StatoUtenteApi;
 
-my $api_instance = WWW::SwaggerClient::UtentiApi->new();
+my $api_instance = WWW::SwaggerClient::StatoUtenteApi->new();
+my $user = user_example; # String | 
 
 eval { 
-    my $result = $api_instance->utentiGet();
+    my $result = $api_instance->statoUtenteGet(user => $user);
     print Dumper($result);
 };
 if ($@) {
-    warn "Exception when calling UtentiApi->utentiGet: $@\n";
+    warn "Exception when calling StatoUtenteApi->statoUtenteGet: $@\n";
 }</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Utenti-utentiGet-0-python">
+                            <div class="tab-pane" id="examples-StatoUtente-statoUtenteGet-0-python">
                               <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
 import time
 import swagger_client
@@ -6469,13 +6613,14 @@ from swagger_client.rest import ApiException
 from pprint import pprint
 
 # create an instance of the API class
-api_instance = swagger_client.UtentiApi()
+api_instance = swagger_client.StatoUtenteApi()
+user = user_example # String | 
 
 try: 
-    api_response = api_instance.utenti_get()
+    api_response = api_instance.stato_utente_get(user)
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling UtentiApi->utentiGet: %s\n" % e)</code></pre>
+    print("Exception when calling StatoUtenteApi->statoUtenteGet: %s\n" % e)</code></pre>
                             </div>
                           </div>
 
@@ -6485,30 +6630,56 @@ except ApiException as e:
 
 
 
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">user*</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_statoUtenteGet_user">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    String
+                                                </span>
+                                
+                                            </div>
+                                                <div class="inner required">
+                                                    Required
+                                                </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                            </table>
 
                           <h2>Responses</h2>
-                            <h3> Status: 200 - Utenti ritornati con successo </h3>
+                            <h3> Status: 200 - Stato utente ritornato con successo </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                                 <li class="active">
-                                  <a data-toggle="tab" href="#responses-utentiGet-200-schema">Schema</a>
+                                  <a data-toggle="tab" href="#responses-statoUtenteGet-200-schema">Schema</a>
                                 </li>
 
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-utentiGet-200-schema">
-                                  <div id='responses-utentiGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                <div class="tab-pane active" id="responses-statoUtenteGet-200-schema">
+                                  <div id='responses-statoUtenteGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
                                     <script>
                                       $(document).ready(function() {
                                         var schemaWrapper = {
-  "description" : "Utenti ritornati con successo",
+  "description" : "Stato utente ritornato con successo",
   "content" : {
     "application/json" : {
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/Utenti"
+          "$ref" : "#/components/schemas/Stato_Utente"
         },
         "x-content-type" : "application/json"
       }
@@ -6528,164 +6699,348 @@ except ApiException as e:
 
                                         //console.log(JSON.stringify(schema));
                                         var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-utentiGet-200-schema-data').val(stringify(schema));
-                                        var result = $('#responses-utentiGet-200-schema-200');
+                                        $('#responses-statoUtenteGet-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-statoUtenteGet-200-schema-200');
                                         result.empty();
                                         result.append(view.render());
                                       });
                                     </script>
                                   </div>
-                                  <input id='responses-utentiGet-200-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                            <h3> Status: 400 - Richiesta non valida </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-utentiGet-400-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-utentiGet-400-schema">
-                                  <div id='responses-utentiGet-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Richiesta non valida",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/inline_response_400"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-utentiGet-400-schema-data').val(stringify(schema));
-                                        var result = $('#responses-utentiGet-400-schema-400');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-utentiGet-400-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                            <h3> Status: 401 - Accesso non autorizzato </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-utentiGet-401-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-utentiGet-401-schema">
-                                  <div id='responses-utentiGet-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Accesso non autorizzato",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/inline_response_400"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-utentiGet-401-schema-data').val(stringify(schema));
-                                        var result = $('#responses-utentiGet-401-schema-401');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-utentiGet-401-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                            <h3> Status: 500 - Errore interno </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-utentiGet-500-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-utentiGet-500-schema">
-                                  <div id='responses-utentiGet-500-schema-500' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Errore interno",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/inline_response_400"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-utentiGet-500-schema-data').val(stringify(schema));
-                                        var result = $('#responses-utentiGet-500-schema-500');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-utentiGet-500-schema-data' type='hidden' value=''></input>
+                                  <input id='responses-statoUtenteGet-200-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
 
                         </article>
                       </div>
                       <hr>
+                  </section>
+                <section id="api-Storico">
+                  <h1>Storico</h1>
+                    <div id="api-Storico-storicoGet">
+                      <article id="api-Storico-storicoGet-0" data-group="User" data-name="storicoGet" data-version="0">
+                        <div class="pull-left">
+                          <h1>storicoGet</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Ritorna lo storico di un mese dell&#x27;anno richiesto</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/storico</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Storico-storicoGet-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Storico-storicoGet-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Storico-storicoGet-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Storico-storicoGet-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Storico-storicoGet-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Storico-storicoGet-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Storico-storicoGet-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Storico-storicoGet-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Storico-storicoGet-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Storico-storicoGet-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Storico-storicoGet-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Storico-storicoGet-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+-H "Accept: application/json"\
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/storico?year=&month="</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Storico-storicoGet-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.StoricoApi;
+
+import java.io.File;
+import java.util.*;
+
+public class StoricoApiExample {
+
+    public static void main(String[] args) {
+        
+        StoricoApi apiInstance = new StoricoApi();
+        Integer year = 56; // Integer | 
+        Integer month = 56; // Integer | 
+        try {
+            array[Storico] result = apiInstance.storicoGet(year, month);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling StoricoApi#storicoGet");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Storico-storicoGet-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.StoricoApi;
+
+public class StoricoApiExample {
+
+    public static void main(String[] args) {
+        StoricoApi apiInstance = new StoricoApi();
+        Integer year = 56; // Integer | 
+        Integer month = 56; // Integer | 
+        try {
+            array[Storico] result = apiInstance.storicoGet(year, month);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling StoricoApi#storicoGet");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Storico-storicoGet-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Storico-storicoGet-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Integer *year = 56; // 
+Integer *month = 56; // 
+
+StoricoApi *apiInstance = [[StoricoApi alloc] init];
+
+[apiInstance storicoGetWith:year
+    month:month
+              completionHandler: ^(array[Storico] output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Storico-storicoGet-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var GestioneParcheggioSmart = require('gestione_parcheggio_smart');
+
+var api = new GestioneParcheggioSmart.StoricoApi()
+var year = 56; // {{Integer}} 
+var month = 56; // {{Integer}} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.storicoGet(year, month, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Storico-storicoGet-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Storico-storicoGet-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class storicoGetExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new StoricoApi();
+            var year = 56;  // Integer | 
+            var month = 56;  // Integer | 
+
+            try
+            {
+                array[Storico] result = apiInstance.storicoGet(year, month);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling StoricoApi.storicoGet: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Storico-storicoGet-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiStoricoApi();
+$year = 56; // Integer | 
+$month = 56; // Integer | 
+
+try {
+    $result = $api_instance->storicoGet($year, $month);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling StoricoApi->storicoGet: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Storico-storicoGet-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::StoricoApi;
+
+my $api_instance = WWW::SwaggerClient::StoricoApi->new();
+my $year = 56; # Integer | 
+my $month = 56; # Integer | 
+
+eval { 
+    my $result = $api_instance->storicoGet(year => $year, month => $month);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling StoricoApi->storicoGet: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Storico-storicoGet-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.StoricoApi()
+year = 56 # Integer | 
+month = 56 # Integer | 
+
+try: 
+    api_response = api_instance.storico_get(year, month)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling StoricoApi->storicoGet: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">year*</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_storicoGet_year">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    Integer
+                                                </span>
+                                
+                                            </div>
+                                                <div class="inner required">
+                                                    Required
+                                                </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                                <tr><td style="width:150px;">month*</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_storicoGet_month">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    Integer
+                                                </span>
+                                
+                                            </div>
+                                                <div class="inner required">
+                                                    Required
+                                                </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                            </table>
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - Storico ritornato con successo </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-storicoGet-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-storicoGet-200-schema">
+                                  <div id='responses-storicoGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Storico ritornato con successo",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Storico"
+        },
+        "x-content-type" : "application/json"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-storicoGet-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-storicoGet-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-storicoGet-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                  </section>
+                <section id="api-Utenti">
+                  <h1>Utenti</h1>
                     <div id="api-Utenti-utentiPost">
                       <article id="api-Utenti-utentiPost-0" data-group="User" data-name="utentiPost" data-version="0">
                         <div class="pull-left">
@@ -7392,7 +7747,7 @@ except ApiException as e:
                         <p class="marked">Ritorna un utente specifico dall&#x27;username</p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/utenti/{username}/</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/utenti/{username}</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
@@ -7414,7 +7769,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Utenti-utentiUsernameGet-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/utenti/{username}/"</code></pre>
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/utenti/{username}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Utenti-utentiUsernameGet-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -7734,7 +8089,7 @@ except ApiException as e:
                         <p class="marked">Modifica i dettagli di un utente specifico, escludendo il tipo</p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="put"><code><span class="pln">/utenti/{username}/</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="put"><code><span class="pln">/utenti/{username}</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
@@ -7757,7 +8112,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/utenti/{username}/"</code></pre>
+"https://virtserver.swaggerhub.com/MARCOVECCHIO/ParkCharge/1.0.0/utenti/{username}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Utenti-utentiUsernamePut-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
