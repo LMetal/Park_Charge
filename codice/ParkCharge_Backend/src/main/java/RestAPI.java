@@ -119,7 +119,6 @@ public class RestAPI {
             return ricariche;
         }),gson::toJson);
 
-        //TODO aggiungi swagger
         //richiedi ricarica, ritorna stato posteggio e ricarica utente
         get(baseURL + "/statoUtente", "application/json", ((request, response) -> {
             Ricariche ricaricaUtente = null;
@@ -160,7 +159,6 @@ public class RestAPI {
             return returnJson;
         }), gson::toJson);
 
-        //TODO swagger diverso
         //richiedi ricarica
         post(baseURL + "/ricariche", "application/json", ((request, response) -> {
             HashMap<String, String> responseJson = new HashMap<>();
@@ -362,7 +360,6 @@ public class RestAPI {
         } ),gson::toJson);
 
 
-        //TODO aggiungi a swagger
         //monitora posti
         get(baseURL + "/posti", "application/json", ((request, response) -> {
             var ricariche = gestorePosti.getStatoPosti();
@@ -373,7 +370,7 @@ public class RestAPI {
             return ricariche;
         }),gson::toJson);
 
-        //TODO aggiungi a swagger
+
         //monitora storico
         get(baseURL + "/storico", "application/json", ((request, response) -> {
             var storico = gestorePagamenti.getStorico();
@@ -396,7 +393,6 @@ public class RestAPI {
         }),gson::toJson);
 
         //interrompi ricarica
-        //TODO aggiungi swagger
         delete(baseURL + "/ricariche", "application/json", ((request, response) -> {
             System.out.println("DELETE "+ request.queryParams("id_prenotazione"));
 
