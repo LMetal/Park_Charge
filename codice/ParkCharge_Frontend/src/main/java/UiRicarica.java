@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import javax.swing.*;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -10,6 +11,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,8 +111,6 @@ public class UiRicarica {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = null;
             HttpResponse<String> response = null;
-            Gson gson = new Gson();
-            Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
             try {
                 request = HttpRequest.newBuilder()
                         .uri(new URI(baseURL + "/ricariche?id_prenotazione="+id_prenotazione))
@@ -161,10 +161,67 @@ public class UiRicarica {
     }
 
     public void avviaRichiediRicarica(HashMap<String,Object> utente) {
-        this.mostraFormRicarica(utente);
+        //check possibilità di ricaricare
+        HttpClient client = HttpClient.newHttpClient();
+        Gson gson = new Gson();
+        Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/statoUtente?user="+utente.get("username")))
+                    .header("Content-Type", "application/json")
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body());
+            HashMap<String, Object> statoUtente = gson.fromJson(response.body(), type);
+
+            System.out.println(statoUtente.get("caricando"));
+            if(statoUtente.get("occupazione_iniziata").toString().equals("no")) this.mostraErrore("La prenotazione non è iniziata\nParcheggiare il veicolo e ritentare");
+            else if(statoUtente.get("caricando").toString().equals("si")) this.mostraErrore("Ricarica gia' richiesta");
+            else this.mostraFormRicarica(utente);;
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            this.mostraErrore("Errore comunicazione server");
+        }
     }
 
     private void mostraFormRicarica(HashMap<String,Object> utente) {
+        HttpRequest request = null;
+        HttpResponse response = null;
+        HttpClient client = HttpClient.newHttpClient();
+        // Create a combo box with numbers from 1 to 100
+        Integer[] numbers = new Integer[100];
+        for (int i = 0; i < 100; i++) {
+            numbers[i] = i + 1;
+        }
+        JComboBox<Integer> numberComboBox = new JComboBox<>(numbers);
 
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(new JLabel("Percentuale da ricaricare"), gbc);
+        gbc.gridx = 1;
+        panel.add(numberComboBox, gbc);
+
+        scelta = showConfirmDialog(null, panel, "Richiedi estensione ricarica", OK_CANCEL_OPTION, QUESTION_MESSAGE);
+
+        if(scelta == OK_OPTION){
+            try {
+                request = HttpRequest.newBuilder()
+                        .uri(new URI(baseURL + "/ricariche?user="+utente.get("username")+"&charge_time="+numberComboBox.getSelectedItem()))
+                        .POST(HttpRequest.BodyPublishers.noBody())
+                        .header("Content-Type", "application/json")
+                        .build();
+                System.out.println(request.uri());
+                response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+                if(response.statusCode() == 200) this.mostraSuccesso("Ricarica richiesta con successo");
+                else this.mostraErrore("Richiesta ricarica non completata");
+            } catch (URISyntaxException | IOException | InterruptedException e) {
+                this.mostraErrore("Errore comunicazione server" + e);
+            }
+        }
     }
 }

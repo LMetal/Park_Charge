@@ -113,7 +113,7 @@ public class RestAPI {
             }
 
 
-            var prenotazioneUtente = gestorePosti.getPrenotazioni(request.queryParams("user"));
+            var prenotazioneUtente = gestorePosti.getPrenotazioneUsername(request.queryParams("user"));
             if(prenotazioneUtente != null){
                 ricaricaUtente = gestoreRicariche.getRicaricheByPrenotazione(Integer.toString(prenotazioneUtente.getId()));
             }
