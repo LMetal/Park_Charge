@@ -333,7 +333,7 @@ public class UiPosteggio {
                                     }
                                 }
                                 else
-                                    JOptionPane.showMessageDialog(null, "Ben arrivato caro, il posto a te assegnato e il numero: " + prenoto.get("posto"), "Successo", INFORMATION_MESSAGE);
+                                    JOptionPane.showMessageDialog(null, "Ben arrivato, il posto a te assegnato e il numero: " + prenoto.get("posto"), "Successo", INFORMATION_MESSAGE);
                             }
                         }
                         else

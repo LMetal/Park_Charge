@@ -12,7 +12,7 @@ import static spark.Spark.*;
 public class RestAPI {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public static void main(String[] args) {
+    public static void start(String[] args) {
         // Imposta la porta su cui il server ascolterà
         int port = 4568;
         if (args.length > 0) {
