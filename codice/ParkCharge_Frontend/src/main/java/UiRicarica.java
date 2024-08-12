@@ -175,7 +175,7 @@ public class UiRicarica {
             HashMap<String, Object> statoUtente = gson.fromJson(response.body(), type);
 
             System.out.println(statoUtente.get("caricando"));
-            if(statoUtente.get("occupazione_iniziata").toString().equals("no")) this.mostraErrore("La prenotazione non è iniziata\nParcheggiare il veicolo e ritentare");
+            if(statoUtente.get("occupazione_iniziata").toString().equals("no")) this.mostraErrore("La prenotazione non e' iniziata\nParcheggiare il veicolo e ritentare");
             else if(statoUtente.get("caricando").toString().equals("si")) this.mostraErrore("Ricarica gia' richiesta");
             else this.mostraFormRicarica(utente);;
         } catch (URISyntaxException | IOException | InterruptedException e) {
