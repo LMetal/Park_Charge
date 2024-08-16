@@ -1,0 +1,1 @@
+Per emulare eseguire main.py
