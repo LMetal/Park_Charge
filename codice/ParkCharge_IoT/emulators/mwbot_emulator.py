@@ -67,7 +67,7 @@ def run():
     client.connect(broker, port, 60)
     print("Connected to broker")
     client.subscribe(topic_subscribe)
-    print(f"Subscribed to topic: {topic_subscribe}")
+    print(f"Subscribed to topic: {topic_subscribe}\n")
     client.on_message = on_message
     client.loop_start()
 
