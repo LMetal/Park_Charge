@@ -99,7 +99,6 @@ public class UiPosteggio {
         pulsantiCancella[0] = "Indietro";
         pulsantiCancella[1] = "Conferma";
 
-
         prenotazione = new HashMap<>();
         gson = new Gson();
     }
@@ -133,7 +132,6 @@ public class UiPosteggio {
                     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
                     if(response.statusCode() == 201){
                         prenotazione = gson.fromJson(response.body(), new TypeToken<HashMap<String,Object>>() {}.getType());
-
 
                         JOptionPane.showMessageDialog(null, "Ben arrivato, il posto a te assegnato e il numero: " + prenotazione.get("posto"), "Successo", INFORMATION_MESSAGE);
                         return prenotazione;
@@ -313,7 +311,7 @@ public class UiPosteggio {
                                 // Formatter per convertire la stringa in un oggetto LocalDateTime
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                                 LocalDateTime tempoArrivo = LocalDateTime.parse((CharSequence) prenoto.get("tempo_arrivo"), formatter);
-                                String queryParams = String.format("?id=%s", URLEncoder.encode((String) prenoto.get("id"), "UTF-8"));
+                                String queryParams = String.format("?id=%s", URLEncoder.encode(prenoto.get("id").toString(), "UTF-8"));
 
                                 // Ottiene il tempo attuale
                                 LocalDateTime tempoAttuale = LocalDateTime.now();
