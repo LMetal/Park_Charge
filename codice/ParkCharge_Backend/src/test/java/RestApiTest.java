@@ -47,7 +47,8 @@ public class RestApiTest {
 
     @BeforeAll
     public static void setUp(){
-        RestAPI.start(new String[]{"6789"});
+        RestAPI api = new RestAPI();
+        api.start(new String[]{"6789"});
     }
 
     @AfterAll
