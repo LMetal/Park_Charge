@@ -1,6 +1,7 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class EDF {
     //TODO aggiungi campo percentuale ricaricata a database ricariche
@@ -65,14 +66,18 @@ public class EDF {
      * @param ricariche list of ricariche
      * @return place number for the MWBot to charge, -1 if MWBot can go idle (nothing to charge)
      */
-    public static int getJobPosto(ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche){
+    public static Prenotazioni getJobPosto(ArrayList<Prenotazioni> prenotazioni, ArrayList<Ricariche> ricariche){
+        //rimuovo prenotazioni conclose (per testing)
+        prenotazioni = (ArrayList<Prenotazioni>) prenotazioni.stream().filter(p -> p.getTempo_uscita().isAfter(LocalDateTime.now())).collect(Collectors.toList());
+
+        //ordino per tempo di uscita
         prenotazioni.sort(Comparator.comparing(Prenotazioni::getTempo_uscita));
 
         for(Prenotazioni p: prenotazioni){
             if(ricariche.stream().anyMatch(r -> r.getPrenotazione() == p.getId())){
-                return p.getPosto();
+                return p;
             }
         }
-        return -1;
+        return null;
     }
 }

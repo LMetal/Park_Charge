@@ -524,7 +524,7 @@ public class RestApiTest {
             Prenotazioni prenotazioneVecchia = null;
             for (Prenotazioni prenotazione : prenotazioni){
                 if(prenotazione.getUtente().equals("utenteTest")){
-                    prenotazioneVecchia = new Prenotazioni(prenotazione.getId(),prenotazione.getTempo_arrivo(),prenotazione.getTempo_uscita(),prenotazione.getUtente(),prenotazione.getPosto());
+                    //prenotazioneVecchia = new Prenotazioni(prenotazione.getId(),prenotazione.getTempo_arrivo(),prenotazione.getTempo_uscita(),prenotazione.getUtente(),prenotazione.getPosto());
                 }
             }
 
@@ -690,7 +690,7 @@ public class RestApiTest {
 
         LocalDateTime now = LocalDateTime.now();
         //nuova prenotazione
-        gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1), 1, "occupa");
+        //gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1), 1, "occupa");
 
         request = HttpRequest.newBuilder()
                 .uri(new URI(baseURL + "/statoUtente?user=prova"))
@@ -738,7 +738,7 @@ public class RestApiTest {
         //setup utente, prenotazione
         LocalDateTime now = LocalDateTime.now();
         gestoreUtenti.creaUtenti(new Utente("nom", "cogn", "prova", 1, "1234"), new Credenziali("prova", "pass123"));
-        gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1), 1, "occupa");
+        //gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1), 1, "occupa");
         int id_prenotazione = gestorePosti.getPrenotazioneUsername("prova").getId();
 
         //nuova ricarica
