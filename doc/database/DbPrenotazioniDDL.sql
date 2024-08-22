@@ -12,5 +12,6 @@ CREATE TABLE "Prenotazioni" (
     "tempo_arrivo" TEXT,
     "tempo_uscita" TEXT,
     "utente" TEXT,
-    "posto" INTEGER
+    "posto" INTEGER,
+    "penale" BOOLEAN
 );
