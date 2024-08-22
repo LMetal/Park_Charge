@@ -3,14 +3,15 @@ import com.google.gson.JsonObject;
 import org.eclipse.paho.client.mqttv3.*;
 
 public class Backend {
-    final public String username = "BackEnd";
-    final public String password = "pass3";
-    private final String brokerUrl = "tcp://localhost:10011";
-    private final String topicSensor = "ParkCharge/StatoPosti/#";
-    private final String topicPagamento = "ParkCharge/Pagamento/#";
-    private MqttClient client;
+    final static public String username = "BackEnd";
+    final static public String password = "pass3";
+    private static final String brokerUrl = "tcp://localhost:10011";
+    private static final String topicSensor = "ParkCharge/StatoPosti/#";
+    private static final String topicPagamento = "ParkCharge/Pagamento/#";
 
-    public void start() {
+    private static MqttClient client;
+
+    public static void start() {
         GestorePosti gestorePosti = new GestorePosti();
 
         try {
@@ -23,7 +24,7 @@ public class Backend {
 
             // Sottoscrizione ai topic
             client.subscribe(topicSensor, gestorePosti::statoPosti);
-            client.subscribe(topicPagamento, this::stampaPagamento);
+            client.subscribe(topicPagamento, Backend::stampaPagamento);
 
             System.out.println("Sottoscritto ai topic");
         } catch (MqttException e) {
@@ -31,7 +32,8 @@ public class Backend {
         }
     }
 
-    private void stampaPagamento(String topic, MqttMessage message) {
+    // Metodo per la stampa del pagamento completato
+    private static void stampaPagamento(String topic, MqttMessage message) {
         String payload = new String(message.getPayload());
         System.out.println("Messaggio Device ricevuto su " + topic + ": " + payload);
 
@@ -44,7 +46,8 @@ public class Backend {
         System.out.println("L'utente " + username + " ha completato il pagamento di " + totale + " euro");
     }
 
-    public void publish(String topic, String message) {
+    // Metodo per tutti i publish del Backend
+    public static void publish(String topic, String message) {
         try {
             MqttMessage mqttMessage = new MqttMessage(message.getBytes());
             mqttMessage.setQos(1);

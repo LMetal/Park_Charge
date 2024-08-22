@@ -5,8 +5,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.time.format.DateTimeFormatter;
 
@@ -173,31 +171,35 @@ public class GestorePosti {
         return dbPrenotazioni.query("SELECT * FROM PostoAuto");
     }
 
-    public boolean statoPosti(String topic, MqttMessage message) {
+    public void statoPosti(String topic, MqttMessage message) {
         Gson gson = new Gson();
         String payload = new String(message.getPayload());
         System.out.println("Messaggio sensore ricevuto su " + topic + ": " + payload);
         String idPosto = topic.split("/")[2];
         HashMap<String, String> stato = gson.fromJson(payload, new TypeToken<HashMap<String, String>>(){}.getType());
 
-        String comandoSql;
         if(stato.get("stato").equals("occupato")){//occupato
-            comandoSql = "UPDATE PostoAuto SET disponibilita = 1 WHERE id = \"" + idPosto + "\";";
+            // Dopo aver occupato il posto, viene segnato come occupato in modo tale che non venga utilizzato da altre prenotazioni
+            String comandoSql = "UPDATE PostoAuto SET disponibilita = 1 WHERE id = \"" + idPosto + "\";";
             dbPrenotazioni.update(comandoSql);
-            return true;
         }
         else{//libero
-            comandoSql = "UPDATE PostoAuto SET disponibilita = 0 WHERE id = \"" + idPosto + "\";";
+            // Dopo aver liberato il posto, viene segnato come libero in modo tale che possa essere utilizzato da altre prenotazioni
+            String comandoSql = "UPDATE PostoAuto SET disponibilita = 0 WHERE id = \"" + idPosto + "\";";
             dbPrenotazioni.update(comandoSql);
+
             Prenotazioni prenotazioneConclusa = this.getPrenotazioniIdPosto(idPosto).get(0);
             Ricariche ricaricaConclusa = gestoreRicariche.getRicaricheByPrenotazione(String.valueOf(prenotazioneConclusa.getId()));
+
+            // Viene richiesto il pagamento andando ad utilizzare le informazioni presenti nella prenotazioni e la possibile ricarica
             gestorePagamenti.effettuaPagamento(prenotazioneConclusa,ricaricaConclusa);
         }
-        return true;
     }
 
+    // Metodo per ottenere le prenotazioni dato l'id del posto
     public ArrayList<Prenotazioni> getPrenotazioniIdPosto(String idPosto) {
         ArrayList<Prenotazioni> listaPrenotazioni = new ArrayList<>();
+        // Order by viene utilizzato in quanto dobbiamo prendere la prima prenotazione che è quella che sta finendo
         String comandoSql = "SELECT * FROM Prenotazioni WHERE posto = \"" + idPosto + "\" ORDER BY tempo_arrivo;";
         System.out.println(comandoSql);
         var rs = dbPrenotazioni.query(comandoSql);
@@ -208,6 +210,7 @@ public class GestorePosti {
         return listaPrenotazioni;
     }
 
+    // Metodo per aggiungere la penale ad una prenotazione in modo tale da considerarla durante il pagamento della sosta
     public void aggiungiPenalePrenotazione(String idParam) {
         String comandoSql = "UPDATE Prenotazioni SET penale = TRUE WHERE id = \"" + idParam + "\";";
         dbPrenotazioni.update(comandoSql);

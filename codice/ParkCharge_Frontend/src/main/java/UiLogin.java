@@ -26,7 +26,6 @@ public class UiLogin {
     private int sceltaMenu;
     private String username;
     private String password;
-    private String esitoControllo;
     private String esitoRicerca;
     private HashMap<String,Object> utente;
     private HashMap<String,Object> prenotazione;
