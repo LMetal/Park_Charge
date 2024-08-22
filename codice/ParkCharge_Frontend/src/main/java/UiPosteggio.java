@@ -6,6 +6,7 @@ import java.awt.*;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -312,6 +313,7 @@ public class UiPosteggio {
                                 // Formatter per convertire la stringa in un oggetto LocalDateTime
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                                 LocalDateTime tempoArrivo = LocalDateTime.parse((CharSequence) prenoto.get("tempo_arrivo"), formatter);
+                                String queryParams = String.format("?id=%s", URLEncoder.encode((String) prenoto.get("id"), "UTF-8"));
 
                                 // Ottiene il tempo attuale
                                 LocalDateTime tempoAttuale = LocalDateTime.now();
@@ -320,7 +322,7 @@ public class UiPosteggio {
                                     // Richiesta post API REST per ootenere il costo della penale
                                     client = HttpClient.newHttpClient();
                                     request = HttpRequest.newBuilder()
-                                            .uri(new URI(baseURL + "/costo"))
+                                            .uri(new URI(baseURL + "/costo" + queryParams))
                                             .header("Content-Type", "application/json")
                                             .GET()
                                             .build();
@@ -331,6 +333,9 @@ public class UiPosteggio {
                                         ArrayList<HashMap<String, Object>> costiAttuali = gson.fromJson(response.body(), new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType());
                                         JOptionPane.showMessageDialog(null, "Ben arrivato, il posto a te assegnato e il numero: " + prenoto.get("posto") + "\ne ti e stato addebitato un costo di " + costiAttuali.get(0).get("penale") + " euro a causa del ritardo superiore ai 30 minuti", "Successo", INFORMATION_MESSAGE);
                                     }
+                                }
+                                else if(tempoAttuale.isBefore(tempoArrivo)){
+                                    JOptionPane.showMessageDialog(null, "Sei in anticipo, la tua prenotazione inizia il: " + prenoto.get("tempo_arrivo"), "Anticipo", INFORMATION_MESSAGE);
                                 }
                                 else
                                     JOptionPane.showMessageDialog(null, "Ben arrivato, il posto a te assegnato e il numero: " + prenoto.get("posto"), "Successo", INFORMATION_MESSAGE);

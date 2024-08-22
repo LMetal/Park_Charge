@@ -1,6 +1,9 @@
+import DataBase.DbPrenotazioni;
 import DataBase.DbStorico;
 import DataBase.DbUtenti;
+import com.google.gson.Gson;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,10 +11,14 @@ import java.util.Map;
 
 public class GestorePagamenti {
     private DbStorico dbStorico;
+    private DbPrenotazioni dbPrenotazioni;
+    private Backend backend;
 
     // Costruttore
     public GestorePagamenti(){
         this.dbStorico = new DbStorico();
+        this.backend = new Backend();
+        this.dbPrenotazioni = new DbPrenotazioni();
     }
 
     // Metodo per ottenere tutti i costi dal database
@@ -52,5 +59,56 @@ public class GestorePagamenti {
                 "WHERE Pagamenti.costo = PrezzoPosteggio.id";
 
         return dbStorico.query(comandoSql);
+    }
+
+    public void effettuaPagamento(Prenotazioni prenotazioneConclusa, Ricariche ricaricaConclusa) {
+        HashMap<String, Object> costiAttuali = this.getCosti().get(0);
+        HashMap<String,Object> prezzoPosteggio = new HashMap<>();
+
+        Duration tempoSosta = Duration.between(prenotazioneConclusa.getTempo_arrivo(), prenotazioneConclusa.getTempo_uscita());
+        Object costoPosteggioObj = costiAttuali.get("costo_posteggio");
+
+        float costoPosteggio = ((Number) costoPosteggioObj).floatValue();
+        float minutiSosta = (float) tempoSosta.toMinutes();
+        float costoSosta = minutiSosta * costoPosteggio;
+
+        float costoRicarica = 0;
+        int penale = 0;
+        int ricarica = 0;
+
+        if(prenotazioneConclusa.getPenale()){
+            penale = (int) costiAttuali.get("penale");
+            costoSosta += penale;
+        }
+        prezzoPosteggio.put("tempoSosta", tempoSosta.toMinutes());
+        prezzoPosteggio.put("costoSosta", costoSosta);
+        if( ricaricaConclusa == null){
+            prezzoPosteggio.put("kilowattUsati",0);
+            prezzoPosteggio.put("costoRicarica",0);
+        }
+        else{
+            ricarica = ricaricaConclusa.getPrenotazione();
+            int kilowattUsati = ricaricaConclusa.getPercentuale_erogata(); // 1% = 1 KW
+            costoRicarica = kilowattUsati * (float) costiAttuali.get("costo_ricarica");
+            prezzoPosteggio.put("kilowattUsati", kilowattUsati);
+            prezzoPosteggio.put("costoRicarica", costoRicarica);
+        }
+        System.out.println("siamo arrivati qua");
+        Gson gson = new Gson();
+        backend.publish("ParkCharge/Notifiche/SostaConclusa/" + prenotazioneConclusa.getUtente(), gson.toJson(prezzoPosteggio));
+        int lastId;
+
+        String deletConclusa = "DELETE FROM Prenotazioni WHERE id = \"" + prenotazioneConclusa.getId() + "\";";
+        dbPrenotazioni.update(deletConclusa);
+
+        String insertPrezzoPosteggio = "INSERT INTO PrezzoPosteggio (costo_posteggio,costo_ricarica,penale) VALUES ('" + costoSosta + "','" + costoRicarica + "','" + penale + "');";
+        dbStorico.update(insertPrezzoPosteggio);
+
+        String selectLastId = "SELECT last_insert_rowid()";
+        var rs = dbStorico.query(selectLastId);
+        lastId =(int) rs.get(0).get("last_insert_rowid()");
+
+        String insertPagamento = "INSERT INTO Pagamenti (id,tempo_arrivo,tempo_uscita,utente,posto,ricarica,costo)VALUES ('" + prenotazioneConclusa.getId() + "','" + prenotazioneConclusa.getTempo_arrivo() + "','" + prenotazioneConclusa.getTempo_uscita() + "','" + prenotazioneConclusa.getUtente() + "','" + prenotazioneConclusa.getPosto() + "','" + ricarica + "', '" + lastId + "' );";
+        dbStorico.update(insertPagamento);
     }
 }

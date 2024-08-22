@@ -54,16 +54,4 @@ public class GestoreIoT {
             e.printStackTrace();
         }
     }
-
-    /*
-    public void stop() {
-        try {
-            if (client != null && client.isConnected()) {
-                client.disconnect();
-            }
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-    }
-     */
 }
