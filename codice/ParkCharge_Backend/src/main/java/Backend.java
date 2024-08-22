@@ -8,10 +8,12 @@ public class Backend {
     private final String brokerUrl = "tcp://localhost:10011";
     private final String topicSensor = "ParkCharge/StatoPosti/#";
     private final String topicPagamento = "ParkCharge/Pagamento/#";
-    private MqttClient client;
+    private final String topicRicariche = "ParkCharge/StatoRicariche/#";
+    private static MqttClient client;
 
     public void start() {
         GestorePosti gestorePosti = new GestorePosti();
+        GestoreRicariche gestoreRicariche = new GestoreRicariche();
 
         try {
             client = new MqttClient(brokerUrl, MqttClient.generateClientId());
@@ -24,6 +26,7 @@ public class Backend {
             // Sottoscrizione ai topic
             client.subscribe(topicSensor, gestorePosti::statoPosti);
             client.subscribe(topicPagamento, this::stampaPagamento);
+            client.subscribe(topicRicariche, gestoreRicariche::statoRicariche);
 
             System.out.println("Sottoscritto ai topic");
         } catch (MqttException e) {
@@ -44,7 +47,7 @@ public class Backend {
         System.out.println("L'utente " + username + " ha completato il pagamento di " + totale + " euro");
     }
 
-    public void publish(String topic, String message) {
+    public static void publish(String topic, String message) {
         try {
             MqttMessage mqttMessage = new MqttMessage(message.getBytes());
             mqttMessage.setQos(1);
