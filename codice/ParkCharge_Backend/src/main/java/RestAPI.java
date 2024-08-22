@@ -12,7 +12,7 @@ import static spark.Spark.*;
 public class RestAPI {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public static void start(String[] args) {
+    public void start(String[] args) {
         // Imposta la porta su cui il server ascolterà
         int port = 4568;
         if (args.length > 0) {
@@ -196,7 +196,10 @@ public class RestAPI {
 
         get(baseURL + "/costo", "application/json", ((request, response) -> {
             var costi = gestorePagamenti.getCosti();
-
+            if(request.queryParams("id") != null){
+                String idParam = request.queryParams("id");
+                gestorePosti.aggiungiPenalePrenotazione(idParam);
+            }
             response.status(200);
             response.type("application/json");
 

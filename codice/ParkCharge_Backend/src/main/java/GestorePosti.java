@@ -1,18 +1,27 @@
 import DataBase.DbPrenotazioni;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.time.format.DateTimeFormatter;
 
 
 public class GestorePosti {
     private DbPrenotazioni dbPrenotazioni;
+    private GestorePagamenti gestorePagamenti;
+    private GestoreRicariche gestoreRicariche;
     DateTimeFormatter formatter;
 
     // Costruttore
     public GestorePosti(){
         this.dbPrenotazioni = new DbPrenotazioni();
+        this.gestorePagamenti = new GestorePagamenti();
+        this.gestoreRicariche = new GestoreRicariche();
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 
@@ -47,7 +56,7 @@ public class GestorePosti {
         // Verifica la disponibilità del posto per la nuova prenotazione
         if(this.verificaDisponibilta(idPostiAuto,prenotazioni,nuovaPrenotazione)){
             // Costruisce e esegue la query per inserire la nuova prenotazione nel database
-            String comandoSql = "INSERT INTO Prenotazioni (tempo_arrivo, tempo_uscita, utente, posto) VALUES ('" + nuovaPrenotazione.getTempo_arrivo().format(formatter) + "', '" + nuovaPrenotazione.getTempo_uscita().format(formatter) + "', '" + nuovaPrenotazione.getUtente() + "', " + nuovaPrenotazione.getPosto() + ");";
+            String comandoSql = "INSERT INTO Prenotazioni (tempo_arrivo, tempo_uscita, utente, posto,penale) VALUES ('" + nuovaPrenotazione.getTempo_arrivo().format(formatter) + "', '" + nuovaPrenotazione.getTempo_uscita().format(formatter) + "', '" + nuovaPrenotazione.getUtente() + "', '" + nuovaPrenotazione.getPosto() + "' , '0' );";
             System.out.println(comandoSql);
 
             // Se l'inserimento ha successo, aggiorna l'oggetto nuovaPrenotazione con i dati aggiornati e lo restituisce
@@ -106,7 +115,7 @@ public class GestorePosti {
         if(rs.isEmpty())
             return null;
 
-        return new Prenotazioni((Integer) rs.get(0).get("id"), LocalDateTime.parse((CharSequence) rs.get(0).get("tempo_arrivo"), formatter), LocalDateTime.parse((CharSequence) rs.get(0).get("tempo_uscita"), formatter), (String) rs.get(0).get("utente"), (Integer) rs.get(0).get("posto"));
+        return new Prenotazioni((Integer) rs.get(0).get("id"), LocalDateTime.parse((CharSequence) rs.get(0).get("tempo_arrivo"), formatter), LocalDateTime.parse((CharSequence) rs.get(0).get("tempo_uscita"), formatter), (String) rs.get(0).get("utente"), (Integer) rs.get(0).get("posto"),(Integer) rs.get(0).get("penale") == 1);
 
     }
 
@@ -120,7 +129,7 @@ public class GestorePosti {
         if(rs.isEmpty())
             return null;
 
-        return new Prenotazioni((Integer) rs.get(0).get("id"), LocalDateTime.parse((CharSequence) rs.get(0).get("tempo_arrivo"), formatter), LocalDateTime.parse((CharSequence) rs.get(0).get("tempo_uscita"), formatter), (String) rs.get(0).get("utente"), (Integer) rs.get(0).get("posto"));
+        return new Prenotazioni((Integer) rs.get(0).get("id"), LocalDateTime.parse((CharSequence) rs.get(0).get("tempo_arrivo"), formatter), LocalDateTime.parse((CharSequence) rs.get(0).get("tempo_uscita"), formatter), (String) rs.get(0).get("utente"), (Integer) rs.get(0).get("posto"),(Integer) rs.get(0).get("penale") == 1);
 
     }
 
@@ -163,5 +172,46 @@ public class GestorePosti {
     public ArrayList<HashMap<String, Object>> getStatoPosti() {
         return dbPrenotazioni.query("SELECT * FROM PostoAuto");
     }
+
+    public boolean statoPosti(String topic, MqttMessage message) {
+        Gson gson = new Gson();
+        String payload = new String(message.getPayload());
+        System.out.println("Messaggio sensore ricevuto su " + topic + ": " + payload);
+        String idPosto = topic.split("/")[2];
+        HashMap<String, String> stato = gson.fromJson(payload, new TypeToken<HashMap<String, String>>(){}.getType());
+
+        String comandoSql;
+        if(stato.get("stato").equals("occupato")){//occupato
+            comandoSql = "UPDATE PostoAuto SET disponibilita = 1 WHERE id = \"" + idPosto + "\";";
+            dbPrenotazioni.update(comandoSql);
+            return true;
+        }
+        else{//libero
+            comandoSql = "UPDATE PostoAuto SET disponibilita = 0 WHERE id = \"" + idPosto + "\";";
+            dbPrenotazioni.update(comandoSql);
+            Prenotazioni prenotazioneConclusa = this.getPrenotazioniIdPosto(idPosto).get(0);
+            Ricariche ricaricaConclusa = gestoreRicariche.getRicaricheByPrenotazione(String.valueOf(prenotazioneConclusa.getId()));
+            gestorePagamenti.effettuaPagamento(prenotazioneConclusa,ricaricaConclusa);
+        }
+        return true;
+    }
+
+    public ArrayList<Prenotazioni> getPrenotazioniIdPosto(String idPosto) {
+        ArrayList<Prenotazioni> listaPrenotazioni = new ArrayList<>();
+        String comandoSql = "SELECT * FROM Prenotazioni WHERE posto = \"" + idPosto + "\" ORDER BY tempo_arrivo;";
+        System.out.println(comandoSql);
+        var rs = dbPrenotazioni.query(comandoSql);
+
+        for(HashMap<String, Object> record : rs){
+            listaPrenotazioni.add(new Prenotazioni(record));
+        }
+        return listaPrenotazioni;
+    }
+
+    public void aggiungiPenalePrenotazione(String idParam) {
+        String comandoSql = "UPDATE Prenotazioni SET penale = TRUE WHERE id = \"" + idParam + "\";";
+        dbPrenotazioni.update(comandoSql);
+    }
+
 
 }
