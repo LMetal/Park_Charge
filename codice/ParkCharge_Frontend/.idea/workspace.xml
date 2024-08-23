@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="ParkCharge_Frontend:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7df6e4c3-d83e-45f9-83e8-3c81412f79a0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbPrenotazioni" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbPrenotazioni" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbStorico" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbStorico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbUtenti" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbUtenti" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/paho486514957375000-tcplocalhost10011/.lck" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/Backend.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/Backend.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestorePagamenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestorePagamenti.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/artifacts/ParkCharge_Backend_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ParkCharge_Backend/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/ParkCharge_Frontend_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_GestoreIoT/paho486505581324000-tcplocalhost10011/.lck" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_GestoreIoT/paho486863612220600-tcplocalhost10011/.lck" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_GestoreIoT/paho487743754611400-tcplocalhost10011/.lck" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_IoT/emulators/user_emulator.py" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_IoT/emulators/user_emulator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +31,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -55,24 +59,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build ParkCharge_Frontend.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ParkCharge_Frontend [:Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin script (Beta).build.gradle.kts.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;gruppo1&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/marco/OneDrive/Desktop/MARCO/UNI/TERZO_ANNO/SECONDO SEMESTRE/aa23-24-gruppo6/codice/ParkCharge_Frontend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build ParkCharge_Frontend.executor": "Run",
+    "Gradle.ParkCharge_Frontend [:Main.main()].executor": "Run",
+    "Gradle.ParkCharge_Frontend [clean].executor": "Run",
+    "Kotlin script (Beta).build.gradle.kts.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "gruppo1",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/marco/OneDrive/Desktop/MARCO/UNI/TERZO_ANNO/SECONDO SEMESTRE/aa23-24-gruppo6/codice/ParkCharge_Frontend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager">
+}]]></component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="gradle clean" />
+    </option>
+  </component>
+  <component name="RunManager" selected="Gradle.ParkCharge_Frontend [clean]">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="ParkCharge_Frontend.main" />
@@ -80,8 +94,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ParkCharge_Frontend [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.ParkCharge_Frontend [clean]" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
