@@ -20,6 +20,7 @@ public class Backend {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(username);
             options.setPassword(password.toCharArray());
+            options.setAutomaticReconnect(true);
 
             client.connect(options);
 
@@ -51,10 +52,17 @@ public class Backend {
         try {
             MqttMessage mqttMessage = new MqttMessage(message.getBytes());
             mqttMessage.setQos(0);
-            client.publish(topic, mqttMessage);
-            System.out.println("Messaggio pubblicato su " + topic + ": " + message);
+            System.out.println(client.isConnected());
+            if(client.isConnected()){
+                client.publish(topic, mqttMessage);  //bug?
+                System.out.println("Messaggio pubblicato su " + topic + ": " + message);
+            } else {
+                System.out.println("ERRORE BROKER MQTT");
+            }
+
         } catch (MqttException e) {
             e.printStackTrace();
+            System.out.println("adhsvdkfdsfki");
         }
     }
 }

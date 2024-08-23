@@ -74,7 +74,7 @@ public class EDF {
         prenotazioni.sort(Comparator.comparing(Prenotazioni::getTempo_uscita));
 
         for(Prenotazioni p: prenotazioni){
-            if(ricariche.stream().anyMatch(r -> r.getPrenotazione() == p.getId())){
+            if(ricariche.stream().anyMatch(r -> r.getPrenotazione() == p.getId() && r.getPercentuale_richiesta() != r.getPercentuale_erogata())){
                 return p;
             }
         }

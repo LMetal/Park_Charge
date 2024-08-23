@@ -47,8 +47,15 @@ public class GestoreRicariche {
 
         //publish nuovo target
         var gestorePosti = new GestorePosti();
+        var a = this.getRicariche();
         Prenotazioni target = EDF.getJobPosto(gestorePosti.getPrenotazioni(), this.getRicariche());
-        if(target == null) return;
+        if(target == null){
+            dbRicariche.update("UPDATE MWBot SET idPrenotazione = \"-1\", stato = \"Finnito\" WHERE id = 1");
+            comandoMWBot.put("target", -1);
+            comandoMWBot.put("percentualeRicarica", 0);
+            Backend.publish("ParkCharge/RichiediRicarica/1", gson.toJson(comandoMWBot));
+            return;
+        }
         var pr = this.getRicaricheByPrenotazione(target.getId());
         Ricariche ricarica = pr.stream()
                 .filter(r -> r.getPercentuale_erogata() < r.getPercentuale_richiesta())
@@ -62,10 +69,23 @@ public class GestoreRicariche {
         Backend.publish("ParkCharge/RichiediRicarica/1", gson.toJson(comandoMWBot));
     }
 
+    /**
+     * @param id_prenotazione prenotazione di cui fermare la ricarica in corso
+     * @return True se esecuzione corretta, False altrimenti
+     * La ricarica viene ritenuta completata quando la percentuale_emessa corrisponde alla percentuale_richiesta,
+     * viene quindi impostata la percentuale_richiesta a quanto emesso fino a ora.
+     * Viene comunicato il nuovo target all'MWBot.
+     */
     public boolean stopRicaricaByPrenotazione(String id_prenotazione) {
         try{
-            dbRicariche.update("DELETE FROM Ricarica WHERE prenotazione = \"" + id_prenotazione + "\";");
+            var ricaricaDaInterrompere = dbRicariche.query("SELECT * FROM Ricarica WHERE prenotazione = \"" + id_prenotazione + "\" AND percentuale_richiesta != percentuale_erogata;");
+            float percentualeRicaricata = Float.parseFloat(ricaricaDaInterrompere.get(0).get("percentuale_erogata").toString());
+            dbRicariche.update("UPDATE Ricarica SET percentuale_richiesta = percentuale_erogata WHERE prenotazione = \"" + id_prenotazione + "\" AND percentuale_richiesta != percentuale_erogata;");
+            this.publishNuovoTarget();
+            this.notificaRicaricaConclusa(percentualeRicaricata);
+
         } catch (Exception e){
+            System.out.println(e.getMessage());
             return false;
         }
         return true;
@@ -91,9 +111,6 @@ public class GestoreRicariche {
     }
 
     public void statoRicariche(String topic, MqttMessage mqttMessage) {
-        HashMap<String,Object> json;
-        GestorePosti gestorePosti = new GestorePosti();
-
         String payload = new String(mqttMessage.getPayload());
         System.out.println("Messaggio sensore ricevuto su " + topic + ": " + payload);
 
@@ -107,9 +124,6 @@ public class GestoreRicariche {
 
 
         int prenotazioneID = (int) dbRicariche.query("SELECT * FROM MWBot WHERE id = \""+ MWBotID + "\"").get(0).get("idPrenotazione");
-        Prenotazioni p = gestorePosti.getPrenotazione(String.valueOf(prenotazioneID));
-
-
 
         if(stato.equals("Charging")){
             Ricariche ric = this.getRicaricheByPrenotazione(prenotazioneID).stream()
@@ -130,19 +144,27 @@ public class GestoreRicariche {
             dbRicariche.update("UPDATE Ricarica SET percentuale_erogata = \"" + nuovaPrecentuale + "\" WHERE prenotazione = \""+ prenotazioneID +"\" AND percentuale_richiesta != percentuale_erogata");
         } else {
             //fine ricarica
-            GestorePagamenti gestorePagamenti = new GestorePagamenti();
-            json = new HashMap<>();
-
             System.out.println("finita");
-            var costi = gestorePagamenti.getCosti().get(0);
-            float costoAlKW = Float.parseFloat(costi.get("costo_ricarica").toString());
-            System.out.println(costoAlKW);
-            json.put("kilowattUsati", KWEmessi);
-            json.put("costoRicarica", KWEmessi * costoAlKW);
-            Backend.publish("ParkCharge/Notifiche/RicaricaConclusa/" + p.getUtente(), gson.toJson(json));
-
+            this.notificaRicaricaConclusa(KWEmessi);
         }
+    }
+    private void notificaRicaricaConclusa(float KWEmessi){
+        HashMap<String,Object> json  = new HashMap<>();;
+        GestorePagamenti gestorePagamenti = new GestorePagamenti();
+        GestorePosti gestorePosti = new GestorePosti();
+        var costi = gestorePagamenti.getCosti().get(0);
+        float costoAlKW = Float.parseFloat(costi.get("costo_ricarica").toString());
+        System.out.println(costoAlKW);
 
+        int prenotazioneID = (int) dbRicariche.query("SELECT * FROM MWBot WHERE id = 1").get(0).get("idPrenotazione");
+        Prenotazioni p = gestorePosti.getPrenotazione(Integer.toString(prenotazioneID));
+        System.out.println(p);
+
+
+
+        json.put("kilowattUsati", KWEmessi);
+        json.put("costoRicarica", KWEmessi * costoAlKW);
+        Backend.publish("ParkCharge/Notifiche/RicaricaConclusa/" + p.getUtente(), gson.toJson(json));
     }
 
 
