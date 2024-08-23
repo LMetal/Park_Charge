@@ -189,7 +189,7 @@ public class GestorePosti {
             dbPrenotazioni.update(comandoSql);
 
             Prenotazioni prenotazioneConclusa = this.getPrenotazioniIdPosto(idPosto).get(0);
-            Ricariche ricaricaConclusa = gestoreRicariche.getRicaricheByPrenotazione(String.valueOf(prenotazioneConclusa.getId()));
+            ArrayList<Ricariche> ricaricaConclusa = gestoreRicariche.getRicaricheByPrenotazione(String.valueOf(prenotazioneConclusa.getId()));
 
             // Viene richiesto il pagamento andando ad utilizzare le informazioni presenti nella prenotazioni e la possibile ricarica
             gestorePagamenti.effettuaPagamento(prenotazioneConclusa,ricaricaConclusa);
@@ -197,7 +197,7 @@ public class GestorePosti {
     }
 
     // Metodo per ottenere le prenotazioni dato l'id del posto
-    public ArrayList<Prenotazioni> getPrenotazioniIdPosto(String idPosto) {
+    private ArrayList<Prenotazioni> getPrenotazioniIdPosto(String idPosto) {
         ArrayList<Prenotazioni> listaPrenotazioni = new ArrayList<>();
         // Order by viene utilizzato in quanto dobbiamo prendere la prima prenotazione che è quella che sta finendo
         String comandoSql = "SELECT * FROM Prenotazioni WHERE posto = \"" + idPosto + "\" ORDER BY tempo_arrivo;";
