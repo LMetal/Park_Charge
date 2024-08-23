@@ -5,8 +5,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.time.format.DateTimeFormatter;
 
@@ -190,7 +188,8 @@ public class GestorePosti {
             comandoSql = "UPDATE PostoAuto SET disponibilita = 0 WHERE id = \"" + idPosto + "\";";
             dbPrenotazioni.update(comandoSql);
             Prenotazioni prenotazioneConclusa = this.getPrenotazioniIdPosto(idPosto).get(0);
-            Ricariche ricaricaConclusa = gestoreRicariche.getRicaricheByPrenotazione(String.valueOf(prenotazioneConclusa.getId()));
+            var ricarichePrenotazione = gestoreRicariche.getRicaricheByPrenotazione(String.valueOf(prenotazioneConclusa.getId()));
+            Ricariche ricaricaConclusa = ricarichePrenotazione.get(ricarichePrenotazione.size()-1);
             gestorePagamenti.effettuaPagamento(prenotazioneConclusa,ricaricaConclusa);
         }
         return true;

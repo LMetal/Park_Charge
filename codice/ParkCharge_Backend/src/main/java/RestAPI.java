@@ -101,6 +101,7 @@ public class RestAPI {
         //richiedi ricarica, ritorna stato posteggio e ricarica utente
         get(baseURL + "/statoUtente", "application/json", ((request, response) -> {
             Ricariche ricaricaUtente = null;
+            ArrayList<Ricariche> ricaricheUtente = null;
             HashMap<String, Object> returnJson = new HashMap<>();
             response.status(200);
             response.type("application/json");
@@ -115,7 +116,12 @@ public class RestAPI {
 
             var prenotazioneUtente = gestorePosti.getPrenotazioneUsername(request.queryParams("user"));
             if(prenotazioneUtente != null){
-                ricaricaUtente = gestoreRicariche.getRicaricheByPrenotazione(Integer.toString(prenotazioneUtente.getId()));
+                ricaricheUtente = gestoreRicariche.getRicaricheByPrenotazione(Integer.toString(prenotazioneUtente.getId()));
+                if(ricaricheUtente == null) ricaricaUtente = null;
+                else ricaricaUtente = ricaricheUtente.stream()
+                        .filter(r -> r.getPercentuale_erogata() < r.getPercentuale_richiesta())
+                        .findFirst()
+                        .orElse(null);
             }
 
 
