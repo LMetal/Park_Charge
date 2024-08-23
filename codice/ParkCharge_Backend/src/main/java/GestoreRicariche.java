@@ -1,20 +1,17 @@
-import DataBase.DbPrenotazioni;
 import DataBase.DbRicariche;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GestoreRicariche {
     private DbRicariche dbRicariche;
-    private DbPrenotazioni dbPrenotazioni;
+    private GestorePosti gestorePosti;
     private Gson gson;
 
     public GestoreRicariche(){
-        this.dbPrenotazioni = new DbPrenotazioni();
         this.dbRicariche = new DbRicariche();
         this.gson = new Gson();
     }
@@ -52,10 +49,14 @@ public class GestoreRicariche {
         var gestorePosti = new GestorePosti();
         Prenotazioni target = EDF.getJobPosto(gestorePosti.getPrenotazioni(), this.getRicariche());
         if(target == null) return;
-        Ricariche ricarica = this.getRicaricaByPrenotazione(target.getId());
+        var pr = this.getRicaricheByPrenotazione(target.getId());
+        Ricariche ricarica = pr.stream()
+                .filter(r -> r.getPercentuale_erogata() < r.getPercentuale_richiesta())
+                .findFirst()
+                .orElse(null);
         if(ricarica == null) return;
 
-        dbRicariche.update("UPDATE MWBot SET idPrenotazione = \"" + target.getId() + "\" WHERE id = 1");
+        dbRicariche.update("UPDATE MWBot SET idPrenotazione = \"" + target.getId() + "\", stato = \"Charging\" WHERE id = 1");
         comandoMWBot.put("target", target.getPosto());
         comandoMWBot.put("percentualeRicarica", ricarica.getPercentuale_richiesta() - ricarica.getPercentuale_erogata());
         Backend.publish("ParkCharge/RichiediRicarica/1", gson.toJson(comandoMWBot));
@@ -71,23 +72,28 @@ public class GestoreRicariche {
     }
 
 
-    public Ricariche getRicaricheByPrenotazione(String id_prenotazione) {
-        var ricaricaUtente = dbRicariche.query("SELECT * FROM Ricarica WHERE prenotazione = \""+ id_prenotazione + "\"");
-        if(ricaricaUtente == null) return null;
-        if(ricaricaUtente.size() != 1) return null;
+    public ArrayList<Ricariche> getRicaricheByPrenotazione(String id_prenotazione) {
+        ArrayList<Ricariche> ricaricheList = new ArrayList<>();
 
-        return new Ricariche(ricaricaUtente.get(0));
+        var ricarichePrenotazione = dbRicariche.query("SELECT * FROM Ricarica WHERE prenotazione = \""+ id_prenotazione + "\"");
+        if(ricarichePrenotazione == null) return null;
+        if(ricarichePrenotazione.size() < 1) return null;
+
+        for(HashMap<String, Object> r : ricarichePrenotazione){
+            ricaricheList.add(new Ricariche(r));
+        }
+
+        return ricaricheList;
     }
 
-    private Ricariche getRicaricaByPrenotazione(int ricaricaID) {
-        var ricarica = dbRicariche.query("SELECT * FROM Ricarica WHERE prenotazione = "+ ricaricaID);
-        if(ricarica == null) return null;
-        if(ricarica.size() < 1) return null;
-
-        return new Ricariche(ricarica.get(0));
+    private ArrayList<Ricariche> getRicaricheByPrenotazione(int id_prenotazione) {
+        return this.getRicaricheByPrenotazione(String.valueOf(id_prenotazione));
     }
 
     public void statoRicariche(String topic, MqttMessage mqttMessage) {
+        HashMap<String,Object> json;
+        GestorePosti gestorePosti = new GestorePosti();
+
         String payload = new String(mqttMessage.getPayload());
         System.out.println("Messaggio sensore ricevuto su " + topic + ": " + payload);
 
@@ -96,25 +102,44 @@ public class GestoreRicariche {
 
         //aggiorna stato database
         String stato = MWBotJson.get("statoCarica");
+        Float KWEmessi = Float.parseFloat(MWBotJson.get("KW_Emessi"));
         dbRicariche.update("UPDATE MWBot SET stato = \""+ stato +"\" WHERE id = \"" + MWBotID + "\";");
 
+
+        int prenotazioneID = (int) dbRicariche.query("SELECT * FROM MWBot WHERE id = \""+ MWBotID + "\"").get(0).get("idPrenotazione");
+        Prenotazioni p = gestorePosti.getPrenotazione(String.valueOf(prenotazioneID));
+
+
+
         if(stato.equals("Charging")){
-            //aggiorna percentuale erogata
-            if(Float.parseFloat(MWBotJson.get("KW_Emessi")) == 0) return;
-            int prenotazioneID = (int) dbRicariche.query("SELECT * FROM MWBot WHERE id = \""+ MWBotID + "\"").get(0).get("idPrenotazione");
+            Ricariche ric = this.getRicaricheByPrenotazione(prenotazioneID).stream()
+                    .filter(r -> r.getPercentuale_erogata() < r.getPercentuale_richiesta())
+                    .findFirst()
+                    .orElse(null); //get ricarica in corso (associata alla prenotazione)
 
-            var r = this.getRicaricaByPrenotazione(prenotazioneID); //get ricarica in corso (associata alla prenotazione)
-
-            if (r == null) {
+            if (ric == null) {
                 System.out.println("ERRORE");
                 return;
             }
 
-            int nuovaPrecentale = r.getPercentuale_erogata() + 1;
-            dbRicariche.update("UPDATE Ricarica SET percentuale_erogata = \"" + nuovaPrecentale + "\" WHERE prenotazione = \""+ prenotazioneID +"\"");
+            //aggiorna percentuale erogata
+
+            if(KWEmessi == 0) return;
+
+            int nuovaPrecentuale = ric.getPercentuale_erogata() + 1;
+            dbRicariche.update("UPDATE Ricarica SET percentuale_erogata = \"" + nuovaPrecentuale + "\" WHERE prenotazione = \""+ prenotazioneID +"\" AND percentuale_richiesta != percentuale_erogata");
         } else {
             //fine ricarica
+            GestorePagamenti gestorePagamenti = new GestorePagamenti();
+            json = new HashMap<>();
+
             System.out.println("finita");
+            var costi = gestorePagamenti.getCosti().get(0);
+            float costoAlKW = Float.parseFloat(costi.get("costo_ricarica").toString());
+            System.out.println(costoAlKW);
+            json.put("kilowattUsati", KWEmessi);
+            json.put("costoRicarica", KWEmessi * costoAlKW);
+            Backend.publish("ParkCharge/Notifiche/RicaricaConclusa/" + p.getUtente(), gson.toJson(json));
 
         }
 

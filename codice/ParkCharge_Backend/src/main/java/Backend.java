@@ -50,7 +50,7 @@ public class Backend {
     public static void publish(String topic, String message) {
         try {
             MqttMessage mqttMessage = new MqttMessage(message.getBytes());
-            mqttMessage.setQos(1);
+            mqttMessage.setQos(0);
             client.publish(topic, mqttMessage);
             System.out.println("Messaggio pubblicato su " + topic + ": " + message);
         } catch (MqttException e) {
