@@ -59,7 +59,7 @@ public class GestorePagamenti {
         return dbStorico.query(comandoSql);
     }
 
-    public void effettuaPagamento(Prenotazioni prenotazioneConclusa, Ricariche ricaricaConclusa) {
+    public void effettuaPagamento(Prenotazioni prenotazioneConclusa, ArrayList<Ricariche> ricaricaConclusa) {
         HashMap<String, Object> costiAttuali = this.getCosti().get(0);
 
         // Calcolo del costo del parcheggio
@@ -75,10 +75,10 @@ public class GestorePagamenti {
         // Calcolo del costo di ricarica (se applicabile)
         float costoRicarica = 0;
         int kilowattUsati = 0;
-        if (ricaricaConclusa != null) {
-            kilowattUsati = ricaricaConclusa.getPercentuale_erogata(); // 1% = 1 kW
-            costoRicarica = kilowattUsati * ((Number) costiAttuali.get("costo_ricarica")).floatValue();
+        for (Ricariche richariche : ricaricaConclusa) {
+            kilowattUsati += richariche.getPercentuale_erogata(); // 1% = 1 kW
         }
+        costoRicarica = kilowattUsati * ((Number) costiAttuali.get("costo_ricarica")).floatValue();
 
         // Creazione del JSON per la notifica
         HashMap<String, Object> prezzoPosteggio = new HashMap<>();
@@ -98,11 +98,11 @@ public class GestorePagamenti {
         dbStorico.update(insertPrezzoPosteggio);
 
         // L'id essendo auto increment, è necessario questo tipo di select
-        String selectLastId = "SELECT last_insert_rowid()";
+        String selectLastId = "SELECT * FROM PrezzoPosteggio ORDER BY id DESC LIMIT 1";
         var rs = dbStorico.query(selectLastId);
-        int lastId =(int) rs.get(0).get("last_insert_rowid()");
+        int lastId =(int) rs.get(0).get("id");
 
-        int idRicarica = ricaricaConclusa != null ? ricaricaConclusa.getPrenotazione() : 0;
+        int idRicarica = ricaricaConclusa != null ? ricaricaConclusa.get(0).getPrenotazione() : 0;
         String insertPagamento = "INSERT INTO Pagamenti (id,tempo_arrivo,tempo_uscita,utente,posto,ricarica,costo)VALUES ('" + prenotazioneConclusa.getId() + "','" + prenotazioneConclusa.getTempo_arrivo() + "','" + prenotazioneConclusa.getTempo_uscita() + "','" + prenotazioneConclusa.getUtente() + "','" + prenotazioneConclusa.getPosto() + "','" + idRicarica + "', '" + lastId + "' );";
         dbStorico.update(insertPagamento);
     }

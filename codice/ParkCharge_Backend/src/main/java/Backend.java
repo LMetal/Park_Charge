@@ -41,7 +41,7 @@ public class Backend {
         JsonObject jsonPayload = gson.fromJson(payload, JsonObject.class);
 
         String username = jsonPayload.get("username").getAsString();
-        int totale = jsonPayload.get("totale").getAsInt();
+        float totale = jsonPayload.get("totale").getAsFloat();
 
         System.out.println("L'utente " + username + " ha completato il pagamento di " + totale + " euro");
     }

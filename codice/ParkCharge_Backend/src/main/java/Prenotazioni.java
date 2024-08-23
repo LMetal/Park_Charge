@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
-public class Prenotazioni implements Comparable<Prenotazioni> {
+public class Prenotazioni {
     private int id;
     private String tempo_arrivo;
     private String tempo_uscita;
@@ -78,15 +78,5 @@ public class Prenotazioni implements Comparable<Prenotazioni> {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setPenale(boolean penale) {
-        this.penale = penale;
-    }
-
-
-    @Override
-    public int compareTo(Prenotazioni o) {
-        return this.getTempo_arrivo().compareTo(o.getTempo_arrivo());
     }
 }

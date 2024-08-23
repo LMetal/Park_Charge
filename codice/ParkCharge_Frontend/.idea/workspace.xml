@@ -5,20 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7df6e4c3-d83e-45f9-83e8-3c81412f79a0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../ParkCharge_Backend/paho486514957375000-tcplocalhost10011/.lck" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ParkCharge_GestoreIoT/paho486505581324000-tcplocalhost10011/.lck" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ParkCharge_GestoreIoT/paho486863612220600-tcplocalhost10011/.lck" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ParkCharge_GestoreIoT/paho487743754611400-tcplocalhost10011/.lck" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbPrenotazioni" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbPrenotazioni" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbStorico" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbStorico" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbUtenti" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbUtenti" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/paho486514957375000-tcplocalhost10011/.lck" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/Backend.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/Backend.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestorePagamenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestorePagamenti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestorePosti.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestorePosti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UiLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UiLogin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UiPosteggio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UiPosteggio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_GestoreIoT/paho486505581324000-tcplocalhost10011/.lck" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_GestoreIoT/paho486863612220600-tcplocalhost10011/.lck" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_GestoreIoT/paho487743754611400-tcplocalhost10011/.lck" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_IoT/emulators/user_emulator.py" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_IoT/emulators/user_emulator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,8 +89,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17011.79" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17011.79" />
       </set>
     </attachedChunks>
   </component>
@@ -111,6 +108,8 @@
       <workItem from="1724138798956" duration="4405000" />
       <workItem from="1724309414464" duration="6967000" />
       <workItem from="1724332020416" duration="2478000" />
+      <workItem from="1724396507100" duration="3456000" />
+      <workItem from="1724401893175" duration="14000" />
     </task>
     <servers />
   </component>

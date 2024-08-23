@@ -11,13 +11,13 @@ public class TestEDF {
 
     @Test
     public void testAccettable(){
-        Prenotazioni p1 = new Prenotazioni(0, "2024-06-11 11:00:00", "2024-06-11 12:00:00", "a", 1);
+        Prenotazioni p1 = new Prenotazioni(0, "2024-06-11 11:00:00", "2024-06-11 12:00:00", "a", 1, false);
         Ricariche r1 = new Ricariche(30, 30, 30, 0, 1);
-        Prenotazioni p2 = new Prenotazioni(1, "2024-06-11 11:00:00", "2024-06-11 12:30:00", "b", 2);
+        Prenotazioni p2 = new Prenotazioni(1, "2024-06-11 11:00:00", "2024-06-11 12:30:00", "b", 2, false);
         Ricariche r2 = new Ricariche(30, 30, 30, 1, 1);
-        Prenotazioni p3 = new Prenotazioni(2, "2024-06-11 12:00:00", "2024-06-11 12:50:00", "c", 3);
+        Prenotazioni p3 = new Prenotazioni(2, "2024-06-11 12:00:00", "2024-06-11 12:50:00", "c", 3, false);
         Ricariche r3 = new Ricariche(40, 40, 40, 2, 1);
-        Prenotazioni p4 = new Prenotazioni(3, "2024-06-11 12:30:00", "2024-06-11 15:00:00", "mrossi", 4);
+        Prenotazioni p4 = new Prenotazioni(3, "2024-06-11 12:30:00", "2024-06-11 15:00:00", "mrossi", 4, false);
         Ricariche r4 = new Ricariche(40, 40, 40, 3, 1);
 
         var listPrenotazioni = new ArrayList<Prenotazioni>();
@@ -55,13 +55,13 @@ public class TestEDF {
 
     @Test
     public void testScheduling(){
-        Prenotazioni p1 = new Prenotazioni(0, "2024-06-11 11:00:00", "2024-06-11 12:00:00", "a", 1);
+        Prenotazioni p1 = new Prenotazioni(0, "2024-06-11 11:00:00", "2024-06-11 12:00:00", "a", 1, false);
         Ricariche r1 = new Ricariche(30, 30, 30, 0, 1);
-        Prenotazioni p2 = new Prenotazioni(1, "2024-06-11 11:00:00", "2024-06-11 12:30:00", "b", 2);
+        Prenotazioni p2 = new Prenotazioni(1, "2024-06-11 11:00:00", "2024-06-11 12:30:00", "b", 2, false);
         Ricariche r2 = new Ricariche(30, 30, 30, 1, 1);
-        Prenotazioni p3 = new Prenotazioni(2, "2024-06-11 12:00:00", "2024-06-11 12:20:00", "c", 3);
+        Prenotazioni p3 = new Prenotazioni(2, "2024-06-11 12:00:00", "2024-06-11 12:20:00", "c", 3, false);
         Ricariche r3 = new Ricariche(10, 10, 10, 2, 1);
-        Prenotazioni p4 = new Prenotazioni(3, "2024-06-11 12:30:00", "2024-06-11 15:00:00", "mrossi", 4);
+        Prenotazioni p4 = new Prenotazioni(3, "2024-06-11 12:30:00", "2024-06-11 15:00:00", "mrossi", 4, false);
         Ricariche r4 = new Ricariche(40, 40, 40, 3, 1);
 
         ArrayList<Prenotazioni> prenotazioniList = new ArrayList<>();
