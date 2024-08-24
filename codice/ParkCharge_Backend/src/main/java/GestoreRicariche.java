@@ -86,7 +86,7 @@ public class GestoreRicariche {
             this.publishNuovoTarget();
 
         } catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("ERRORE stop line 89: " + e.getMessage());
             return false;
         }
         return true;

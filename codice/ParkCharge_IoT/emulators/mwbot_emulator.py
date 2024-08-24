@@ -44,14 +44,16 @@ def run():
             root.update_idletasks()
             return
 
+        # Reset percentage to 0 when a new request is received
+        percentualeRicarica = 0
+
         if target != posto:
             posto = target
-            percentualeRicarica = 0
             publish_status("Charging")
             posto_label.config(text=f"Posto: {posto}")
             percentuale_label.config(text=f"Percentuale Ricarica: {percentualeRicarica}%", bg="orange")
         else:
-            percentuale_label.config(text=f"Percentuale Ricarica: {target_percentualeRicarica}%", bg="orange")
+            percentuale_label.config(text=f"Percentuale Ricarica: {percentualeRicarica}%", bg="orange")
 
         richiesta_label.config(text=f"Percentuale Richiesta: {target_percentualeRicarica}%")
         root.update_idletasks()

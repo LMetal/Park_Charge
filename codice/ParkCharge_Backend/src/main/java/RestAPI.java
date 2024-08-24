@@ -164,6 +164,7 @@ public class RestAPI {
             }
 
             if(! EDF.isAcceptable(request.queryParams("user"), (int) timeToCharge, prenotazioni, ricaricheAccettate)) {
+                response.status(400);
                 responseJson.put("outcome", "not_acceptable");
                 return responseJson;
             }
