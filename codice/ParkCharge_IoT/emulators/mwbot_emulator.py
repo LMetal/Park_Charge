@@ -10,12 +10,12 @@ def run():
     topic_publish = "ParkCharge/StatoMWBot/1"
     topic_subscribe = "ParkCharge/EseguiRicarica/1"
 
-    #stato iniziale
+    # Initial state
     posto = "idle"
     percentualeRicarica = 0
     target_percentualeRicarica = 0
 
-    #mqtt publish
+    # MQTT publish function
     def publish_status(stato):
         data = {
             "statoCarica": stato,
@@ -24,16 +24,26 @@ def run():
             "KW_Emessi": float(percentualeRicarica)
         }
         payload = json.dumps(data)
-        client.publish(topic_publish, payload)
+        client.publish(topic_publish, payload, qos=2)
         print(f"Published: {payload}")
 
-    #callback pub
+    # MQTT on_message callback
     def on_message(client, userdata, message):
-        nonlocal  posto, percentualeRicarica, target_percentualeRicarica
+        nonlocal posto, percentualeRicarica, target_percentualeRicarica
         data = json.loads(message.payload.decode())
         target = data.get("target", posto)
         target_percentualeRicarica = data.get("percentualeRicarica", 0)
-        
+
+        # Check for reset condition
+        if target == -1:
+            posto = "idle"
+            percentualeRicarica = 0
+            percentuale_label.config(text=f"Percentuale Ricarica: {percentualeRicarica}%", bg="green")
+            richiesta_label.config(text=f"Percentuale Richiesta: {target_percentualeRicarica}%")
+            posto_label.config(text=f"Posto: {posto}")
+            root.update_idletasks()
+            return
+
         if target != posto:
             posto = target
             percentualeRicarica = 0
@@ -42,14 +52,13 @@ def run():
             percentuale_label.config(text=f"Percentuale Ricarica: {percentualeRicarica}%", bg="orange")
         else:
             percentuale_label.config(text=f"Percentuale Ricarica: {target_percentualeRicarica}%", bg="orange")
-        
+
         richiesta_label.config(text=f"Percentuale Richiesta: {target_percentualeRicarica}%")
         root.update_idletasks()
 
-
-    #incrementa kw erogati
+    # Increment percentage function
     def increment_percentage():
-        nonlocal  percentualeRicarica, posto
+        nonlocal percentualeRicarica, posto
         if posto != "nessuno" and percentualeRicarica < target_percentualeRicarica:
             percentualeRicarica += 1
             percentuale_label.config(text=f"Percentuale Ricarica: {percentualeRicarica}%")
@@ -61,9 +70,10 @@ def run():
                 posto_label.config(text=f"Posto: {posto}")
         root.update_idletasks()
 
-    #mqtt client
+    # MQTT client setup
     client = mqtt.Client()
     client.username_pw_set(username, password)
+    client.reconnect_delay_set(min_delay=1, max_delay=120)
     client.connect(broker, port, 60)
     print("Connected to broker")
     client.subscribe(topic_subscribe)
@@ -71,11 +81,10 @@ def run():
     client.on_message = on_message
     client.loop_start()
 
-    #gui
+    # GUI setup
     root = tk.Tk()
     root.title("MWBot Monitor")
     root.geometry("600x250")
-
 
     posto_label = tk.Label(root, text=f"Posto: {posto}", font=("Arial", 14))
     posto_label.pack(pady=10)
@@ -84,13 +93,13 @@ def run():
     richiesta_label = tk.Label(root, text=f"Percentuale Richiesta: {target_percentualeRicarica}%", font=("Arial", 12))
     richiesta_label.pack(pady=10)
 
-
     increment_button = tk.Button(root, text="Incrementa", command=increment_percentage, font=("Arial", 14))
     increment_button.pack(pady=10)
 
-    #start gui
+    # Start GUI
     root.mainloop()
 
-    #chiusura
+    # Cleanup on close
     client.loop_stop()
     client.disconnect()
+
