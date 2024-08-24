@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="ParkCharge_Backend:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ae605fca-8a7d-432d-a4cb-15d91c108933" name="Changes" comment="modifica costi Ui, Ui amministratore, Rest Api GET /costi, GET /prenotazioni">
     <list default="true" id="ae605fca-8a7d-432d-a4cb-15d91c108933" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/CreaUtente.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/DiventaPremium.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ModificaDati.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/PrenotaPosto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/RestApiTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/ParkCharge_Backend_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/artifacts/ParkCharge_Frontend_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/kotlinc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GestorePagamenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestorePagamenti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GestoreRicariche.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestoreRicariche.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dati/DbUtenti" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbUtenti" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GestoreUtenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestoreUtenti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/RestAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/RestAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Frontend/src/main/java/UiMonitora.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Frontend/src/main/java/UiMonitora.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,9 +55,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 1
-}</component>
+  <component name="ProjectColorInfo">
+    <option name="associatedIndex" value="1" />
+  </component>
   <component name="ProjectId" id="2hg6kC98fyg19O2wCnxxIN81vra" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -70,300 +68,56 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Gradle.CreaUtente.executor": "Run",
-    "Gradle.CreaUtente.testCreaUtenteErrore.executor": "Run",
-    "Gradle.CreaUtente.testCreaUtenteSuccesso.executor": "Run",
-    "Gradle.DiventaPremium.executor": "Run",
-    "Gradle.DiventaPremium.testDiventaPremiumErrore.executor": "Run",
-    "Gradle.DiventaPremium.testDiventaPremiumSuccesso.executor": "Run",
-    "Gradle.Login.executor": "Run",
-    "Gradle.Login.testLoginErrore.executor": "Run",
-    "Gradle.Login.testLoginSuccesso.executor": "Run",
-    "Gradle.Login.testProva.executor": "Run",
-    "Gradle.ModificaDati.executor": "Run",
-    "Gradle.ModificaDati.testModificaUtenteErrore.executor": "Run",
-    "Gradle.ModificaDati.testModificaUtenteSuccesso.executor": "Run",
-    "Gradle.ParkCharge_Backend [:RestAPI.main()].executor": "Run",
-    "Gradle.ParkCharge_Backend [test].executor": "Run",
-    "Gradle.Tests in 'ParkCharge_Backend'.executor": "Run",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "deletionFromPopupRequiresConfirmation": "false",
     "git-widget-placeholder": "gruppo1",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/nicom/OneDrive/Documenti/Università/3° anno 2° semestre/Pissir/aa23-24-gruppo6/codice/ParkCharge_Backend/src/test",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.ParkCharge_Backend [:RestAPI.main()].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Gradle.CreaUtente.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.CreaUtente.testCreaUtenteErrore.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.CreaUtente.testCreaUtenteSuccesso.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.DiventaPremium.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.DiventaPremium.testDiventaPremiumErrore.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.DiventaPremium.testDiventaPremiumSuccesso.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Login.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Login.testLoginErrore.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Login.testLoginSuccesso.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Login.testProva.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ModificaDati.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ModificaDati.testModificaUtenteErrore.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ModificaDati.testModificaUtenteSuccesso.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ParkCharge_Backend [:RestAPI.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ParkCharge_Backend [test].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests in 'ParkCharge_Backend'.executor&quot;: &quot;Run&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;gruppo1&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/nicom/OneDrive/Documenti/Università/3° anno 2° semestre/Pissir/aa23-24-gruppo6/codice/ParkCharge_Backend/src/test&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+    "node.js.selected.package.tslint": "(autodetect)"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="" />
     </key>
-}]]></component>
-}</project>
-  <component name="RunManager" selected="Gradle.ParkCharge_Backend [test]">
-    <configuration name="CreaUtente" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;CreaUtente&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
+  </component>
+  <component name="RunManager">
+    <configuration name="CreaUtente" type="Gradle" factoryName="Gradle">
+      <option name="gradleSettings" value="GRADLE_PROJECT=$PROJECT_DIR$/../ParkCharge_Backend;TASK=run" />
     </configuration>
-    <configuration name="DiventaPremium" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;DiventaPremium&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
+    <configuration name="DiventaPremium" type="Gradle" factoryName="Gradle">
+      <option name="gradleSettings" value="GRADLE_PROJECT=$PROJECT_DIR$/../ParkCharge_Backend;TASK=run" />
     </configuration>
-    <configuration name="Login" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;Login&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
+    <configuration name="Login" type="Gradle" factoryName="Gradle">
+      <option name="gradleSettings" value="GRADLE_PROJECT=$PROJECT_DIR$/../ParkCharge_Backend;TASK=run" />
     </configuration>
-    <configuration name="ModificaDati" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;ModificaDati&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
+    <configuration name="ModificaDati" type="Gradle" factoryName="Gradle">
+      <option name="gradleSettings" value="GRADLE_PROJECT=$PROJECT_DIR$/../ParkCharge_Backend;TASK=run" />
     </configuration>
-    <configuration name="ParkCharge_Backend [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
+    <configuration name="PrenotaPosto" type="Gradle" factoryName="Gradle">
+      <option name="gradleSettings" value="GRADLE_PROJECT=$PROJECT_DIR$/../ParkCharge_Backend;TASK=run" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.ParkCharge_Backend [test]" />
-        <item itemvalue="Gradle.DiventaPremium" />
-        <item itemvalue="Gradle.Login" />
-        <item itemvalue="Gradle.ModificaDati" />
-        <item itemvalue="Gradle.CreaUtente" />
-      </list>
-    </recent_temporary>
+    <configuration name="RestApiTest" type="Gradle" factoryName="Gradle">
+      <option name="gradleSettings" value="GRADLE_PROJECT=$PROJECT_DIR$/../ParkCharge_Backend;TASK=run" />
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17011.79" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17011.79" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
       </set>
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ae605fca-8a7d-432d-a4cb-15d91c108933" name="Changes" comment="" />
-      <created>1718003518114</created>
+      <changelist id="79966b52-c509-4b00-8bec-5bfd2416ece7" name="Changes" comment="" />
+      <created>1724424459856</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1718003518114</updated>
-      <workItem from="1718003519254" duration="169000" />
-      <workItem from="1718003700260" duration="5545000" />
-      <workItem from="1718010988407" duration="1042000" />
-      <workItem from="1718012038710" duration="813000" />
-      <workItem from="1718107045187" duration="508000" />
-      <workItem from="1718108745594" duration="12483000" />
+      <updated>1724424459856</updated>
+      <workItem from="1724424461006" duration="929000" />
     </task>
-    <task id="LOCAL-00001" summary="modifica costi Ui, Ui amministratore, Rest Api GET /costi, GET /prenotazioni">
-      <created>1718120066606</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1718120066606</updated>
-      <workItem from="1718021406287" duration="470000" />
-      <workItem from="1718025810103" duration="548000" />
-      <workItem from="1718049367128" duration="1554000" />
-      <workItem from="1718089319029" duration="15000" />
-      <workItem from="1718369800181" duration="1239000" />
-      <workItem from="1718373374758" duration="4016000" />
-      <workItem from="1718472528480" duration="2909000" />
-      <workItem from="1718566081914" duration="5371000" />
-      <workItem from="1718622666263" duration="2480000" />
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="modifica costi Ui, Ui amministratore, Rest Api GET /costi, GET /prenotazioni" />
-    <option name="LAST_COMMIT_MESSAGE" value="modifica costi Ui, Ui amministratore, Rest Api GET /costi, GET /prenotazioni" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.lang.reflect.InaccessibleObjectException" package="java.lang.reflect" />
-          <option name="timeStamp" value="1" />
-        </breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
