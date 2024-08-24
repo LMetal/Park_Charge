@@ -47,11 +47,16 @@ public class GestoreRicariche {
     }
 
 
-    public Ricariche getRicaricheByPrenotazione(String id_prenotazione) {
+    public ArrayList<Ricariche> getRicaricheByPrenotazione(String id_prenotazione) {
         var ricaricaUtente = dbRicariche.query("SELECT * FROM Ricarica WHERE prenotazione = \""+ id_prenotazione + "\"");
-        if(ricaricaUtente == null) return null;
-        if(ricaricaUtente.size() != 1) return null;
 
-        return new Ricariche(ricaricaUtente.get(0));
+        if(ricaricaUtente == null || ricaricaUtente.isEmpty()) return null;
+
+        ArrayList<Ricariche> ricaricheList = new ArrayList<>();
+        for (var ricarica : ricaricaUtente) {
+            ricaricheList.add(new Ricariche(ricarica));
+        }
+
+        return ricaricheList;
     }
 }
