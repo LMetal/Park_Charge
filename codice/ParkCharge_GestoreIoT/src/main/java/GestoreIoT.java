@@ -25,6 +25,7 @@ public class GestoreIoT {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(username);
             options.setPassword(password.toCharArray());
+            options.setAutomaticReconnect(true);
 
             client.connect(options);
 
@@ -47,7 +48,7 @@ public class GestoreIoT {
     public void publish(String topic, String message) {
         try {
             MqttMessage mqttMessage = new MqttMessage(message.getBytes());
-            mqttMessage.setQos(1);
+            mqttMessage.setQos(2);
             client.publish(topic, mqttMessage);
             System.out.println("Messaggio pubblicato su " + topic + ": " + message);
         } catch (MqttException e) {

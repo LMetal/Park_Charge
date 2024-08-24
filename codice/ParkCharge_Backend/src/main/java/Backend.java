@@ -10,6 +10,7 @@ public class Backend {
     private final String topicPagamento = "ParkCharge/Pagamento/#";
     private final String topicRicariche = "ParkCharge/StatoRicariche/#";
     private static MqttClient client;
+    static MqttConnectOptions options = new MqttConnectOptions();
 
     public void start() {
         GestorePosti gestorePosti = new GestorePosti();
@@ -17,7 +18,6 @@ public class Backend {
 
         try {
             client = new MqttClient(brokerUrl, MqttClient.generateClientId());
-            MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(username);
             options.setPassword(password.toCharArray());
             options.setAutomaticReconnect(true);
@@ -51,13 +51,23 @@ public class Backend {
     public static void publish(String topic, String message) {
         try {
             MqttMessage mqttMessage = new MqttMessage(message.getBytes());
-            mqttMessage.setQos(0);
+            mqttMessage.setQos(2);
+
+            //se il broker non e' connesso provo a riconnettere
+            /*int tries = 3;
             System.out.println(client.isConnected());
+            while (tries > 0 && !client.isConnected()){
+                IMqttToken token = client.connectWithResult(options);
+                tries--;
+                token.waitForCompletion();
+            }*/
+
+
             if(client.isConnected()){
                 client.publish(topic, mqttMessage);  //bug?
                 System.out.println("Messaggio pubblicato su " + topic + ": " + message);
             } else {
-                System.out.println("ERRORE BROKER MQTT");
+                System.out.println("ERRORE broker mqtt");
             }
 
         } catch (MqttException e) {

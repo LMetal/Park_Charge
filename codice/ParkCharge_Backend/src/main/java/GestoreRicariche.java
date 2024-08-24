@@ -50,7 +50,7 @@ public class GestoreRicariche {
         var a = this.getRicariche();
         Prenotazioni target = EDF.getJobPosto(gestorePosti.getPrenotazioni(), this.getRicariche());
         if(target == null){
-            dbRicariche.update("UPDATE MWBot SET idPrenotazione = \"-1\", stato = \"Finnito\" WHERE id = 1");
+            dbRicariche.update("UPDATE MWBot SET idPrenotazione = \"-1\", stato = \"Finito\" WHERE id = 1");
             comandoMWBot.put("target", -1);
             comandoMWBot.put("percentualeRicarica", 0);
             Backend.publish("ParkCharge/RichiediRicarica/1", gson.toJson(comandoMWBot));
@@ -67,6 +67,7 @@ public class GestoreRicariche {
         comandoMWBot.put("target", target.getPosto());
         comandoMWBot.put("percentualeRicarica", ricarica.getPercentuale_richiesta() - ricarica.getPercentuale_erogata());
         Backend.publish("ParkCharge/RichiediRicarica/1", gson.toJson(comandoMWBot));
+        System.out.println("HERE");
     }
 
     /**
@@ -81,8 +82,8 @@ public class GestoreRicariche {
             var ricaricaDaInterrompere = dbRicariche.query("SELECT * FROM Ricarica WHERE prenotazione = \"" + id_prenotazione + "\" AND percentuale_richiesta != percentuale_erogata;");
             float percentualeRicaricata = Float.parseFloat(ricaricaDaInterrompere.get(0).get("percentuale_erogata").toString());
             dbRicariche.update("UPDATE Ricarica SET percentuale_richiesta = percentuale_erogata WHERE prenotazione = \"" + id_prenotazione + "\" AND percentuale_richiesta != percentuale_erogata;");
-            this.publishNuovoTarget();
             this.notificaRicaricaConclusa(percentualeRicaricata);
+            this.publishNuovoTarget();
 
         } catch (Exception e){
             System.out.println(e.getMessage());
@@ -112,7 +113,7 @@ public class GestoreRicariche {
 
     public void statoRicariche(String topic, MqttMessage mqttMessage) {
         String payload = new String(mqttMessage.getPayload());
-        System.out.println("Messaggio sensore ricevuto su " + topic + ": " + payload);
+        System.out.println("Messaggio MWBot ricevuto su " + topic + ": " + payload);
 
         String MWBotID = topic.split("/")[2];
         HashMap<String, String> MWBotJson = gson.fromJson(payload, new TypeToken<HashMap<String, String>>(){}.getType());
