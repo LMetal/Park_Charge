@@ -25,7 +25,7 @@ public class GestoreIoT {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(username);
             options.setPassword(password.toCharArray());
-            options.setAutomaticReconnect(true);
+            //options.setAutomaticReconnect(true);
 
             client.connect(options);
 
@@ -39,7 +39,7 @@ public class GestoreIoT {
             client.subscribe(topicMWBot, (topic, message) -> mwBotStrategy.handleMessage(topic, message));
             client.subscribe(topicCommand, (topic, message) -> commandStrategy.handleMessage(topic, message));
 
-            System.out.println("Sottoscritto ai topic");
+            System.out.println("Sottoscritto ai topic: " + client.isConnected());
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -48,7 +48,7 @@ public class GestoreIoT {
     public void publish(String topic, String message) {
         try {
             MqttMessage mqttMessage = new MqttMessage(message.getBytes());
-            mqttMessage.setQos(2);
+            mqttMessage.setQos(0);
             client.publish(topic, mqttMessage);
             System.out.println("Messaggio pubblicato su " + topic + ": " + message);
         } catch (MqttException e) {
