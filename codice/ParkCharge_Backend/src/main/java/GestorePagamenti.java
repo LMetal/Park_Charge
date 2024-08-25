@@ -1,13 +1,10 @@
 import DataBase.DbPrenotazioni;
 import DataBase.DbStorico;
-import DataBase.DbUtenti;
 import com.google.gson.Gson;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class GestorePagamenti {
     private DbStorico dbStorico;
@@ -75,7 +72,7 @@ public class GestorePagamenti {
         // Calcolo del costo di ricarica (se applicabile)
         float costoRicarica = 0;
         int kilowattUsati = 0;
-        for (Ricariche richariche : ricaricaConclusa) {
+        for (Ricariche richariche : ricaricaConclusa) { //nullpointerexception
             kilowattUsati += richariche.getPercentuale_erogata(); // 1% = 1 kW
         }
         costoRicarica = kilowattUsati * ((Number) costiAttuali.get("costo_ricarica")).floatValue();

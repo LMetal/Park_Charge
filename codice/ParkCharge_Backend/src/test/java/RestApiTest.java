@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
-import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -690,6 +690,7 @@ public class RestApiTest {
 
         LocalDateTime now = LocalDateTime.now();
         //nuova prenotazione
+        //gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1), 1, "occupa");
         gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1, false), 1, "occupa");
 
         request = HttpRequest.newBuilder()
@@ -704,7 +705,7 @@ public class RestApiTest {
         assertNotNull(gestorePosti.getPrenotazioni().stream().filter(p -> p.getUtente().equals("prova")));
         assertEquals("prova", statoUtente.get("utente"));
         assertEquals("si", statoUtente.get("occupazione_iniziata"));
-        assertEquals(now.truncatedTo(ChronoUnit.SECONDS), LocalDateTime.parse((CharSequence) statoUtente.get("tempo_arrivo"), formatter));
+        assertEquals(now.format(formatter), LocalDateTime.parse((CharSequence) statoUtente.get("tempo_arrivo"), formatter));
         assertEquals("no", statoUtente.get("caricando"));
 
         dbUtenti.update("DELETE FROM Credenziali WHERE username = 'prova'");

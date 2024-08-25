@@ -1,8 +1,10 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -79,17 +81,17 @@ public class TestEDF {
         ricaricheList.add(r4);
 
         //nessuna prenotazione o ricarica
-        assertEquals(-1, EDF.getJobPosto(emptyPrenotazioniList, emptyRicaricheList));
+        assertNull(EDF.getJobPosto(emptyPrenotazioniList, emptyRicaricheList, true));
         //nessuna ricarica
-        assertEquals(-1, EDF.getJobPosto(prenotazioniList, emptyRicaricheList));
+        assertNull(EDF.getJobPosto(prenotazioniList, emptyRicaricheList, true));
         //nessuna prenotazione
-        assertEquals(-1, EDF.getJobPosto(emptyPrenotazioniList, ricaricheList));
+        assertNull(EDF.getJobPosto(emptyPrenotazioniList, ricaricheList, true));
 
         // prenotazioni e ricariche
-        assertEquals(1, EDF.getJobPosto(prenotazioniList, ricaricheList));
+        Assertions.assertEquals(1, Objects.requireNonNull(EDF.getJobPosto(prenotazioniList, ricaricheList, true)).getPosto());
         //ricarica prenotazione 0 completata
         ricaricheList.remove(0);
-        assertEquals(3, EDF.getJobPosto(prenotazioniList, ricaricheList));
+        assertEquals(3, Objects.requireNonNull(EDF.getJobPosto(prenotazioniList, ricaricheList, true)).getPosto());
 
 
     }
