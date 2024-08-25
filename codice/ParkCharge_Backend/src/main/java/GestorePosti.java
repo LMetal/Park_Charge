@@ -188,7 +188,7 @@ public class GestorePosti {
             String comandoSql = "UPDATE PostoAuto SET disponibilita = 0 WHERE id = \"" + idPosto + "\";";
             dbPrenotazioni.update(comandoSql);
 
-            Prenotazioni prenotazioneConclusa = this.getPrenotazioniIdPosto(idPosto).get(0);
+            Prenotazioni prenotazioneConclusa = this.getPrenotazioniIdPosto(idPosto).get(0); //TODO prenotazioni (da utenti premium) future potrebbero avere lo stesso id posto
             ArrayList<Ricariche> ricaricaConclusa = gestoreRicariche.getRicaricheByPrenotazione(String.valueOf(prenotazioneConclusa.getId()));
 
             // Viene richiesto il pagamento andando ad utilizzare le informazioni presenti nella prenotazioni e la possibile ricarica

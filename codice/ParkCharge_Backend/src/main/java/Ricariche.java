@@ -18,10 +18,14 @@ public class Ricariche {
     }
 
     public Ricariche(HashMap<String, Object> ricaricaJson) {
-        this.kilowatt = Double.valueOf(ricaricaJson.get("kilowatt").toString()).floatValue();
-        this.durata_ricarica = (int) ricaricaJson.get("durata_ricarica");
         this.percentuale_richiesta = (int) ricaricaJson.get("percentuale_richiesta");
         this.prenotazione = (int) ricaricaJson.get("prenotazione");
+        try{
+            this.percentuale_erogata = (int) ricaricaJson.get("percentuale_erogata");
+        } catch (Exception e){
+            this.percentuale_erogata = 0;
+        }
+
         this.mwbot = (int) ricaricaJson.get("MWBot");
     }
 
