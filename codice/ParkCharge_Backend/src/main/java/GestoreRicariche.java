@@ -40,6 +40,7 @@ public class GestoreRicariche {
         dbRicariche.update("INSERT INTO Ricarica(prenotazione, percentuale_richiesta, percentuale_erogata, MWBot) VALUES ("+prenotazioneId+","+percentuale+", '0', '1');");
 
         this.publishNuovoTarget();
+        System.out.println("HERE finished add");
     }
 
     private void publishNuovoTarget() {
@@ -56,6 +57,11 @@ public class GestoreRicariche {
             Backend.publish("ParkCharge/RichiediRicarica/1", gson.toJson(comandoMWBot));
             return;
         }
+        //ottengo id prenotazione attuale in ricarica
+        HashMap<String, Object> statoMWBot = dbRicariche.query("SELECT * FROM MWBot WHERE id = 1").get(0);
+        int idPrenotazioneInRicarica = Integer.parseInt(statoMWBot.get("idPrenotazione").toString());
+
+        //ottengo ricarica associata alla prenotazione target non completata
         var pr = this.getRicaricheByPrenotazione(target.getId());
         Ricariche ricarica = pr.stream()
                 .filter(r -> r.getPercentuale_erogata() < r.getPercentuale_richiesta())
@@ -63,11 +69,14 @@ public class GestoreRicariche {
                 .orElse(null);
         if(ricarica == null) return;
 
+        //se l'MWBot non deve cambiare posizione non viene inviato un nuovo comando
+        if(target.getId() == idPrenotazioneInRicarica) return;
+
+        //comando mwbot nuovo posto target e aggiorno dati a database
         dbRicariche.update("UPDATE MWBot SET idPrenotazione = \"" + target.getId() + "\", stato = \"Charging\" WHERE id = 1");
         comandoMWBot.put("target", target.getPosto());
         comandoMWBot.put("percentualeRicarica", ricarica.getPercentuale_richiesta() - ricarica.getPercentuale_erogata());
         Backend.publish("ParkCharge/RichiediRicarica/1", gson.toJson(comandoMWBot));
-        System.out.println("HERE");
     }
 
     /**
@@ -147,6 +156,7 @@ public class GestoreRicariche {
             //fine ricarica
             System.out.println("finita");
             this.notificaRicaricaConclusa(KWEmessi);
+            this.publishNuovoTarget();
         }
     }
     private void notificaRicaricaConclusa(float KWEmessi){
