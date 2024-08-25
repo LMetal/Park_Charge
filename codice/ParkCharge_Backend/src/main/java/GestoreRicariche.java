@@ -47,7 +47,7 @@ public class GestoreRicariche {
 
         //publish nuovo target
         var gestorePosti = new GestorePosti();
-        
+
         Prenotazioni target = EDF.getJobPosto(gestorePosti.getPrenotazioni(), this.getRicariche(), false);
         if(target == null){
             dbRicariche.update("UPDATE MWBot SET idPrenotazione = \"-1\", stato = \"Finito\" WHERE id = 1");
