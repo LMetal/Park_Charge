@@ -49,7 +49,7 @@ public class GestorePagamenti {
     }
 
     public ArrayList<HashMap<String, Object>> getStorico() {
-        String comandoSql = "SELECT * FROM Pagamenti\n" +
+        String comandoSql = "SELECT * FROM Pagamenti \n" +
                 "JOIN PrezzoPosteggio \n" +
                 "WHERE Pagamenti.costo = PrezzoPosteggio.id";
 
@@ -72,8 +72,10 @@ public class GestorePagamenti {
         // Calcolo del costo di ricarica (se applicabile)
         float costoRicarica = 0;
         int kilowattUsati = 0;
-        for (Ricariche richariche : ricaricaConclusa) { //TODO nullPointerException ricaricaConclusa
-            kilowattUsati += richariche.getPercentuale_erogata(); // 1% = 1 kW
+        if(ricaricaConclusa != null && !ricaricaConclusa.isEmpty()){
+            for (Ricariche richariche : ricaricaConclusa) {
+                kilowattUsati += richariche.getPercentuale_erogata(); // 1% = 1 kW
+            }
         }
         costoRicarica = kilowattUsati * ((Number) costiAttuali.get("costo_ricarica")).floatValue();
 
