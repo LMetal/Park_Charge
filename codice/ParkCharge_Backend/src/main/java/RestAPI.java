@@ -176,8 +176,13 @@ public class RestAPI {
             System.out.println(prenotazioneId);
 
             //add to database
-            gestoreRicariche.addRicarica((int) timeToCharge, prenotazioneId);
-            responseJson.put("outcome", "ok");
+            if(gestoreRicariche.addRicarica((int) timeToCharge, prenotazioneId)){
+                responseJson.put("outcome", "ok");
+            } else {
+                responseJson.put("outcome", "server_error");
+                response.status(400);
+            }
+
             return responseJson;
         }),gson::toJson);
 

@@ -35,15 +35,15 @@ public class GestoreRicariche {
         return new Ricariche(ricaricaUtente.get(0));
     }
 
-    public void addRicarica(int percentuale, int prenotazioneId){
+    public boolean addRicarica(int percentuale, int prenotazioneId){
         //add new charge
         dbRicariche.update("INSERT INTO Ricarica(prenotazione, percentuale_richiesta, percentuale_erogata, MWBot) VALUES ("+prenotazioneId+","+percentuale+", '0', '1');");
 
-        this.publishNuovoTarget();
         System.out.println("HERE finished add");
+        return this.publishNuovoTarget();
     }
 
-    private void publishNuovoTarget() {
+    private boolean publishNuovoTarget() {
         HashMap<String,Object> comandoMWBot = new HashMap<>();
 
         //publish nuovo target
@@ -55,7 +55,7 @@ public class GestoreRicariche {
             comandoMWBot.put("target", -1);
             comandoMWBot.put("percentualeRicarica", 0);
             Backend.publish("ParkCharge/RichiediRicarica/1", gson.toJson(comandoMWBot));
-            return;
+            return false;
         }
         //ottengo id prenotazione attuale in ricarica
         HashMap<String, Object> statoMWBot = dbRicariche.query("SELECT * FROM MWBot WHERE id = 1").get(0);
@@ -67,16 +67,20 @@ public class GestoreRicariche {
                 .filter(r -> r.getPercentuale_erogata() < r.getPercentuale_richiesta())
                 .findFirst()
                 .orElse(null);
-        if(ricarica == null) return;
+        if(ricarica == null) return false;
 
         //se l'MWBot non deve cambiare posizione non viene inviato un nuovo comando
-        if(target.getId() == idPrenotazioneInRicarica) return;
+        if(target.getId() == idPrenotazioneInRicarica){
+            System.out.println("MWBot non spostato");
+            return true;
+        }
 
         //comando mwbot nuovo posto target e aggiorno dati a database
         dbRicariche.update("UPDATE MWBot SET idPrenotazione = \"" + target.getId() + "\", stato = \"Charging\" WHERE id = 1");
         comandoMWBot.put("target", target.getPosto());
         comandoMWBot.put("percentualeRicarica", ricarica.getPercentuale_richiesta() - ricarica.getPercentuale_erogata());
         Backend.publish("ParkCharge/RichiediRicarica/1", gson.toJson(comandoMWBot));
+        return true;
     }
 
     /**
@@ -126,6 +130,7 @@ public class GestoreRicariche {
 
         String MWBotID = topic.split("/")[2];
         HashMap<String, String> MWBotJson = gson.fromJson(payload, new TypeToken<HashMap<String, String>>(){}.getType());
+        if(Integer.parseInt(MWBotJson.get("posizione")) == -1) return;
 
         //aggiorna stato database
         String stato = MWBotJson.get("statoCarica");
@@ -169,13 +174,14 @@ public class GestoreRicariche {
 
         int prenotazioneID = (int) dbRicariche.query("SELECT * FROM MWBot WHERE id = 1").get(0).get("idPrenotazione");
         Prenotazioni p = gestorePosti.getPrenotazione(Integer.toString(prenotazioneID));
+        if(p == null) return;
         System.out.println(p);
 
 
 
         json.put("kilowattUsati", KWEmessi);
         json.put("costoRicarica", KWEmessi * costoAlKW);
-        Backend.publish("ParkCharge/Notifiche/RicaricaConclusa/" + p.getUtente(), gson.toJson(json));
+        Backend.publish("ParkCharge/Notifiche/RicaricaConclusa/" + p.getUtente(), gson.toJson(json)); //TODO nullpointer p dopo fine ricarica
     }
 
 
