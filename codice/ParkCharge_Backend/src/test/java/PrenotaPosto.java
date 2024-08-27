@@ -23,6 +23,7 @@ public class PrenotaPosto{
         nuovaPrenotazione.setUtente("utente1");
 
         Prenotazioni risultato = gestorePosti.creaPrenotazione(nuovaPrenotazione, 1, "prenota");
+        assertEquals(risultato.getUtente(), "utente1");
         assertNotNull(risultato);
 
         dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE utente = 'utente1'");
@@ -34,15 +35,15 @@ public class PrenotaPosto{
             Prenotazioni nuovaPrenotazione = new Prenotazioni();
             nuovaPrenotazione.setTempo_arrivo(LocalDateTime.now().format(formatter));
             nuovaPrenotazione.setTempo_uscita(LocalDateTime.now().plusHours(2).format(formatter));
-            nuovaPrenotazione.setUtente("utente1");
+            nuovaPrenotazione.setUtente("utente"+i);
 
             Prenotazioni risultato = gestorePosti.creaPrenotazione(nuovaPrenotazione, 1, "prenota");
             if(i != 10) assertNotNull(risultato);
             else assertNull(risultato);
         }
 
-        for (int i = 0; i < 10; i++){
-            dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE utente = 'utente1'");
+        for (int i = 0; i < 10; i++) {
+            dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE utente = 'utente" + i + "'");
         }
     }
 }
