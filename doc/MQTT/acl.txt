@@ -15,6 +15,7 @@ topic read ParkCharge/StatoRicariche/#
 topic write ParkCharge/RichiediRicarica/#
 topic write ParkCharge/Notifiche/SostaConclusa/#
 topic write  ParkCharge/Notifiche/RicaricaConclusa/#
+topic write ParkCharge/Notifiche/Premium/#
 topic read ParkCharge/Pagamento/#
 
 user MWBot
@@ -24,4 +25,5 @@ topic write ParkCharge/StatoMWBot/#
 user User
 topic read ParkCharge/Notifiche/SostaConclusa/#
 topic read  ParkCharge/Notifiche/RicaricaConclusa/#
+topic read ParkCharge/Notifiche/Premium/#
 topic write ParkCharge/Pagamento/#

@@ -12,7 +12,9 @@ def run():
     # topics (wildcard -> each user)
     sosta_conclusa_topic = "ParkCharge/Notifiche/SostaConclusa/#"
     ricarica_conclusa_topic = "ParkCharge/Notifiche/RicaricaConclusa/#"
+    premium_topic = "ParkCharge/Notifiche/Premium/#"
     pagamento_topic = "ParkCharge/Pagamento/#"
+    
 
     # callback connessione
     def on_connect(client, userdata, flags, rc):
@@ -21,7 +23,8 @@ def run():
             # Subscribe to the wildcard topics
             client.subscribe(sosta_conclusa_topic)
             client.subscribe(ricarica_conclusa_topic)
-            print(f"Subscribed to {sosta_conclusa_topic} and {ricarica_conclusa_topic}")
+            client.subscribe(premium_topic)
+            print(f"Subscribed to {sosta_conclusa_topic} , {ricarica_conclusa_topic} and {premium_topic}")
         else:
             print(f"Connection failed with code {rc}")
 
@@ -46,6 +49,17 @@ def run():
             
             # Mostra il pulsante di pagamento sotto il campo di testo
             pay_button.config(text=f"Paga {totale:.2f} EUR", command=lambda: effettua_pagamento(user_id, totale))
+            pay_button.pack(side=tk.TOP, pady=10)
+
+        elif "Premium" in topic:
+            totale = payload['costo_premium']
+            message = (
+                f"User {user_id} - Notifica costo abbonamento premium richiesto:\n"
+                f"  - Costo totale: {totale} EUR\n"
+            )
+
+            # Mostra il pulsante di pagamento sotto il campo di testo
+            pay_button.config(text=f"Paga {totale} EUR", command=lambda: effettua_pagamento(user_id, totale))
             pay_button.pack(side=tk.TOP, pady=10)
 
 

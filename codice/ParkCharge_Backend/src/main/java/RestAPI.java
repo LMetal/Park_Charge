@@ -247,6 +247,9 @@ public class RestAPI {
                 int costoPremium = gestorePagamenti.getCostoPremium();
                 response.status(200); // Se l'aggiornamento ha successo, restituisce 200 OK
                 response.type("application/json");
+                HashMap<String,Object> prezzoPremium = new HashMap<>();
+                prezzoPremium.put("costo_premium",costoPremium);
+                Backend.publish("ParkCharge/Notifiche/Premium/" + username, gson.toJson(prezzoPremium));
                 return costoPremium;
             }
             else{
