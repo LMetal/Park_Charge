@@ -265,10 +265,8 @@ public class UiMonitora {
                     .GET()
                     .build();
 
-            //System.out.println(listaPosti);
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             ArrayList<HashMap<String, Object>> listaPosti = gson.fromJson(response.body(), type);
-            System.out.println(listaPosti);
 
             JPanel panel = new JPanel(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
@@ -394,7 +392,6 @@ public class UiMonitora {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             String responseBody = response.body();
-            System.out.println("Response: " + responseBody);
 
             ArrayList<Map<String, Object>> costiList = gson.fromJson(responseBody, type);
             Map<String, Object> costiAttuali = (Map<String, Object>) costiList.get(0);

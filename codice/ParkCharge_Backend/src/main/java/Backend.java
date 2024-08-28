@@ -15,6 +15,8 @@ public class Backend {
         GestorePosti gestorePosti = new GestorePosti();
         GestoreRicariche gestoreRicariche = new GestoreRicariche();
 
+        gestoreRicariche.initMWBot();
+
         try {
             client = new MqttClient(brokerUrl, MqttClient.generateClientId());
             MqttConnectOptions options = new MqttConnectOptions();

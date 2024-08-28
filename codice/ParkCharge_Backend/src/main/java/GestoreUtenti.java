@@ -11,7 +11,6 @@ public class GestoreUtenti {
     // Metodo per ottenere le credenziali dell'utente dato username e password
     public Credenziali getCredenziali(String username, String password) {
         String comandoSql = "SELECT * FROM Credenziali WHERE username=\"" +username+ "\"AND password=\"" +password+ "\"";
-        System.out.println(comandoSql);
         var rs = dbUtenti.query(comandoSql);
 
         // Se non ci sono risultati, restituisce null
@@ -26,7 +25,6 @@ public class GestoreUtenti {
     // Metodo per ottenere le informazioni dell'utente dato username
     public Utente getUtente(String username) {
         String comandoSql = "SELECT * FROM Utente WHERE username=\"" +username+ "\"";
-        System.out.println(comandoSql);
         var rs = dbUtenti.query(comandoSql);
 
         // Se non ci sono risultati, restituisce null
@@ -47,21 +45,18 @@ public class GestoreUtenti {
         // Query per inserire l'utente nella tabella Utente
         String utenteSql = "INSERT INTO Utente (nome,cognome,username,tipo,carta) VALUES (\"" + utente.getNome() + "\",\"" + utente.getCognome() + "\",\"" + utente.getUsername() + "\",\"" + utente.getTipo() + "\",\"" + utente.getCarta() + "\")";
 
-        System.out.println(controlloSql);
         var rs = dbUtenti.query(controlloSql);
 
         // Se l'username esiste già, restituisce un messaggio di errore
         if(!rs.isEmpty())
             return "Username gia esistente";
 
-        System.out.println(credenzialiSql);
         boolean credenzialiBool = dbUtenti.update(credenzialiSql);
 
         // Se l'inserimento delle credenziali fallisce, restituisce un messaggio di errore
         if(!credenzialiBool)
             return "Errore nella creazione delle credenziali";
 
-        System.out.println(utenteSql);
         boolean utenteBool = dbUtenti.update(utenteSql);
 
         // Se l'inserimento dell'utente fallisce, restituisce un messaggio di errore
@@ -95,7 +90,6 @@ public class GestoreUtenti {
 
         // Aggiunge la condizione WHERE per specificare l'utente da modificare
         comandoSql.append("WHERE username=\"" +username+ "\"");
-        System.out.println(comandoSql);
 
         // Esegue la query di aggiornamento e restituisce il risultato
         return dbUtenti.update(comandoSql.toString());
@@ -104,7 +98,6 @@ public class GestoreUtenti {
     // Metodo per cambiare il tipo di utente a premium dato username
     public boolean diventaPremium(String username) {
         String comandoSql = "UPDATE Utente SET tipo = 1 WHERE username=\"" +username+ "\"";
-        System.out.println(comandoSql);
 
         // Esegue la query di aggiornamento e restituisce il risultato
         return dbUtenti.update(comandoSql);

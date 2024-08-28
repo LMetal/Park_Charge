@@ -27,7 +27,6 @@ public class GestorePosti {
     public ArrayList<Prenotazioni> getPrenotazioni(){
         ArrayList<Prenotazioni> listaPrenotazioni = new ArrayList<>();
         String comandoSql = "SELECT * FROM Prenotazioni";
-        System.out.println(comandoSql);
 
         // Esegue la query per ottenere tutte le prenotazioni dal database delle prenotazioni
         var rs = dbPrenotazioni.query(comandoSql);
@@ -55,7 +54,6 @@ public class GestorePosti {
         if(this.verificaDisponibilta(idPostiAuto,prenotazioni,nuovaPrenotazione)){
             // Costruisce e esegue la query per inserire la nuova prenotazione nel database
             String comandoSql = "INSERT INTO Prenotazioni (tempo_arrivo, tempo_uscita, utente, posto,penale) VALUES ('" + nuovaPrenotazione.getTempo_arrivo().format(formatter) + "', '" + nuovaPrenotazione.getTempo_uscita().format(formatter) + "', '" + nuovaPrenotazione.getUtente() + "', '" + nuovaPrenotazione.getPosto() + "' , '0' );";
-            System.out.println(comandoSql);
 
             // Se l'inserimento ha successo, aggiorna l'oggetto nuovaPrenotazione con i dati aggiornati e lo restituisce
             if(dbPrenotazioni.update(comandoSql)){
@@ -69,7 +67,6 @@ public class GestorePosti {
     // Metodo privato per ottenere gli ID dei posti auto dal database
     private ArrayList<Integer> getIdPostiAuto() {
         String comandoPostiAutoSql = "SELECT * FROM PostoAuto";
-        System.out.println(comandoPostiAutoSql);
         ArrayList<Integer> idPostiAuto = new ArrayList<>();
         var rsPostiAuto = dbPrenotazioni.query(comandoPostiAutoSql);
 
@@ -106,7 +103,6 @@ public class GestorePosti {
     // Metodo per ottenere una specifica prenotazione dal database dato il suo ID
     public Prenotazioni getPrenotazione(String id) {
         String comandoSql = "SELECT * FROM Prenotazioni WHERE id = \"" + id + "\"";
-        System.out.println(comandoSql);
         var rs = dbPrenotazioni.query(comandoSql);
 
         // Se non esiste una prenotazione con l'ID specificato, ritorna null; altrimenti, restituisce l'oggetto Prenotazioni corrispondente
@@ -120,7 +116,6 @@ public class GestorePosti {
     // Metodo per ottenere una prenotazione dato il nome utente
     public Prenotazioni getPrenotazioneUsername(String username) {
         String comandoSql = "SELECT * FROM Prenotazioni WHERE utente = \"" + username + "\"";
-        System.out.println(comandoSql);
         var rs = dbPrenotazioni.query(comandoSql);
 
         // Se non esiste una prenotazione per l'utente specificato, ritorna null; altrimenti, restituisce l'oggetto Prenotazioni corrispondente
@@ -147,7 +142,6 @@ public class GestorePosti {
         if(this.verificaDisponibilta(idPostiAuto,prenotazioni,nuovaPrenotazione)){
             // Costruisce e esegue la query per aggiornare la prenotazione nel database
             String comandoSql = "UPDATE Prenotazioni SET tempo_arrivo = \"" + nuovaPrenotazione.getTempo_arrivo().format(formatter) + "\", tempo_uscita = \"" + nuovaPrenotazione.getTempo_uscita().format(formatter) + "\" WHERE id = \"" + vecchiaPrenotazione.getId() + "\";";
-            System.out.println(comandoSql);
             dbPrenotazioni.update(comandoSql);
 
             // Aggiorna l'oggetto vecchiaPrenotazione con i nuovi dati e lo restituisce
@@ -161,7 +155,6 @@ public class GestorePosti {
     // Metodo per cancellare una prenotazione dal database dato il suo ID
     public boolean cancellaPrenotazione(String id) {
         String comandoSql = "DELETE FROM Prenotazioni WHERE id = \"" + id + "\";";
-        System.out.println(comandoSql);
 
         // Esegue la query per cancellare la prenotazione dal database e restituisce true se l'operazione ha successo, altrimenti false
         return dbPrenotazioni.update(comandoSql);
@@ -201,7 +194,6 @@ public class GestorePosti {
         ArrayList<Prenotazioni> listaPrenotazioni = new ArrayList<>();
         // Order by viene utilizzato in quanto dobbiamo prendere la prima prenotazione che è quella che sta finendo
         String comandoSql = "SELECT * FROM Prenotazioni WHERE posto = \"" + idPosto + "\" ORDER BY tempo_arrivo;";
-        System.out.println(comandoSql);
         var rs = dbPrenotazioni.query(comandoSql);
 
         for(HashMap<String, Object> record : rs){

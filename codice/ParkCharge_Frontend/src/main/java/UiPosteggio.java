@@ -316,7 +316,8 @@ public class UiPosteggio {
                                 // Ottiene il tempo attuale
                                 LocalDateTime tempoAttuale = LocalDateTime.now();
 
-                                if(tempoAttuale.isAfter(tempoArrivo.plusMinutes(1))){
+                                //30 minuti Penale
+                                if(tempoAttuale.isAfter(tempoArrivo.plusMinutes(30))){
                                     // Richiesta post API REST per ootenere il costo della penale
                                     client = HttpClient.newHttpClient();
                                     request = HttpRequest.newBuilder()

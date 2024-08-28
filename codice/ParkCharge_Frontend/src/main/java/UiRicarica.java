@@ -117,7 +117,6 @@ public class UiRicarica {
                         .DELETE()
                         .header("Content-Type", "application/json")
                         .build();
-                System.out.println(request.uri());
                 response = client.send(request, HttpResponse.BodyHandlers.ofString());
             } catch (URISyntaxException | IOException | InterruptedException e) {
                 this.mostraErrore("Errore comunicazione server");
@@ -149,10 +148,8 @@ public class UiRicarica {
                     .header("Content-Type", "application/json")
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
             HashMap<String, Object> statoUtente = gson.fromJson(response.body(), type);
 
-            System.out.println(statoUtente.get("caricando"));
             if(statoUtente.get("caricando").toString().equals("si")) this.mostraInterrompiRicarica(statoUtente.get("id_prenotazione"));
             else this.mostraErrore("Nessuna ricarica in corso");
         } catch (URISyntaxException | IOException | InterruptedException e) {
@@ -171,10 +168,8 @@ public class UiRicarica {
                     .header("Content-Type", "application/json")
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
             HashMap<String, Object> statoUtente = gson.fromJson(response.body(), type);
 
-            System.out.println(statoUtente.get("caricando"));
             if(statoUtente.get("occupazione_iniziata").toString().equals("no")) this.mostraErrore("La prenotazione non e' iniziata\nParcheggiare il veicolo e ritentare");
             else if(statoUtente.get("caricando").toString().equals("si")) this.mostraErrore("Ricarica gia' richiesta");
             else this.mostraFormRicarica(utente);;
@@ -214,7 +209,6 @@ public class UiRicarica {
                         .POST(HttpRequest.BodyPublishers.noBody())
                         .header("Content-Type", "application/json")
                         .build();
-                System.out.println(request.uri());
                 response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
                 if(response.statusCode() == 200) this.mostraSuccesso("Ricarica richiesta con successo");

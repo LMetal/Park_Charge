@@ -39,7 +39,6 @@ public class GestoreRicariche {
         //add new charge
         dbRicariche.update("INSERT INTO Ricarica(prenotazione, percentuale_richiesta, percentuale_erogata, MWBot) VALUES ("+prenotazioneId+","+percentuale+", '0', '1');");
 
-        System.out.println("HERE finished add");
         return this.publishNuovoTarget();
     }
 
@@ -99,7 +98,6 @@ public class GestoreRicariche {
             this.publishNuovoTarget();
 
         } catch (Exception e){
-            System.out.println("ERRORE stop line 89: " + e.getMessage());
             return false;
         }
         return true;
@@ -147,7 +145,6 @@ public class GestoreRicariche {
                     .orElse(null); //get ricarica in corso (associata alla prenotazione)
 
             if (ric == null) {
-                System.out.println("ERRORE");
                 return;
             }
 
@@ -159,7 +156,6 @@ public class GestoreRicariche {
             dbRicariche.update("UPDATE Ricarica SET percentuale_erogata = \"" + nuovaPrecentuale + "\" WHERE prenotazione = \""+ prenotazioneID +"\" AND percentuale_richiesta != percentuale_erogata");
         } else {
             //fine ricarica
-            System.out.println("finita");
             this.notificaRicaricaConclusa(KWEmessi);
             this.publishNuovoTarget();
         }
@@ -170,19 +166,17 @@ public class GestoreRicariche {
         GestorePosti gestorePosti = new GestorePosti();
         var costi = gestorePagamenti.getCosti().get(0);
         float costoAlKW = Float.parseFloat(costi.get("costo_ricarica").toString());
-        System.out.println(costoAlKW);
 
         int prenotazioneID = (int) dbRicariche.query("SELECT * FROM MWBot WHERE id = 1").get(0).get("idPrenotazione");
         Prenotazioni p = gestorePosti.getPrenotazione(Integer.toString(prenotazioneID));
         if(p == null) return;
-        System.out.println(p);
-
-
 
         json.put("kilowattUsati", KWEmessi);
         json.put("costoRicarica", KWEmessi * costoAlKW);
-        Backend.publish("ParkCharge/Notifiche/RicaricaConclusa/" + p.getUtente(), gson.toJson(json)); //TODO nullpointer p dopo fine ricarica
+        Backend.publish("ParkCharge/Notifiche/RicaricaConclusa/" + p.getUtente(), gson.toJson(json));
     }
 
-
+    public void initMWBot(){
+        dbRicariche.update("UPDATE MWBot SET stato = 'Finito', idPrenotazione = '-1';");
+    }
 }

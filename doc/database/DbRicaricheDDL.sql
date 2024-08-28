@@ -13,5 +13,6 @@ CREATE TABLE "Ricarica" (
 
 CREATE TABLE "MWBot" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "stato" TEXT
+    "stato" TEXT,
+    "idPrenotazione" INTEGER
 );

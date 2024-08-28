@@ -154,8 +154,6 @@ public class RestAPI {
             var user = request.queryParams("user");
             float timeToCharge;
             try{
-                System.out.println(request.queryParams());
-                System.out.println(request.queryParams("charge_time"));
                 timeToCharge = Float.parseFloat(request.queryParams("charge_time"));
             } catch (Exception e){
                 response.status(400); //bad request
@@ -173,7 +171,6 @@ public class RestAPI {
                     .filter(p -> p.getUtente().equals(user))
                     .findFirst()
                     .orElse(null)).getId();
-            System.out.println(prenotazioneId);
 
             //add to database
             if(gestoreRicariche.addRicarica((int) timeToCharge, prenotazioneId)){
@@ -400,10 +397,6 @@ public class RestAPI {
 
         //interrompi ricarica
         delete(baseURL + "/ricariche", "application/json", ((request, response) -> {
-            System.out.println("DELETE "+ request.queryParams("id_prenotazione"));
-
-            System.out.println();
-
             if(gestoreRicariche.getRicaricheByPrenotazione(request.queryParams("id_prenotazione")) == null) {
                 response.status(404);
                 return null;

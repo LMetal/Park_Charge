@@ -39,18 +39,13 @@ public class EDF {
                         .orElse(null);
 
                 if(ricaricaPrenotazione == null) return false;
-                System.out.println("Testing ricarica di prenotazione: " + p.getUtente()+ " inizio prenotazione: "+ p.getTempo_arrivo() + " tempo ricarica "+ricaricaPrenotazione.getDurata_ricarica());
                 if(t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica() - ricaricaPrenotazione.getPercentuale_erogata()).isAfter(p.getTempo_uscita())){
-                    System.out.println("fine ricarica: "+ t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica()) + " after " + p.getTempo_uscita());
                     return false;
                 }
                 t = t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica());
-                System.out.println(t.plusMinutes(timeToCharge));
             }
 
             if(p.equals(prenotazioneUtente)){
-                System.out.println("HERE");
-                System.out.println(t.plusMinutes(timeToCharge));
                 if(t.plusMinutes(timeToCharge).isAfter(p.getTempo_uscita())){
                     return false;
                 }

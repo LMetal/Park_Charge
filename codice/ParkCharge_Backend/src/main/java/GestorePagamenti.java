@@ -3,23 +3,25 @@ import DataBase.DbStorico;
 import com.google.gson.Gson;
 
 import java.time.Duration;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GestorePagamenti {
     private DbStorico dbStorico;
     private DbPrenotazioni dbPrenotazioni;
+    DateTimeFormatter formatter;
 
     // Costruttore
     public GestorePagamenti(){
         this.dbStorico = new DbStorico();
         this.dbPrenotazioni = new DbPrenotazioni();
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 
     // Metodo per ottenere tutti i costi dal database
     public ArrayList<HashMap<String, Object>> getCosti(){
         String comandoSql = "SELECT * FROM Costi";
-        System.out.println(comandoSql);
 
         // Esegue la query per ottenere i costi dal database storico
         var rs = dbStorico.query(comandoSql);
@@ -29,7 +31,6 @@ public class GestorePagamenti {
     // Metodo per ottenere il costo del servizio premium dal database
     public int getCostoPremium() {
         String comandoSql = "SELECT costo_premium FROM Costi";
-        System.out.println(comandoSql);
 
         // Esegue la query per ottenere il costo del servizio premium dal database storico
         ArrayList<HashMap<String, Object>> rs = dbStorico.query(comandoSql);
@@ -42,7 +43,6 @@ public class GestorePagamenti {
     public boolean aggiornaPrezzi(Costi costo) {
         // Costruisce la query di aggiornamento dei prezzi con i dati forniti dall'oggetto Costi
         String comandoSql = "UPDATE Costi SET costo_posteggio = \"" + costo.getCosto_posteggio() + "\", costo_ricarica = \"" + costo.getCosto_ricarica() + "\", penale = \"" + costo.getPenale() + "\", costo_premium = \"" + costo.getCosto_premium() + "\" WHERE id = \"" + 1 + "\";";
-        System.out.println(comandoSql);
 
         // Esegue la query di aggiornamento nel database storico e restituisce il risultato
         return dbStorico.update(comandoSql);
@@ -102,7 +102,7 @@ public class GestorePagamenti {
         int lastId =(int) rs.get(0).get("id");
 
         int idRicarica = ricaricaConclusa != null ? ricaricaConclusa.get(0).getPrenotazione() : 0;
-        String insertPagamento = "INSERT INTO Pagamenti (id,tempo_arrivo,tempo_uscita,utente,posto,ricarica,costo)VALUES ('" + prenotazioneConclusa.getId() + "','" + prenotazioneConclusa.getTempo_arrivo() + "','" + prenotazioneConclusa.getTempo_uscita() + "','" + prenotazioneConclusa.getUtente() + "','" + prenotazioneConclusa.getPosto() + "','" + idRicarica + "', '" + lastId + "' );";
+        String insertPagamento = "INSERT INTO Pagamenti (id,tempo_arrivo,tempo_uscita,utente,posto,ricarica,costo)VALUES ('" + prenotazioneConclusa.getId() + "','" + prenotazioneConclusa.getTempo_arrivo().format(formatter) + "','" + prenotazioneConclusa.getTempo_uscita().format(formatter) + "','" + prenotazioneConclusa.getUtente() + "','" + prenotazioneConclusa.getPosto() + "','" + idRicarica + "', '" + lastId + "' );";
         dbStorico.update(insertPagamento);
     }
 }
