@@ -10,13 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7df6e4c3-d83e-45f9-83e8-3c81412f79a0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/artifacts/ParkCharge_Backend_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ParkCharge_Backend/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/ParkCharge_Frontend_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_06_2024_13_31__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_06_2024_13_31__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_GestoreIoT/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_GestoreIoT/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +64,7 @@
     "Kotlin script (Beta).build.gradle.kts.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "gruppo1",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/marco/OneDrive/Desktop/MARCO/UNI/TERZO_ANNO/SECONDO SEMESTRE/aa23-24-gruppo6/codice/ParkCharge_Frontend",
     "node.js.detected.package.eslint": "true",
