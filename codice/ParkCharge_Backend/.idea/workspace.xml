@@ -10,10 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d043bd38-9d3b-451f-810a-52f509317761" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/ParkCharge_Backend_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/ParkCharge_Backend_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/RestAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/RestAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_IoT/emulators/user_emulator.py" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_IoT/emulators/user_emulator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../doc/MQTT/acl.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../doc/MQTT/acl.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/ParkCharge_Backend_jar/ParkCharge_Backend.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ParkCharge_Backend_jar/ParkCharge_Backend.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +35,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Gradle.ParkCharge_Backend [:Main.main()].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
@@ -52,8 +52,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17011.79" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17011.79" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
       </set>
     </attachedChunks>
   </component>
@@ -68,6 +68,7 @@
       <workItem from="1724847338599" duration="1453000" />
       <workItem from="1724850236211" duration="284000" />
       <workItem from="1724856900734" duration="345000" />
+      <workItem from="1724858035559" duration="334000" />
     </task>
     <servers />
   </component>
