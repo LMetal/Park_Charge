@@ -10,17 +10,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae605fca-8a7d-432d-a4cb-15d91c108933" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/dati/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dati/DbPrenotazioni" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbPrenotazioni" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dati/DbRicariche" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbRicariche" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dati/DbStorico" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbStorico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ParkCharge_Backend_jar/ParkCharge_Backend.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ParkCharge_Backend_jar/ParkCharge_Backend.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbPrenotazioni.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbPrenotazioni.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbRicariche.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbRicariche.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbStorico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbStorico.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbUtenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbUtenti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dati/DbUtenti" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbUtenti" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ModificaPrenotazione.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ModificaPrenotazione.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/MonitoraPosti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MonitoraPosti.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/MonitoraPrenotazioni.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MonitoraPrenotazioni.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/MonitoraRicariche.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MonitoraRicariche.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/OccupaPosto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/OccupaPosto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/PrenotaPosto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/PrenotaPosto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/RestApiTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/RestApiTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Ricarica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Ricarica.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,6 +85,32 @@
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build ParkCharge_Backend.executor": "Run",
+    "Gradle.ModificaPrenotazione.testGetPrenotazione.executor": "Run",
+    "Gradle.MonitoraPosti.getStatoPosti.executor": "Run",
+    "Gradle.MonitoraPrenotazioni.testMonitoraPrenotazioni.executor": "Run",
+    "Gradle.MonitoraRicariche.testGetRicariche.executor": "Run",
+    "Gradle.OccupaPosto.executor": "Run",
+    "Gradle.OccupaPosto.testCreaPrenotazione.executor": "Run",
+    "Gradle.OccupaPosto.testCreaPrenotazioneErrore.executor": "Run",
+    "Gradle.ParkCharge_Backend [test].executor": "Run",
+    "Gradle.PrenotaPosto.executor": "Run",
+    "Gradle.PrenotaPosto.testCreaPrenotazione.executor": "Run",
+    "Gradle.PrenotaPosto.testCreaPrenotazioneErrore.executor": "Run",
+    "Gradle.RestApiTest.executor": "Run",
+    "Gradle.Ricarica.richiediInterrompiRicarica.executor": "Run",
+    "git-widget-placeholder": "gruppo1",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
   }
 }</component>
   <component name="RecentsManager">
@@ -91,7 +118,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle.ParkCharge_Backend [test]">
     <configuration name="CreaUtente" type="Gradle" factoryName="Gradle">
       <option name="gradleSettings" value="GRADLE_PROJECT=$PROJECT_DIR$/../ParkCharge_Backend;TASK=run" />
     </configuration>
@@ -110,6 +137,133 @@
     <configuration name="RestApiTest" type="Gradle" factoryName="Gradle">
       <option name="gradleSettings" value="GRADLE_PROJECT=$PROJECT_DIR$/../ParkCharge_Backend;TASK=run" />
     </configuration>
+    <configuration name="OccupaPosto" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;OccupaPosto&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="ParkCharge_Backend [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="PrenotaPosto" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;PrenotaPosto&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="PrenotaPosto.testCreaPrenotazioneErrore" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;PrenotaPosto.testCreaPrenotazioneErrore&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="RestApiTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;RestApiTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.ParkCharge_Backend [test]" />
+        <item itemvalue="Gradle.RestApiTest" />
+        <item itemvalue="Gradle.OccupaPosto" />
+        <item itemvalue="Gradle.PrenotaPosto" />
+        <item itemvalue="Gradle.PrenotaPosto.testCreaPrenotazioneErrore" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

@@ -13,12 +13,14 @@ public class ModificaPrenotazione {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     @Test
     public void testGetPrenotazione(){
-        Prenotazioni prenotazione1 = gestorePosti.getPrenotazione("1");
-        assertEquals(prenotazione1.getUtente(),"mrossi");
+        dbPrenotazioni.update("INSERT INTO Prenotazioni (id, tempo_arrivo, tempo_uscita, utente, posto, penale) VALUES ('998','2024-06-12 08:00:00', '2024-06-12 09:00:00', 'utente1', 1, '0')");
+        Prenotazioni prenotazione1 = gestorePosti.getPrenotazione("998");
+        assertEquals(prenotazione1.getUtente(),"utente1");
         assertEquals(prenotazione1.getPosto(),1);
 
         Prenotazioni prenotazione2 = gestorePosti.getPrenotazione("9999");
         assertEquals(prenotazione2,null);
+        dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE utente = 'utente1'");
     }
 
     @Test
