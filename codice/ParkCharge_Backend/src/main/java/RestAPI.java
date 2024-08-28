@@ -381,7 +381,12 @@ public class RestAPI {
             int month = Integer.parseInt(request.queryParams("month"));
 
             for(var p: storico){
-                LocalDateTime tempoArrivo = LocalDateTime.parse((CharSequence) p.get("tempo_arrivo"), formatter);
+                LocalDateTime tempoArrivo;
+                try {
+                    tempoArrivo = LocalDateTime.parse((CharSequence) p.get("tempo_arrivo"), formatter);
+                }catch (Exception e){
+                    tempoArrivo = LocalDateTime.parse((CharSequence) p.get("tempo_arrivo"));
+                }
                 if(tempoArrivo.getYear() == year && tempoArrivo.getMonthValue() == month){
                     storicoFiltrato.add(p);
                 }

@@ -254,197 +254,271 @@ public class UiMonitora {
     }
 
     private void mostraStatoPosti() {
-        var listaPosti = RestAPI_Adapter.get("/posti");
-        System.out.println(listaPosti);
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        //var listaPosti = RestAPI_Adapter.get("/posti");
 
-        JLabel headerPosto = new JLabel("Posto");
-        JLabel headerStato = new JLabel("Stato");
+        try {
+            // Richiesta get API REST per ottenere tutti i posti
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/posti"))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(headerPosto, gbc);
-        gbc.gridx = 1;
-        panel.add(headerStato, gbc);
+            //System.out.println(listaPosti);
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            ArrayList<HashMap<String, Object>> listaPosti = gson.fromJson(response.body(), type);
+            System.out.println(listaPosti);
 
-        int row = 1;
-        for (HashMap<String, Object> posto : listaPosti) {
-            JLabel labelNumeroPosto = new JLabel(posto.get("id").toString());
-            JLabel labelStato;
-            if(posto.get("disponibilita").toString().equals("1.0")){
-                labelStato = new JLabel("OCCUPATO");
-            } else {
-                labelStato = new JLabel("LIBERO");
-            }
+            JPanel panel = new JPanel(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(10, 10, 10, 10);
+            gbc.fill = GridBagConstraints.HORIZONTAL;
 
+            JLabel headerPosto = new JLabel("Posto");
+            JLabel headerStato = new JLabel("Stato");
 
             gbc.gridx = 0;
-            gbc.gridy = row;
-            panel.add(labelNumeroPosto, gbc);
+            gbc.gridy = 0;
+            panel.add(headerPosto, gbc);
             gbc.gridx = 1;
-            panel.add(labelStato, gbc);
+            panel.add(headerStato, gbc);
 
-            row++;
+            int row = 1;
+            for (HashMap<String, Object> posto : listaPosti) {
+                JLabel labelNumeroPosto = new JLabel(posto.get("id").toString());
+                JLabel labelStato;
+                if(posto.get("disponibilita").toString().equals("1.0")){
+                    labelStato = new JLabel("OCCUPATO");
+                } else {
+                    labelStato = new JLabel("LIBERO");
+                }
+
+
+                gbc.gridx = 0;
+                gbc.gridy = row;
+                panel.add(labelNumeroPosto, gbc);
+                gbc.gridx = 1;
+                panel.add(labelStato, gbc);
+
+                row++;
+            }
+            showConfirmDialog(null, panel, "Stato posti", DEFAULT_OPTION, QUESTION_MESSAGE, null);
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        showConfirmDialog(null, panel, "Stato posti", DEFAULT_OPTION, QUESTION_MESSAGE, null);
     }
 
     private void mostraPrenotazioni() {
-        var listaPrenotazioni = RestAPI_Adapter.get("/prenotazioni");
+        //var listaPrenotazioni = RestAPI_Adapter.get("/prenotazioni");
 
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        try {
+            // Richiesta get API REST per ottenere tutte le prenotazioni
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/prenotazioni"))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
 
-        JLabel headerId = new JLabel("ID");
-        JLabel headerArrivo = new JLabel("Tempo di Arrivo");
-        JLabel headerUscita = new JLabel("Tempo di Uscita");
-        JLabel headerUtente = new JLabel("Utente");
-        JLabel headerPosto = new JLabel("Posto");
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            ArrayList<HashMap<String, Object>> listaPrenotazioni = gson.fromJson(response.body(), type);
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(headerId, gbc);
-        gbc.gridx = 1;
-        panel.add(headerArrivo, gbc);
-        gbc.gridx = 2;
-        panel.add(headerUscita, gbc);
-        gbc.gridx = 3;
-        panel.add(headerUtente, gbc);
-        gbc.gridx = 4;
-        panel.add(headerPosto, gbc);
+            JPanel panel = new JPanel(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(10, 10, 10, 10);
+            gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        int row = 1;
-
-        for (HashMap<String, Object> prenotazione: listaPrenotazioni) {
-            JLabel labelId = new JLabel(prenotazione.get("id").toString());
-            JLabel labelArrivo = new JLabel(prenotazione.get("tempo_arrivo").toString());
-            JLabel labelUscita = new JLabel(prenotazione.get("tempo_uscita").toString());
-            JLabel labelUtente = new JLabel(prenotazione.get("utente").toString());
-            JLabel labelPosto = new JLabel(prenotazione.get("posto").toString());
+            JLabel headerId = new JLabel("ID");
+            JLabel headerArrivo = new JLabel("Tempo di Arrivo");
+            JLabel headerUscita = new JLabel("Tempo di Uscita");
+            JLabel headerUtente = new JLabel("Utente");
+            JLabel headerPosto = new JLabel("Posto");
 
             gbc.gridx = 0;
-            gbc.gridy = row;
-            panel.add(labelId, gbc);
+            gbc.gridy = 0;
+            panel.add(headerId, gbc);
             gbc.gridx = 1;
-            panel.add(labelArrivo, gbc);
+            panel.add(headerArrivo, gbc);
             gbc.gridx = 2;
-            panel.add(labelUscita, gbc);
+            panel.add(headerUscita, gbc);
             gbc.gridx = 3;
-            panel.add(labelUtente, gbc);
+            panel.add(headerUtente, gbc);
             gbc.gridx = 4;
-            panel.add(labelPosto, gbc);
+            panel.add(headerPosto, gbc);
 
-            row++;
+            int row = 1;
+
+            for (HashMap<String, Object> prenotazione: listaPrenotazioni) {
+                JLabel labelId = new JLabel(prenotazione.get("id").toString());
+                JLabel labelArrivo = new JLabel(prenotazione.get("tempo_arrivo").toString());
+                JLabel labelUscita = new JLabel(prenotazione.get("tempo_uscita").toString());
+                JLabel labelUtente = new JLabel(prenotazione.get("utente").toString());
+                JLabel labelPosto = new JLabel(prenotazione.get("posto").toString());
+
+                gbc.gridx = 0;
+                gbc.gridy = row;
+                panel.add(labelId, gbc);
+                gbc.gridx = 1;
+                panel.add(labelArrivo, gbc);
+                gbc.gridx = 2;
+                panel.add(labelUscita, gbc);
+                gbc.gridx = 3;
+                panel.add(labelUtente, gbc);
+                gbc.gridx = 4;
+                panel.add(labelPosto, gbc);
+
+                row++;
+            }
+
+            showConfirmDialog(null, panel, "Lista prenotazioni", DEFAULT_OPTION, QUESTION_MESSAGE, null);
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
-        showConfirmDialog(null, panel, "Lista prenotazioni", DEFAULT_OPTION, QUESTION_MESSAGE, null);
-
     }
 
     private void mostraModificaPrezzi() {
-        var costiAttuali = RestAPI_Adapter.get("/costo").get(0);
+        //var costiAttuali = RestAPI_Adapter.get("/costo").get(0);
 
-        JFrame frame = new JFrame("Modifica prezzi Parcheggio (X per uscire)");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
-        frame.setLayout(new BorderLayout());
+        try {
+            // Richiesta get API REST per ottenere tutti i costi
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/costo"))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
 
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        JLabel labelPosteggio = new JLabel("Costo posteggio");
-        JLabel labelRicarica = new JLabel("Costo ricarica");
-        JLabel labelPenale = new JLabel("Prezzo penale");
-        JLabel labelPremium = new JLabel("Costo premium");
+            String responseBody = response.body();
+            System.out.println("Response: " + responseBody);
 
-        JTextField textPosteggio = new JTextField(10);
-        JTextField textRicarica = new JTextField(10);
-        JTextField textPenale = new JTextField(10);
-        JTextField textPremium = new JTextField(10);
+            ArrayList<Map<String, Object>> costiList = gson.fromJson(responseBody, type);
+            Map<String, Object> costiAttuali = (Map<String, Object>) costiList.get(0);
 
-        JLabel currentPosteggio = new JLabel(costiAttuali.get("costo_posteggio").toString() + " euro/ora");
-        JLabel currentRicarica = new JLabel(costiAttuali.get("costo_ricarica").toString() + " euro/KW");
-        JLabel currentPenale = new JLabel(costiAttuali.get("penale").toString() + " euro");
-        JLabel currentPremium = new JLabel(costiAttuali.get("costo_premium").toString() + " euro");
+            JFrame frame = new JFrame("Modifica prezzi Parcheggio (X per uscire)");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(600, 400);
+            frame.setLayout(new BorderLayout());
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(labelPosteggio, gbc);
-        gbc.gridx = 1;
-        panel.add(textPosteggio, gbc);
-        gbc.gridx = 2;
-        panel.add(currentPosteggio, gbc);
+            JPanel panel = new JPanel(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(10, 10, 10, 10);
+            gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panel.add(labelRicarica, gbc);
-        gbc.gridx = 1;
-        panel.add(textRicarica, gbc);
-        gbc.gridx = 2;
-        panel.add(currentRicarica, gbc);
+            JLabel labelPosteggio = new JLabel("Costo posteggio");
+            JLabel labelRicarica = new JLabel("Costo ricarica");
+            JLabel labelPenale = new JLabel("Prezzo penale");
+            JLabel labelPremium = new JLabel("Costo premium");
 
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        panel.add(labelPenale, gbc);
-        gbc.gridx = 1;
-        panel.add(textPenale, gbc);
-        gbc.gridx = 2;
-        panel.add(currentPenale, gbc);
+            JTextField textPosteggio = new JTextField(10);
+            JTextField textRicarica = new JTextField(10);
+            JTextField textPenale = new JTextField(10);
+            JTextField textPremium = new JTextField(10);
 
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        panel.add(labelPremium, gbc);
-        gbc.gridx = 1;
-        panel.add(textPremium, gbc);
-        gbc.gridx = 2;
-        panel.add(currentPremium, gbc);
+            JLabel currentPosteggio = new JLabel(costiAttuali.get("costo_posteggio").toString() + " euro/ora");
+            JLabel currentRicarica = new JLabel(costiAttuali.get("costo_ricarica").toString() + " euro/KW");
+            JLabel currentPenale = new JLabel(costiAttuali.get("penale").toString() + " euro");
+            JLabel currentPremium = new JLabel(costiAttuali.get("costo_premium").toString() + " euro");
+
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            panel.add(labelPosteggio, gbc);
+            gbc.gridx = 1;
+            panel.add(textPosteggio, gbc);
+            gbc.gridx = 2;
+            panel.add(currentPosteggio, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            panel.add(labelRicarica, gbc);
+            gbc.gridx = 1;
+            panel.add(textRicarica, gbc);
+            gbc.gridx = 2;
+            panel.add(currentRicarica, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy = 2;
+            panel.add(labelPenale, gbc);
+            gbc.gridx = 1;
+            panel.add(textPenale, gbc);
+            gbc.gridx = 2;
+            panel.add(currentPenale, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy = 3;
+            panel.add(labelPremium, gbc);
+            gbc.gridx = 1;
+            panel.add(textPremium, gbc);
+            gbc.gridx = 2;
+            panel.add(currentPremium, gbc);
 
 
-        scelta = showConfirmDialog(null, panel, "Modifica prezzi", DEFAULT_OPTION, QUESTION_MESSAGE, null);
+            scelta = showConfirmDialog(null, panel, "Modifica prezzi", DEFAULT_OPTION, QUESTION_MESSAGE, null);
 
-        if(scelta == OK_OPTION){
-            //verifica dati
-            System.out.println(textPosteggio.getText());
-            try{
-                if(Integer.parseInt(textPosteggio.getText()) < 0){
-                    this.mostraErrore("Costo posteggio minore di zero");
+            if(scelta == OK_OPTION){
+                //verifica dati
+                System.out.println(textPosteggio.getText());
+                try{
+                    if(Float.parseFloat(textPosteggio.getText()) < 0){
+                        this.mostraErrore("Costo posteggio minore di zero");
+                        return;
+                    }
+                    if(Float.parseFloat(textRicarica.getText()) < 0){
+                        this.mostraErrore("Costo ricarica minore di zero");
+                        return;
+                    }
+                    if(Float.parseFloat(textPenale.getText()) < 0){
+                        this.mostraErrore("Costo penale minore di zero");
+                        return;
+                    }
+                    if(Float.parseFloat(textPremium.getText()) < 0){
+                        this.mostraErrore("Costo premium minore di zero");
+                        return;
+                    }
+                } catch (Exception e){
+                    this.mostraErrore("Errore inserimento dati\n" + e.getMessage());
                     return;
                 }
-                if(Integer.parseInt(textRicarica.getText()) < 0){
-                    this.mostraErrore("Costo ricarica minore di zero");
-                    return;
+
+                Map<String, Object> costi = new HashMap<>();
+                costi.put("costo_posteggio", textPosteggio.getText());
+                costi.put("costo_ricarica", textRicarica.getText());
+                costi.put("penale", textPenale.getText());
+                costi.put("costo_premium", textPremium.getText());
+
+                /*
+                if(RestAPI_Adapter.put("/costo", costi)) {
+                    this.mostraSuccesso("Costi modificati con successo");
+                }else{
+                    this.mostraErrore("Costi non modificati, errore di connessione al Backend");
                 }
-                if(Integer.parseInt(textPenale.getText()) < 0){
-                    this.mostraErrore("Costo penale minore di zero");
-                    return;
+                 */
+
+                Gson gson = new Gson();
+                String costiJson = gson.toJson(costi);
+
+                // Richiesta PUT API REST per modificare i costi
+                HttpRequest putRequest = HttpRequest.newBuilder()
+                        .uri(new URI(baseURL + "/costo"))
+                        .header("Content-Type", "application/json")
+                        .PUT(HttpRequest.BodyPublishers.ofString(costiJson))
+                        .build();
+
+                HttpResponse<String> putResponse = client.send(putRequest, HttpResponse.BodyHandlers.ofString());
+
+                if (putResponse.statusCode() == 200) {
+                    this.mostraSuccesso("Costi modificati con successo");
+                } else {
+                    this.mostraErrore("Costi non modificati, errore di connessione al Backend");
                 }
-                if(Integer.parseInt(textPremium.getText()) < 0){
-                    this.mostraErrore("Costo premium minore di zero");
-                    return;
-                }
-            } catch (Exception e){
-                this.mostraErrore("Errore inserimento dati");
-                return;
             }
 
-            Map<String, Object> costi = new HashMap<>();
-            costi.put("costo_posteggio", textPosteggio.getText());
-            costi.put("costo_ricarica", textPosteggio.getText());
-            costi.put("penale", textPosteggio.getText());
-            costi.put("costo_premium", textPosteggio.getText());
-
-            if(RestAPI_Adapter.put("/costo", costi)) {
-                this.mostraSuccesso("Costi modificati con successo");
-            }else{
-                this.mostraErrore("Costi non modificati, errore di connessione al Backend");
-            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

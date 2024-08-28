@@ -33,8 +33,13 @@ def run():
         data = json.loads(message.payload.decode())
         target = data.get("target", posto)
         target_percentualeRicarica = data.get("percentualeRicarica", 0)
-        
-        if target != posto:
+        if target == -1:
+            posto = target
+            percentualeRicarica = 0
+            publish_status("Finito")
+            posto_label.config(text=f"Posto: idle")
+            percentuale_label.config(text=f"Percentuale Ricarica: {percentualeRicarica}%", bg="green")
+        elif target != posto:
             posto = target
             percentualeRicarica = 0
             publish_status("Charging")
