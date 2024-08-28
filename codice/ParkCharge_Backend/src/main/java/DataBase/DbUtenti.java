@@ -23,7 +23,7 @@ public class DbUtenti {
 
         try
         {
-            conn = DriverManager.getConnection("jdbc:sqlite:dati/DbUtenti");
+            conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbUtenti");
             stmt = conn.createStatement();
             rs = stmt.executeQuery(comandoSql);
             md = rs.getMetaData();
@@ -57,7 +57,7 @@ public class DbUtenti {
 
         try
         {
-            conn = DriverManager.getConnection("jdbc:sqlite:dati/DbUtenti");
+            conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbUtenti");
             stmt = conn.createStatement();
             if(stmt.executeUpdate(comandoSql) == 0)
                 return false;
