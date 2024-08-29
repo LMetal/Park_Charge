@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import static javax.swing.JOptionPane.*;
@@ -378,8 +377,6 @@ public class UiMonitora {
     }
 
     private void mostraModificaPrezzi() {
-        //var costiAttuali = RestAPI_Adapter.get("/costo").get(0);
-
         try {
             // Richiesta get API REST per ottenere tutti i costi
             HttpClient client = HttpClient.newHttpClient();
@@ -486,14 +483,6 @@ public class UiMonitora {
                 costi.put("costo_ricarica", textRicarica.getText());
                 costi.put("penale", textPenale.getText());
                 costi.put("costo_premium", textPremium.getText());
-
-                /*
-                if(RestAPI_Adapter.put("/costo", costi)) {
-                    this.mostraSuccesso("Costi modificati con successo");
-                }else{
-                    this.mostraErrore("Costi non modificati, errore di connessione al Backend");
-                }
-                 */
 
                 Gson gson = new Gson();
                 String costiJson = gson.toJson(costi);
