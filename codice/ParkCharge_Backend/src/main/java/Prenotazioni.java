@@ -31,7 +31,7 @@ public class Prenotazioni {
         this.tempo_uscita = (String) prenotazioneJson.get("tempo_uscita");
         this.utente = (String) prenotazioneJson.get("utente");
         this.posto = (Integer) prenotazioneJson.get("posto");
-        //this.penale = (Integer) prenotazioneJson.get("penale") == 1;
+        this.penale = (Integer) prenotazioneJson.get("penale") == 1;
     }
 
     public Prenotazioni(){

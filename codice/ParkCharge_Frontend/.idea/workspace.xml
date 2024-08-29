@@ -12,22 +12,13 @@
     <list default="true" id="7df6e4c3-d83e-45f9-83e8-3c81412f79a0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbPrenotazioni" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbPrenotazioni" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbRicariche" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbRicariche" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbStorico" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbStorico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbUtenti" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/dati/DbUtenti" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/out/artifacts/ParkCharge_Backend_jar/ParkCharge_Backend.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/out/artifacts/ParkCharge_Backend_jar/ParkCharge_Backend.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/Backend.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/Backend.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/EDF.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/EDF.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestorePagamenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestorePagamenti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestorePosti.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestorePosti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestoreRicariche.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestoreRicariche.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestoreUtenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/GestoreUtenti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/RestAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/RestAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/Prenotazioni.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Backend/src/main/java/Prenotazioni.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/ParkCharge_Frontend_jar/ParkCharge_Frontend.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ParkCharge_Frontend_jar/ParkCharge_Frontend.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UiMonitora.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UiMonitora.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/UiPosteggio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UiPosteggio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UiRicarica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UiRicarica.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,6 +153,8 @@
       <workItem from="1724847673427" duration="4000" />
       <workItem from="1724847721769" duration="1071000" />
       <workItem from="1724850246893" duration="282000" />
+      <workItem from="1724920555260" duration="87000" />
+      <workItem from="1724924446723" duration="523000" />
     </task>
     <servers />
   </component>

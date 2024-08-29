@@ -317,7 +317,8 @@ public class UiPosteggio {
                                 LocalDateTime tempoAttuale = LocalDateTime.now();
 
                                 //30 minuti Penale
-                                if(tempoAttuale.isAfter(tempoArrivo.plusMinutes(30))){
+                                int minutiPenale = 5;
+                                if(tempoAttuale.isAfter(tempoArrivo.plusMinutes(minutiPenale))){
                                     // Richiesta post API REST per ootenere il costo della penale
                                     client = HttpClient.newHttpClient();
                                     request = HttpRequest.newBuilder()
@@ -330,7 +331,7 @@ public class UiPosteggio {
 
                                     if(response.statusCode() == 200){
                                         ArrayList<HashMap<String, Object>> costiAttuali = gson.fromJson(response.body(), new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType());
-                                        JOptionPane.showMessageDialog(null, "Ben arrivato, il posto a te assegnato e il numero: " + prenoto.get("posto") + "\ne ti e stato addebitato un costo di " + costiAttuali.get(0).get("penale") + " euro a causa del ritardo superiore ai 30 minuti", "Successo", INFORMATION_MESSAGE);
+                                        JOptionPane.showMessageDialog(null, "Ben arrivato, il posto a te assegnato e il numero: " + prenoto.get("posto") + "\ne ti e stato addebitato un costo di " + costiAttuali.get(0).get("penale") + " euro a causa del ritardo superiore ai "+ minutiPenale +" minuti", "Successo", INFORMATION_MESSAGE);
                                     }
                                 }
                                 else if(tempoAttuale.isBefore(tempoArrivo)){

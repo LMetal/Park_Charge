@@ -69,6 +69,9 @@ public class GestorePagamenti {
         int penale = prenotazioneConclusa.getPenale() ? ((Number) costiAttuali.get("penale")).intValue() : 0;
         costoSosta += penale;
 
+        // Arrotondamento a due cifre decimali
+        costoSosta = Math.round(costoSosta * 100.0f) / 100.0f;
+
         // Calcolo del costo di ricarica (se applicabile)
         float costoRicarica = 0;
         int kilowattUsati = 0;
