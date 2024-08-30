@@ -1,48 +1,61 @@
+import DataBase.DbRicariche;
 import org.junit.jupiter.api.Test;
 
-import java.util.stream.Collectors;
-
+import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-/*
+
 public class Ricarica {
     GestoreRicariche gestoreRicariche = new GestoreRicariche();
+    DbRicariche dbRicariche = new DbRicariche();
     @Test
     public void richiediInterrompiRicarica(){
-        var ricaricheList = gestoreRicariche.getRicariche();
-        assertFalse(gestoreRicariche.getRicariche().stream().anyMatch(p -> p.getPrenotazione() == 100));
-        assertEquals(10, ricaricheList.size());
+        gestoreRicariche.addRicarica(20, 1000, true);
+        ArrayList<Ricariche> ricaricheList = gestoreRicariche.getRicaricheByPrenotazione("1000");
 
-        gestoreRicariche.addRicarica(20, 100);
-        ricaricheList = gestoreRicariche.getRicariche();
-        assertEquals(11, ricaricheList.size());
-        assertTrue(ricaricheList.stream().anyMatch(p -> p.getPrenotazione() == 100));
+        assertEquals(1, ricaricheList.size());
+        assertEquals(20, ricaricheList.get(0).getPercentuale_richiesta());
+        assertEquals(1000, ricaricheList.get(0).getPrenotazione());
+        assertEquals(0, ricaricheList.get(0).getPercentuale_erogata());
+        assertEquals(1, ricaricheList.get(0).getMwbot());
 
-        assertTrue(gestoreRicariche.stopRicaricaByPrenotazione("100"));
-        ricaricheList = gestoreRicariche.getRicariche();
-        assertEquals(10, ricaricheList.size());
-        assertFalse(ricaricheList.stream().anyMatch(p -> p.getPrenotazione() == 100));
+        assertTrue(gestoreRicariche.stopRicaricaByPrenotazione("1000", true));
 
+        ricaricheList = gestoreRicariche.getRicaricheByPrenotazione("1000");
+        assertEquals(1, ricaricheList.size());
+        assertEquals(0, ricaricheList.get(0).getPercentuale_richiesta());
+        assertEquals(1000, ricaricheList.get(0).getPrenotazione());
+        assertEquals(0, ricaricheList.get(0).getPercentuale_erogata());
+        assertEquals(1, ricaricheList.get(0).getMwbot());
 
+        //simulo ricarica in corso in parte erogata
+        dbRicariche.update("INSERT INTO Ricarica(prenotazione, percentuale_richiesta, percentuale_erogata, MWBot) VALUES ('1000','50', '11', '1');");
 
-        ricaricheList = gestoreRicariche.getRicariche();
-        assertFalse(gestoreRicariche.getRicariche().stream().anyMatch(p -> p.getPrenotazione() == 100));
-        assertEquals(10, ricaricheList.size());
+        ricaricheList = gestoreRicariche.getRicaricheByPrenotazione("1000");
+        assertEquals(2, ricaricheList.size());
 
-        gestoreRicariche.addRicarica(20, 100);
-        gestoreRicariche.addRicarica(20, 101);
-        ricaricheList = gestoreRicariche.getRicariche();
-        assertEquals(12, ricaricheList.size());
-        assertTrue(ricaricheList.stream().anyMatch(p -> p.getPrenotazione() == 100));
-        assertTrue(ricaricheList.stream().anyMatch(p -> p.getPrenotazione() == 101));
+        assertEquals(0, ricaricheList.get(0).getPercentuale_richiesta());
+        assertEquals(1000, ricaricheList.get(0).getPrenotazione());
+        assertEquals(0, ricaricheList.get(0).getPercentuale_erogata());
+        assertEquals(1, ricaricheList.get(0).getMwbot());
 
-        gestoreRicariche.stopRicaricaByPrenotazione("100");
-        gestoreRicariche.stopRicaricaByPrenotazione("101");
-        ricaricheList = gestoreRicariche.getRicariche();
-        assertEquals(10, ricaricheList.size());
-        assertFalse(ricaricheList.stream().anyMatch(p -> p.getPrenotazione() == 100));
-        assertFalse(ricaricheList.stream().anyMatch(p -> p.getPrenotazione() == 101));
+        assertEquals(50, ricaricheList.get(1).getPercentuale_richiesta());
+        assertEquals(1000, ricaricheList.get(1).getPrenotazione());
+        assertEquals(11, ricaricheList.get(1).getPercentuale_erogata());
+        assertEquals(1, ricaricheList.get(1).getMwbot());
+
+        dbRicariche.update("DELETE FROM Ricarica WHERE prenotazione = 1000");
+
+        //due ricariche per prenotazioni diverse
+        gestoreRicariche.addRicarica(25, 1000, true);
+        gestoreRicariche.addRicarica(40, 1001, true);
+
+        assertEquals(1, gestoreRicariche.getRicaricheByPrenotazione("1000").size());
+        assertEquals(1, gestoreRicariche.getRicaricheByPrenotazione("1001").size());
+
+        dbRicariche.update("DELETE FROM Ricarica WHERE prenotazione = 1000");
+        dbRicariche.update("DELETE FROM Ricarica WHERE prenotazione = 1001");
+
     }
 }
- */

@@ -23,7 +23,12 @@ public class DbUtenti {
 
         try
         {
-            conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbUtenti");
+            //prova connessione da IDE, altrimenti prova connessione con progetto buildato
+            try {
+                conn = DriverManager.getConnection("jdbc:sqlite:dati/DbUtenti");
+            } catch (SQLException e) {
+                conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbUtenti");
+            }
             stmt = conn.createStatement();
             rs = stmt.executeQuery(comandoSql);
             md = rs.getMetaData();
@@ -57,7 +62,11 @@ public class DbUtenti {
 
         try
         {
-            conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbUtenti");
+            try {
+                conn = DriverManager.getConnection("jdbc:sqlite:dati/DbUtenti");
+            } catch (SQLException e) {
+                conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbUtenti");
+            }
             stmt = conn.createStatement();
             if(stmt.executeUpdate(comandoSql) == 0)
                 return false;

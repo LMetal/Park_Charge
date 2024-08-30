@@ -1,7 +1,6 @@
 import DataBase.DbPrenotazioni;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.Assert.*;
@@ -31,7 +30,7 @@ public class ModificaPrenotazione {
         vecchiaPrenotazione.setTempo_uscita("2024-06-12 09:00:00");
         vecchiaPrenotazione.setUtente("utente1");
 
-        dbPrenotazioni.update("INSERT INTO Prenotazioni (id, tempo_arrivo, tempo_uscita, utente, posto) VALUES ('998','2024-06-12 08:00:00', '2024-06-12 09:00:00', 'utente1', 1)");
+        dbPrenotazioni.update("INSERT INTO Prenotazioni (id, tempo_arrivo, tempo_uscita, utente, posto, penale) VALUES ('998','2024-06-12 08:00:00', '2024-06-12 09:00:00', 'utente1', 1, 0)");
 
         Prenotazioni nuovaPrenotazione = new Prenotazioni();
         nuovaPrenotazione.setTempo_arrivo("2024-06-12 09:00:00");

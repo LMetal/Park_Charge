@@ -23,7 +23,11 @@ public class DbStorico {
 
         try
         {
-            conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbStorico");
+            try {
+                conn = DriverManager.getConnection("jdbc:sqlite:dati/DbStorico");
+            } catch (SQLException e) {
+                conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbStorico");
+            }
             stmt = conn.createStatement();
             rs = stmt.executeQuery(comandoSql);
             md = rs.getMetaData();
@@ -57,7 +61,11 @@ public class DbStorico {
 
         try
         {
-            conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbStorico");
+            try {
+                conn = DriverManager.getConnection("jdbc:sqlite:dati/DbStorico");
+            } catch (SQLException e) {
+                conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbStorico");
+            }
             stmt = conn.createStatement();
             if(stmt.executeUpdate(comandoSql) == 0)
                 return false;

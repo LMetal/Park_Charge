@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class EDF {
-    //TODO aggiungi campo percentuale ricaricata a database ricariche
     /**
      * @param userRequesting id user requesting to charge
      * @param timeToCharge time in minutes of the requesting charge

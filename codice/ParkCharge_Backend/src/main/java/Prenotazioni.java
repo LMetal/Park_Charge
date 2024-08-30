@@ -26,6 +26,7 @@ public class Prenotazioni {
     }
 
     public Prenotazioni(HashMap<String, Object> prenotazioneJson) {
+        System.out.println(prenotazioneJson);
         this.id = (Integer) prenotazioneJson.get("id");
         this.tempo_arrivo = (String) prenotazioneJson.get("tempo_arrivo");
         this.tempo_uscita = (String) prenotazioneJson.get("tempo_uscita");

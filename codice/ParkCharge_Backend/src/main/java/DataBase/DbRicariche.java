@@ -23,7 +23,11 @@ public class DbRicariche {
 
         try
         {
-            conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbRicariche");
+            try {
+                conn = DriverManager.getConnection("jdbc:sqlite:dati/DbRicariche");
+            } catch (SQLException e) {
+                conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbRicariche");
+            }
             stmt = conn.createStatement();
             rs = stmt.executeQuery(comandoSql);
             md = rs.getMetaData();
@@ -57,7 +61,11 @@ public class DbRicariche {
 
         try
         {
-            conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbRicariche");
+            try {
+                conn = DriverManager.getConnection("jdbc:sqlite:dati/DbRicariche");
+            } catch (SQLException e){
+                conn = DriverManager.getConnection("jdbc:sqlite:ParkCharge_Backend/dati/DbRicariche");
+            }
             stmt = conn.createStatement();
             stmt.executeUpdate(comandoSql);
             stmt.close();

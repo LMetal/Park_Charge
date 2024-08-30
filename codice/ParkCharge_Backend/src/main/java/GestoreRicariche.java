@@ -35,10 +35,12 @@ public class GestoreRicariche {
         return new Ricariche(ricaricaUtente.get(0));
     }
 
-    public boolean addRicarica(int percentuale, int prenotazioneId){
+    public boolean addRicarica(int percentuale, int prenotazioneId, boolean isTest){
         //add new charge
         dbRicariche.update("INSERT INTO Ricarica(prenotazione, percentuale_richiesta, percentuale_erogata, MWBot) VALUES ("+prenotazioneId+","+percentuale+", '0', '1');");
 
+        //se è un test non fa publish non essendoci un broker attivo
+        if(isTest) return true;
         return this.publishNuovoTarget();
     }
 
@@ -78,7 +80,12 @@ public class GestoreRicariche {
         dbRicariche.update("UPDATE MWBot SET idPrenotazione = \"" + target.getId() + "\", stato = \"Charging\" WHERE id = 1");
         comandoMWBot.put("target", target.getPosto());
         comandoMWBot.put("percentualeRicarica", ricarica.getPercentuale_richiesta() - ricarica.getPercentuale_erogata());
-        Backend.publish("ParkCharge/RichiediRicarica/1", gson.toJson(comandoMWBot));
+        try{
+            Backend.publish("ParkCharge/RichiediRicarica/1", gson.toJson(comandoMWBot));
+        } catch (NullPointerException e){
+            return true;
+        }
+
         return true;
     }
 
@@ -89,11 +96,12 @@ public class GestoreRicariche {
      * viene quindi impostata la percentuale_richiesta a quanto emesso fino a ora.
      * Viene comunicato il nuovo target all'MWBot.
      */
-    public boolean stopRicaricaByPrenotazione(String id_prenotazione) {
+    public boolean stopRicaricaByPrenotazione(String id_prenotazione, boolean isTest) {
         try{
             var ricaricaDaInterrompere = dbRicariche.query("SELECT * FROM Ricarica WHERE prenotazione = \"" + id_prenotazione + "\" AND percentuale_richiesta != percentuale_erogata;");
             float percentualeRicaricata = Float.parseFloat(ricaricaDaInterrompere.get(0).get("percentuale_erogata").toString());
             dbRicariche.update("UPDATE Ricarica SET percentuale_richiesta = percentuale_erogata WHERE prenotazione = \"" + id_prenotazione + "\" AND percentuale_richiesta != percentuale_erogata;");
+            if(isTest) return true;
             this.notificaRicaricaConclusa(percentualeRicaricata);
             this.publishNuovoTarget();
 

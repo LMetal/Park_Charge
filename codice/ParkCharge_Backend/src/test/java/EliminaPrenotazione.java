@@ -14,5 +14,6 @@ public class EliminaPrenotazione {
 
         assertTrue(gestorePosti.cancellaPrenotazione("998"));
         assertFalse(gestorePosti.cancellaPrenotazione("998"));
+        assertNull(gestorePosti.getPrenotazione("998"));
     }
 }

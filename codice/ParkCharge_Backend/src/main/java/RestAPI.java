@@ -173,7 +173,7 @@ public class RestAPI {
                     .orElse(null)).getId();
 
             //add to database
-            if(gestoreRicariche.addRicarica((int) timeToCharge, prenotazioneId)){
+            if(gestoreRicariche.addRicarica((int) timeToCharge, prenotazioneId, false)){
                 responseJson.put("outcome", "ok");
             } else {
                 responseJson.put("outcome", "server_error");
@@ -249,7 +249,12 @@ public class RestAPI {
                 response.type("application/json");
                 HashMap<String,Object> prezzoPremium = new HashMap<>();
                 prezzoPremium.put("costo_premium",costoPremium);
-                Backend.publish("ParkCharge/Notifiche/Premium/" + username, gson.toJson(prezzoPremium));
+                try{
+                    Backend.publish("ParkCharge/Notifiche/Premium/" + username, gson.toJson(prezzoPremium));
+                } catch (NullPointerException e){
+                    //mqtt broker error (service unavailable)
+                    response.status(503);
+                }
                 return costoPremium;
             }
             else{
@@ -405,7 +410,7 @@ public class RestAPI {
                 return null;
             }
 
-            if(gestoreRicariche.stopRicaricaByPrenotazione(request.queryParams("id_prenotazione"))){
+            if(gestoreRicariche.stopRicaricaByPrenotazione(request.queryParams("id_prenotazione"), false)){
                 response.status(200);
             } else {
                 response.status(500);

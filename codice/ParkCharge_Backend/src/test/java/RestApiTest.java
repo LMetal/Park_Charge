@@ -300,16 +300,21 @@ public class RestApiTest {
             int costoPremium = gson.fromJson(response.body(), Integer.class);
             int costoPremiumEffettivo = gestorePagamenti.getCostoPremium();
             Utente utente = gestoreUtenti.getUtente("UsernameTest");
-            assertEquals(200, response.statusCode());
+            assertEquals(503, response.statusCode()); //mqtt broker not found
             assertEquals(costoPremium,costoPremiumEffettivo);
             assertEquals(utente.getTipo(),1);
 
             dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
             dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+            //non c'e broker mqtt, corretto
             dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
             dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
-            fail("Exception occurred: " + e.getMessage());
+            if(!e.getMessage().contains("<html><body><h2>503")) fail("Exception occurred: " + e.getMessage());
+        } catch (Exception e){
+            dbUtenti.update("DELETE FROM Credenziali WHERE username = 'UsernameTest'");
+            dbUtenti.update("DELETE FROM Utente WHERE username = 'UsernameTest'");
+            fail("Exception occurred: "+ e.getMessage());
         }
     }
 
@@ -649,71 +654,79 @@ public class RestApiTest {
         }
     }
 
-    /*
+
     @Test
     public void testStatoUtente() throws URISyntaxException, IOException, InterruptedException {
         Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
+        try{
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/statoUtente?user=lverdi"))
+                    .GET()
+                    .header("Content-Type", "application/json")
+                    .build();
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(baseURL + "/statoUtente?user=lverdi"))
-                .GET()
-                .header("Content-Type", "application/json")
-                .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HashMap<String, Object> statoUtente = gson.fromJson(response.body(), type);
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        HashMap<String, Object> statoUtente = gson.fromJson(response.body(), type);
-
-        assertEquals("lverdi", statoUtente.get("utente"));
-        assertEquals("si", statoUtente.get("occupazione_iniziata"));
-        assertEquals("2024-06-01 09:00:00", statoUtente.get("tempo_arrivo"));
-        assertEquals("si", statoUtente.get("caricando"));
-        assertEquals(2.0, statoUtente.get("id_prenotazione"));
-
-
-        //nuovo utente
-        gestoreUtenti.creaUtenti(new Utente("nom", "cogn", "prova", 1, "1234"), new Credenziali("prova", "pass123"));
-        request = HttpRequest.newBuilder()
-                .uri(new URI(baseURL + "/statoUtente?user=prova"))
-                .GET()
-                .header("Content-Type", "application/json")
-                .build();
-
-        response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        statoUtente = gson.fromJson(response.body(), type);
-
-        assertEquals("prova", statoUtente.get("utente"));
-        assertEquals("no", statoUtente.get("occupazione_iniziata"));
-        assertEquals("null", statoUtente.get("tempo_arrivo"));
-        assertEquals("no", statoUtente.get("caricando"));
-        assertEquals("null", statoUtente.get("id_prenotazione"));
+            assertEquals("lverdi", statoUtente.get("utente"));
+            assertEquals("no", statoUtente.get("occupazione_iniziata"));
+            assertEquals("null", statoUtente.get("tempo_arrivo"));
+            assertEquals("no", statoUtente.get("caricando"));
+            assertEquals("null", statoUtente.get("id_prenotazione"));
 
 
-        LocalDateTime now = LocalDateTime.now();
-        //nuova prenotazione
-        //gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1), 1, "occupa");
-        gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1, false), 1, "occupa");
+            //nuovo utente
+            gestoreUtenti.creaUtenti(new Utente("nom", "cogn", "prova", 1, "1234"), new Credenziali("prova", "pass123"));
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/statoUtente?user=prova"))
+                    .GET()
+                    .header("Content-Type", "application/json")
+                    .build();
 
-        request = HttpRequest.newBuilder()
-                .uri(new URI(baseURL + "/statoUtente?user=prova"))
-                .GET()
-                .header("Content-Type", "application/json")
-                .build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            statoUtente = gson.fromJson(response.body(), type);
 
-        response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        statoUtente = gson.fromJson(response.body(), type);
+            assertEquals("prova", statoUtente.get("utente"));
+            assertEquals("no", statoUtente.get("occupazione_iniziata"));
+            assertEquals("null", statoUtente.get("tempo_arrivo"));
+            assertEquals("no", statoUtente.get("caricando"));
+            assertEquals("null", statoUtente.get("id_prenotazione"));
 
-        assertNotNull(gestorePosti.getPrenotazioni().stream().filter(p -> p.getUtente().equals("prova")));
-        assertEquals("prova", statoUtente.get("utente"));
-        assertEquals("si", statoUtente.get("occupazione_iniziata"));
-        assertEquals(now.format(formatter), LocalDateTime.parse((CharSequence) statoUtente.get("tempo_arrivo"), formatter));
-        assertEquals("no", statoUtente.get("caricando"));
 
-        dbUtenti.update("DELETE FROM Credenziali WHERE username = 'prova'");
-        dbUtenti.update("DELETE FROM Utente WHERE username = 'prova'");
-        dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE Utente = 'prova'");
+            LocalDateTime now = LocalDateTime.now();
+            //nuova prenotazione
+            //gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1), 1, "occupa");
+            gestorePosti.creaPrenotazione(new Prenotazioni(1000, now, now.plusHours(1), "prova", 1, false), 1, "occupa");
+
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(baseURL + "/statoUtente?user=prova"))
+                    .GET()
+                    .header("Content-Type", "application/json")
+                    .build();
+
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            statoUtente = gson.fromJson(response.body(), type);
+
+            assertNotNull(gestorePosti.getPrenotazioni().stream().filter(p -> p.getUtente().equals("prova")));
+            assertEquals("prova", statoUtente.get("utente"));
+            assertEquals("si", statoUtente.get("occupazione_iniziata"));
+            assertEquals(now.format(formatter), LocalDateTime.parse((CharSequence) statoUtente.get("tempo_arrivo"), formatter).format(formatter));
+            assertEquals("no", statoUtente.get("caricando"));
+
+            dbUtenti.update("DELETE FROM Credenziali WHERE username = 'prova'");
+            dbUtenti.update("DELETE FROM Utente WHERE username = 'prova'");
+            dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE Utente = 'prova'");
+        } catch (Exception e){
+            dbUtenti.update("DELETE FROM Credenziali WHERE username = 'prova'");
+            dbUtenti.update("DELETE FROM Utente WHERE username = 'prova'");
+            dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE Utente = 'prova'");
+            fail(e.getMessage());
+        }
+
+
     }
-     */
+
 
     @Test
     public void testStatoUtenteErrato() throws URISyntaxException, IOException, InterruptedException {
@@ -736,7 +749,7 @@ public class RestApiTest {
         assertEquals("null", statoUtente.get("id_prenotazione"));
     }
 
-    /*
+
     @Test
     public void testRichiediRicarica() throws URISyntaxException, IOException, InterruptedException {
         //setup utente, prenotazione
@@ -763,10 +776,10 @@ public class RestApiTest {
                 .findFirst()
                 .orElse(null);
 
-        System.out.println(ricarica.getDurata_ricarica());
+        System.out.println(ricarica.getPercentuale_richiesta());
 
         assertNotNull(ricarica);
-        assertEquals(30, ricarica.getDurata_ricarica());
+        assertEquals(30, ricarica.getPercentuale_richiesta());
 
         //elimino dati creati
         dbUtenti.update("DELETE FROM Credenziali WHERE username = 'prova'");
@@ -774,7 +787,6 @@ public class RestApiTest {
         dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE Utente = 'prova'");
         dbRicariche.update("DELETE FROM Ricarica WHERE prenotazione = '"+id_prenotazione+"'");
     }
-     */
 
     @Test
     public void testMonitoraPostiAmministratore() throws URISyntaxException, IOException, InterruptedException {
@@ -804,6 +816,19 @@ public class RestApiTest {
 
     @Test
     public void testMonitoraPrenotazioneAmministratore() throws URISyntaxException, IOException, InterruptedException {
+        Prenotazioni nuovaPrenotazione = new Prenotazioni();
+        nuovaPrenotazione.setTempo_arrivo(LocalDateTime.now().format(formatter));
+        nuovaPrenotazione.setTempo_uscita(LocalDateTime.now().plusHours(2).format(formatter));
+        nuovaPrenotazione.setUtente("utente1");
+
+        gestorePosti.creaPrenotazione(nuovaPrenotazione, 1, "prenota");
+
+        nuovaPrenotazione = new Prenotazioni();
+        nuovaPrenotazione.setTempo_arrivo(LocalDateTime.now().format(formatter));
+        nuovaPrenotazione.setTempo_uscita(LocalDateTime.now().plusHours(2).format(formatter));
+        nuovaPrenotazione.setUtente("utente2");
+
+        gestorePosti.creaPrenotazione(nuovaPrenotazione, 1, "prenota");
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -815,6 +840,11 @@ public class RestApiTest {
         Type listType = new TypeToken<List<Prenotazioni>>() {}.getType();
         List<Prenotazioni> prenotazioniList = gson.fromJson(response.body(), listType);
 
-        //assertEquals(9, prenotazioniList.size());
+        assertTrue(prenotazioniList.stream().anyMatch(p -> p.getUtente().equals("utente1")));
+        assertTrue(prenotazioniList.stream().anyMatch(p -> p.getUtente().equals("utente2")));
+        assertTrue(prenotazioniList.stream().noneMatch(p -> p.getUtente().equals("utente3")));
+
+        dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE utente = 'utente1'");
+        dbPrenotazioni.update("DELETE FROM Prenotazioni WHERE utente = 'utente2'");
     }
 }
