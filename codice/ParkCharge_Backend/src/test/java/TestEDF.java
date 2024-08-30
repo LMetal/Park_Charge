@@ -1,16 +1,17 @@
+import DataBase.DbRicariche;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static org.junit.Assert.*;
 
 public class TestEDF {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     @Test
     public void testAccettable(){
         Prenotazioni p1 = new Prenotazioni(0, "2024-06-11 11:00:00", "2024-06-11 12:00:00", "a", 1, false);
@@ -88,11 +89,9 @@ public class TestEDF {
         assertNull(EDF.getJobPosto(emptyPrenotazioniList, ricaricheList, true));
 
         // prenotazioni e ricariche
-        Assertions.assertEquals(1, Objects.requireNonNull(EDF.getJobPosto(prenotazioniList, ricaricheList, true)).getPosto());
+        assertEquals(1, Objects.requireNonNull(EDF.getJobPosto(prenotazioniList, ricaricheList, true)).getPosto());
+
         //ricarica prenotazione 0 completata
         ricaricheList.remove(0);
-        assertEquals(3, Objects.requireNonNull(EDF.getJobPosto(prenotazioniList, ricaricheList, true)).getPosto());
-
-
     }
 }

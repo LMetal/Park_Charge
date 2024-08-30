@@ -27,14 +27,6 @@ public class GestoreRicariche {
         return listaRicariche;
     }
 
-    public Ricariche getRicariche(String id) {
-        var ricaricaUtente = dbRicariche.query("SELECT * FROM Ricarica WHERE id = \""+ id + "\"");
-        if(ricaricaUtente == null) return null;
-        if(ricaricaUtente.size() != 1) return null;
-
-        return new Ricariche(ricaricaUtente.get(0));
-    }
-
     public boolean addRicarica(int percentuale, int prenotazioneId, boolean isTest){
         //add new charge
         dbRicariche.update("INSERT INTO Ricarica(prenotazione, percentuale_richiesta, percentuale_erogata, MWBot) VALUES ("+prenotazioneId+","+percentuale+", '0', '1');");

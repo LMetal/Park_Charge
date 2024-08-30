@@ -44,5 +44,6 @@ public class MonitoraRicariche {
         dbRicariche.update("DELETE FROM Ricarica WHERE prenotazione = '1000'");
         dbRicariche.update("DELETE FROM Ricarica WHERE prenotazione = '1001'");
         dbRicariche.update("DELETE FROM Ricarica WHERE prenotazione = '1002'");
+        dbRicariche.update("UPDATE MWBot SET idPrenotazione = \"-1\", stato = \"Finito\" WHERE id = 1");
     }
 }
