@@ -16,22 +16,6 @@
       <change beforePath="$PROJECT_DIR$/dati/DbRicariche" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbRicariche" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dati/DbStorico" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbStorico" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dati/DbUtenti" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbUtenti" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbPrenotazioni.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbPrenotazioni.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbRicariche.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbRicariche.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbStorico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbStorico.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DbUtenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DbUtenti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/EDF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/EDF.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GestoreRicariche.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestoreRicariche.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Prenotazioni.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Prenotazioni.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/RestAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/RestAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/EliminaPrenotazione.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/EliminaPrenotazione.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ModificaPrenotazione.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ModificaPrenotazione.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/MonitoraPrenotazioni.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MonitoraPrenotazioni.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/MonitoraRicariche.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MonitoraRicariche.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/MonitoraStorico.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/RestApiTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/RestApiTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/Ricarica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Ricarica.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,24 +49,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.ParkCharge_Backend [:Main.main()].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.ParkCharge_Backend [:Main.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ParkCharge_Backend [test].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Gradle.ParkCharge_Backend [test]">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -110,6 +95,7 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="RestApiTest.testMonitoraPrenotazioneAmministratore" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -133,6 +119,7 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="RestApiTest.testRichiediRicarica" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -156,6 +143,7 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="RestApiTest.testStatoUtente" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -179,6 +167,7 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="Ricarica.richiediInterrompiRicarica" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -202,6 +191,7 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <recent_temporary>
@@ -237,6 +227,7 @@
       <workItem from="1724918234040" duration="839000" />
       <workItem from="1724921630506" duration="2170000" />
       <workItem from="1724954684815" duration="10037000" />
+      <workItem from="1725027999287" duration="189000" />
     </task>
     <servers />
   </component>
