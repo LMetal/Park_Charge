@@ -10,12 +10,14 @@ import java.util.HashMap;
 public class GestorePagamenti {
     private DbStorico dbStorico;
     private DbPrenotazioni dbPrenotazioni;
+    private GestoreRicariche gestoreRicariche;
     DateTimeFormatter formatter;
 
     // Costruttore
     public GestorePagamenti(){
         this.dbStorico = new DbStorico();
         this.dbPrenotazioni = new DbPrenotazioni();
+        this.gestoreRicariche = new GestoreRicariche();
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 
@@ -104,7 +106,7 @@ public class GestorePagamenti {
         var rs = dbStorico.query(selectLastId);
         int lastId =(int) rs.get(0).get("id");
 
-        int idRicarica = ricaricaConclusa != null ? ricaricaConclusa.get(0).getPrenotazione() : 0;
+        int idRicarica = ricaricaConclusa != null ? gestoreRicariche.getIdRicaricaByPrenotazione(prenotazioneConclusa.getId()) : 0;
         String insertPagamento = "INSERT INTO Pagamenti (id,tempo_arrivo,tempo_uscita,utente,posto,ricarica,costo)VALUES ('" + prenotazioneConclusa.getId() + "','" + prenotazioneConclusa.getTempo_arrivo().format(formatter) + "','" + prenotazioneConclusa.getTempo_uscita().format(formatter) + "','" + prenotazioneConclusa.getUtente() + "','" + prenotazioneConclusa.getPosto() + "','" + idRicarica + "', '" + lastId + "' );";
         dbStorico.update(insertPagamento);
     }

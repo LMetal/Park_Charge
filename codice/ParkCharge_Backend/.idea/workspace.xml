@@ -10,12 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d043bd38-9d3b-451f-810a-52f509317761" name="Changes" comment="correzione test, modifica connessione database, database finale">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_06_2024_13_31__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_06_2024_13_31__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dati/DbPrenotazioni" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbPrenotazioni" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dati/DbRicariche" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbRicariche" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dati/DbStorico" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbStorico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dati/DbUtenti" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbUtenti" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/ParkCharge_Backend_jar/ParkCharge_Backend.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ParkCharge_Backend_jar/ParkCharge_Backend.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GestorePagamenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestorePagamenti.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/GestoreRicariche.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestoreRicariche.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -228,6 +229,7 @@
       <workItem from="1724921630506" duration="2170000" />
       <workItem from="1724954684815" duration="10037000" />
       <workItem from="1725027999287" duration="189000" />
+      <workItem from="1725123797939" duration="2113000" />
     </task>
     <servers />
   </component>

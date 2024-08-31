@@ -179,4 +179,8 @@ public class GestoreRicariche {
     public void initMWBot(){
         dbRicariche.update("UPDATE MWBot SET stato = 'Finito', idPrenotazione = '-1';");
     }
+
+    public int getIdRicaricaByPrenotazione(int prenotazioneId){
+        return (int) dbRicariche.query("SELECT id FROM Ricarica WHERE prenotazione = \"" + prenotazioneId + "\";").get(0).get("id");
+    }
 }
