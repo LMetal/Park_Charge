@@ -15,8 +15,8 @@
       <change beforePath="$PROJECT_DIR$/dati/DbRicariche" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbRicariche" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dati/DbStorico" beforeDir="false" afterPath="$PROJECT_DIR$/dati/DbStorico" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/ParkCharge_Backend_jar/ParkCharge_Backend.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ParkCharge_Backend_jar/ParkCharge_Backend.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GestorePagamenti.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestorePagamenti.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GestoreRicariche.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GestoreRicariche.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Frontend/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ParkCharge_Frontend/out/artifacts/ParkCharge_Frontend_jar/ParkCharge_Frontend.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../ParkCharge_Frontend/out/artifacts/ParkCharge_Frontend_jar/ParkCharge_Frontend.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,6 +230,8 @@
       <workItem from="1724954684815" duration="10037000" />
       <workItem from="1725027999287" duration="189000" />
       <workItem from="1725123797939" duration="2113000" />
+      <workItem from="1725220516254" duration="87000" />
+      <workItem from="1725221026884" duration="4000" />
     </task>
     <servers />
   </component>

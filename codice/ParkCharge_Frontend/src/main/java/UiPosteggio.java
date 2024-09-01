@@ -364,11 +364,17 @@ public class UiPosteggio {
             JOptionPane.showMessageDialog(null,"Spiacente, non hai prenotazioni da modificare", "Errore", ERROR_MESSAGE);
             return null;
         }
+
         this.prenotazione = prenotazioneModifica;
 
-
         while(!indietro && !formato) {
-            this.mostraFormModificaPrenotazione(prenotazioneModifica);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime tempoArrivoModifica = LocalDateTime.parse((CharSequence) prenotazioneModifica.get("tempo_arrivo"), formatter);
+            LocalDateTime tempoAttuale = LocalDateTime.now();
+
+            // Il secondo campo ci permette di capire se la prenotazione è iniziata oppure no
+            this.mostraFormModificaPrenotazione(prenotazioneModifica, tempoArrivoModifica.isBefore(tempoAttuale));
+
             if (!indietro && formato) {
                 try {
                     this.prenotazione.put("tempo_arrivo", tempo_arrivo);
@@ -400,27 +406,45 @@ public class UiPosteggio {
         return null;
     }
 
-    // Controlla se l'utente ha già una prenotazione attiva
-    private void mostraFormModificaPrenotazione(HashMap<String,Object> prenotazioneModifica) {
+    private void mostraFormModificaPrenotazione(HashMap<String,Object> prenotazioneModifica, boolean isStart) {
         scelta = showOptionDialog(null, modificaPanel, "Modifca prenotazione (clicca su X per uscire)", DEFAULT_OPTION, QUESTION_MESSAGE, null, pulsantiModifica, "Modifica prenotazione");
 
         if (scelta == 0 || scelta == CLOSED_OPTION) // torna indietro
         {
-            tempoArrivoModificaField.setText("");
             tempoUscitaModificaField.setText("");
             indietro = true;
         }
-        if (scelta == 1) // Modica prenotazione
-        {
-            tempo_arrivo = tempoArrivoModificaField.getText();
-            tempo_uscita = tempoUscitaModificaField.getText();
-            formato = this.controlloFormatoTempi();
-            tempoArrivoModificaField.setText("");
-            tempoUscitaModificaField.setText("");
-        }
-        if(scelta == 2){ // Cancella prenotazione
-            this.avviaCancellaPrenotazione(prenotazioneModifica);
-            indietro = true;
+        if(isStart){
+            tempoArrivoModificaField.setEnabled(false);
+            tempoUscitaModificaField.revalidate();
+            tempoUscitaModificaField.repaint();
+            if (scelta == 1) // Modica prenotazione
+            {
+                tempo_arrivo = (String) prenotazioneModifica.get("tempo_arrivo");
+                tempo_uscita = tempoUscitaModificaField.getText();
+                formato = this.controlloFormatoTempo();
+                tempoUscitaModificaField.setText("");
+            }
+            if(scelta == 2){ // Cancella prenotazione
+                JOptionPane.showMessageDialog(null,"Spiacente, non puoi eliminare una prenotazione iniziata", "Errore", ERROR_MESSAGE);
+                indietro = true;
+            }
+        }else{
+            tempoArrivoModificaField.setEnabled(true);
+            tempoUscitaModificaField.revalidate();
+            tempoUscitaModificaField.repaint();
+            if (scelta == 1) // Modica prenotazione
+            {
+                tempo_arrivo = tempoArrivoModificaField.getText();
+                tempo_uscita = tempoUscitaModificaField.getText();
+                formato = this.controlloFormatoTempi();
+                tempoArrivoModificaField.setText("");
+                tempoUscitaModificaField.setText("");
+            }
+            if(scelta == 2){ // Cancella prenotazione
+                this.avviaCancellaPrenotazione(prenotazioneModifica);
+                indietro = true;
+            }
         }
     }
 
