@@ -57,6 +57,58 @@ public class TestEDF {
     }
 
     @Test
+    public void isAcceptableBegunCharges(){
+        Prenotazioni p1 = new Prenotazioni(0, "2024-06-11 10:30:00", "2024-06-11 11:35:00", "a", 1, false);
+        Ricariche r1 = new Ricariche(30, 30, 30, 20, 0, 1); //ricarica iniziata
+        Prenotazioni p2 = new Prenotazioni(1, "2024-06-11 11:00:00", "2024-06-11 11:50:00", "b", 2, false);
+        Ricariche r2 = new Ricariche(30, 30, 30, 1, 1);
+
+        var listPrenotazioni = new ArrayList<Prenotazioni>();
+        listPrenotazioni.add(p1);
+        listPrenotazioni.add(p2);
+
+        var listRicariche = new ArrayList<Ricariche>();
+        listRicariche.add(r1);
+
+        assertTrue(EDF.isAcceptable("b", 30, listPrenotazioni, listRicariche, LocalDateTime.parse("2024-06-11 11:00:00", formatter), true));
+    }
+
+    @Test
+    public void isAcceptableEndedCharges(){
+        Prenotazioni p1 = new Prenotazioni(0, "2024-06-11 10:30:00", "2024-06-11 11:35:00", "a", 1, false);
+        Ricariche r11 = new Ricariche(30, 30, 30, 30, 0, 1); //finita
+        Ricariche r12 = new Ricariche(30, 30, 20, 2, 0, 1);
+        Prenotazioni p2 = new Prenotazioni(1, "2024-06-11 11:00:00", "2024-06-11 11:50:00", "b", 2, false);
+        Ricariche r2 = new Ricariche(30, 40, 40, 1, 1);
+
+        var listPrenotazioni = new ArrayList<Prenotazioni>();
+        listPrenotazioni.add(p1);
+        listPrenotazioni.add(p2);
+
+        var listRicariche = new ArrayList<Ricariche>();
+        listRicariche.add(r11);
+        listRicariche.add(r12);
+
+        assertFalse(EDF.isAcceptable("b", 40, listPrenotazioni, listRicariche, LocalDateTime.parse("2024-06-11 11:00:00", formatter), true));
+
+
+
+        Prenotazioni p4 = new Prenotazioni(0, "2024-06-11 11:00:00", "2024-06-11 12:00:00", "a", 1, false);
+        Ricariche r4 = new Ricariche(30, 30, 30, 30,0, 1);
+        Prenotazioni p5 = new Prenotazioni(1, "2024-06-11 11:10:00", "2024-06-11 12:00:00", "b", 2, false);
+        Ricariche r5 = new Ricariche(30, 30, 30, 1, 1);
+
+        var lp = new ArrayList<Prenotazioni>();
+        lp.add(p4);
+        lp.add(p5);
+
+        var lr = new ArrayList<Ricariche>();
+        lr.add(r4);
+
+        assertTrue(EDF.isAcceptable("b", 40, lp, lr, LocalDateTime.parse("2024-06-11 11:00:00", formatter), true));
+    }
+
+    @Test
     public void testScheduling(){
         Prenotazioni p1 = new Prenotazioni(0, "2024-06-11 11:00:00", "2024-06-11 12:00:00", "a", 1, false);
         Ricariche r1 = new Ricariche(30, 30, 30, 0, 1);

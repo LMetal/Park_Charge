@@ -32,16 +32,21 @@ public class EDF {
             if(!test && p.getTempo_uscita().isBefore(LocalDateTime.now())) continue;
 
             if(ricariche.stream().anyMatch(r -> r.getPrenotazione() == p.getId())){
+
+                //ottengo la ricarica in corso associata a una prenotazione
                 Ricariche ricaricaPrenotazione = ricariche.stream()
                         .filter(r -> r.getPrenotazione() == p.getId())
+                        .filter(r -> r.getPercentuale_erogata() != r.getPercentuale_richiesta())
                         .findFirst()
                         .orElse(null);
 
-                if(ricaricaPrenotazione == null) return false;
-                if(t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica() - ricaricaPrenotazione.getPercentuale_erogata()).isAfter(p.getTempo_uscita())){
-                    return false;
+                if(ricaricaPrenotazione != null){
+                    if(t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica() - ricaricaPrenotazione.getPercentuale_erogata()).isAfter(p.getTempo_uscita())){
+                        return false;
+                    }
+                    t = t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica() - ricaricaPrenotazione.getPercentuale_erogata());
                 }
-                t = t.plusMinutes(ricaricaPrenotazione.getDurata_ricarica());
+
             }
 
             if(p.equals(prenotazioneUtente)){

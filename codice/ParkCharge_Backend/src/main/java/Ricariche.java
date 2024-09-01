@@ -17,6 +17,16 @@ public class Ricariche {
         this.mwbot = mwbot;
     }
 
+    //per testing EDF
+    public Ricariche(float kilowatt, int durata_ricarica, int percentuale_richiesta, int percentuale_erogata, int prenotazione, int mwbot){
+        this.kilowatt = kilowatt;
+        this.durata_ricarica = durata_ricarica;
+        this.percentuale_richiesta = percentuale_richiesta;
+        this.percentuale_erogata = percentuale_erogata;
+        this.prenotazione = prenotazione;
+        this.mwbot = mwbot;
+    }
+
     public Ricariche(HashMap<String, Object> ricaricaJson) {
         this.percentuale_richiesta = (int) ricaricaJson.get("percentuale_richiesta");
         this.prenotazione = (int) ricaricaJson.get("prenotazione");

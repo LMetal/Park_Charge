@@ -14,7 +14,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static javax.swing.JOptionPane.*;
 
@@ -199,7 +201,12 @@ public class UiMonitora {
         } catch (URISyntaxException | IOException | InterruptedException e) {
             this.mostraErrore("Errore comunicazione server");
         }
-        ArrayList<HashMap<String, Object>> listaRicariche = gson.fromJson(response.body(), type);
+        List<HashMap<String, Object>> listaRicariche = gson.fromJson(response.body(), type);
+
+        System.out.println(listaRicariche);
+        //filtro per ricariche in coda o in corso
+        var listaRicaricheInCorso = listaRicariche.stream()
+                .filter(h -> !h.get("percentuale_richiesta").toString().equals(h.get("percentuale_erogata").toString())).toList();
 
 
         JPanel panel = new JPanel(new GridBagLayout());
@@ -208,28 +215,23 @@ public class UiMonitora {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel headerPrenotazione = new JLabel("Prenotazione");
-        JLabel headerKilowatt = new JLabel("Kilowatt utilizzati");
-        JLabel headerDurata = new JLabel("Durata della ricarica");
+        JLabel headerErogata = new JLabel("Percentuale erogata");
         JLabel headerPercentuale = new JLabel("Percentuale richiesta");
         JLabel headerBot = new JLabel("MWBot");
 
-        gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(headerPrenotazione, gbc);
         gbc.gridx = 1;
-        panel.add(headerKilowatt, gbc);
+        panel.add(headerErogata, gbc);
         gbc.gridx = 2;
-        panel.add(headerDurata, gbc);
-        gbc.gridx = 3;
         panel.add(headerPercentuale, gbc);
-        gbc.gridx = 4;
+        gbc.gridx = 3;
         panel.add(headerBot, gbc);
 
         int row = 1;
-        for (HashMap<String, Object> ricarica : listaRicariche) {
+        for (HashMap<String, Object> ricarica : listaRicaricheInCorso) {
             JLabel labelId = new JLabel(ricarica.get("prenotazione").toString());
-            JLabel labelKilowatt = new JLabel(ricarica.get("kilowatt").toString());
-            JLabel labelDurata = new JLabel(ricarica.get("durata_ricarica").toString());
+            JLabel labelErogata = new JLabel(ricarica.get("percentuale_erogata").toString());
             JLabel labelPercentuale = new JLabel(ricarica.get("percentuale_richiesta").toString());
             JLabel labelBot = new JLabel(ricarica.get("mwbot").toString());
 
@@ -237,12 +239,10 @@ public class UiMonitora {
             gbc.gridy = row;
             panel.add(labelId, gbc);
             gbc.gridx = 1;
-            panel.add(labelKilowatt, gbc);
+            panel.add(labelErogata, gbc);
             gbc.gridx = 2;
-            panel.add(labelDurata, gbc);
-            gbc.gridx = 3;
             panel.add(labelPercentuale, gbc);
-            gbc.gridx = 4;
+            gbc.gridx = 3;
             panel.add(labelBot, gbc);
 
             row++;
@@ -333,7 +333,6 @@ public class UiMonitora {
             JLabel headerUtente = new JLabel("Utente");
             JLabel headerPosto = new JLabel("Posto");
 
-            gbc.gridx = 0;
             gbc.gridy = 0;
             panel.add(headerId, gbc);
             gbc.gridx = 1;
