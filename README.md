@@ -33,8 +33,13 @@ cd aa23-24-gruppo6/
 
 ### Avvio di Mosquitto
 Avvia il broker MQTT Mosquitto utilizzando il file di configurazione forniti nella cartella `doc/MQTT`:
+- **Windows**:
 ```
 ./mosquitto.exe -c configurazione_broker.conf -v
+```
+- **Linux**:
+```
+mosquitto -c configurazione_broker.conf -v
 ```
 
 ### Avvio del Sistema
